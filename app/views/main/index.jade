@@ -5,7 +5,7 @@ html(lang="en")
     meta(name="viewport",content="width=device-width, initial-scale=1.0")
     title= title
         
-    link(href="http://fonts.googleapis.com/css?family=Open+Sans" 
+    link(href="//fonts.googleapis.com/css?family=Open+Sans" 
         rel="stylesheet",type="text/css")
     link(href="/css/bootstrap.min.css",rel="stylesheet")
     link(href="/css/fix.css",rel="stylesheet")
@@ -14,7 +14,7 @@ html(lang="en")
 
     // HTML5 shim, for IE6-8 support of HTML5 elements
     // if lt IE 9
-      script(src="../assets/js/html5shiv.js")
+      script(src="/js/html5shiv.js")
     
     <!-- Fav and touch icons -->
     link(rel="apple-touch-icon-precomposed",sizes="144x144",
@@ -27,19 +27,26 @@ html(lang="en")
         href="../assets/ico/apple-touch-icon-57-precomposed.png")
     link(rel="shortcut icon",href="../assets/ico/favicon.png")
 
-  body
+    script(src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
+    script(src="/js/bootstrap.min.js")
 
+  body
     .navbar.navbar-fixed-top
       .navbar-inner
         .container
-          button(type="button",data-toggle="collapse",data-target=".nav-collapse").btn.btn-navbar 
+          button(type="button",data-toggle="collapse",
+              data-target=".nav-collapse").btn.btn-navbar 
             span.icon-bar
             span.icon-bar
             span.icon-bar
           a.brand(href="#") Skeletor
           .nav-collapse.collapse
-            p.navbar-text.pull-right Logged in as 
-              a(href="#").navbar-link Username
+            p.navbar-text.pull-right
+              if user
+                span #{user.displayName} | 
+                a(href="/logout").navbar-link Logout
+              else
+                a(href="/auth/google").navbar-link login
             ul.nav
               li.active 
                 a(href="#") Home

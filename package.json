@@ -9,6 +9,8 @@
     "express": "3.0.3",
     "ejs": "0.8.4",
     "express-resource": "1.0.0",
-    "jade": "*"
+    "jade": "0.33.0",
+    "passport": "0.1.17",
+    "passport-google": "0.3.0"
   }
 }
