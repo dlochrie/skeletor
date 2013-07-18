@@ -1,0 +1,23 @@
+.navbar.navbar-fixed-top
+  .navbar-inner
+    .container
+      button(type="button",data-toggle="collapse",
+          data-target=".nav-collapse").btn.btn-navbar 
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+      a.brand(href="#") Skeletor
+      .nav-collapse.collapse
+        p.navbar-text.pull-right
+          if user
+            span #{user.displayName} | 
+            a(href="/logout").navbar-link Logout
+          else
+            a(href="/auth/google").navbar-link login
+        ul.nav
+          li.active 
+            a(href="#") Home
+          li
+            a(href="#about") About
+          li
+            a(href="#contact") Contact

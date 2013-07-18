@@ -1,72 +1,13 @@
-doctype 5
-html(lang="en")
-  head
-    meta(charset="utf-8")
-    meta(name="viewport",content="width=device-width, initial-scale=1.0")
-    title= title
-        
-    link(href="//fonts.googleapis.com/css?family=Open+Sans" 
-        rel="stylesheet",type="text/css")
-    link(href="/css/bootstrap.min.css",rel="stylesheet")
-    link(href="/css/fix.css",rel="stylesheet")
-    link(href="/css/bootstrap-responsive.min.css",rel="stylesheet")
-    link(href="/css/application.css",rel="stylesheet")
-
-    // HTML5 shim, for IE6-8 support of HTML5 elements
-    // if lt IE 9
-      script(src="/js/html5shiv.js")
+extends ../layout
+block body
+  .row
+    .span12
+      h1 skeletor
+      h2 feelin' fine.
     
-    <!-- Fav and touch icons -->
-    link(rel="apple-touch-icon-precomposed",sizes="144x144",
-        href="../assets/ico/apple-touch-icon-144-precomposed.png")
-    link(rel="apple-touch-icon-precomposed",sizes="114x114",
-        href="../assets/ico/apple-touch-icon-114-precomposed.png")
-    link(rel="apple-touch-icon-precomposed",sizes="72x72",
-        href="../assets/ico/apple-touch-icon-72-precomposed.png")
-    link(rel="apple-touch-icon-precomposed",
-        href="../assets/ico/apple-touch-icon-57-precomposed.png")
-    link(rel="shortcut icon",href="../assets/ico/favicon.png")
+  hr
 
-    script(src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
-    script(src="/js/bootstrap.min.js")
-
-  body
-    .navbar.navbar-fixed-top
-      .navbar-inner
-        .container
-          button(type="button",data-toggle="collapse",
-              data-target=".nav-collapse").btn.btn-navbar 
-            span.icon-bar
-            span.icon-bar
-            span.icon-bar
-          a.brand(href="#") Skeletor
-          .nav-collapse.collapse
-            p.navbar-text.pull-right
-              if user
-                span #{user.displayName} | 
-                a(href="/logout").navbar-link Logout
-              else
-                a(href="/auth/google").navbar-link login
-            ul.nav
-              li.active 
-                a(href="#") Home
-              li
-                a(href="#about") About
-              li
-                a(href="#contact") Contact
-
-    .container
-      .row
-        .span12
-          h1 skeletor
-          h2 feelin' fine.
-        
-      hr
-
-      .row
-        .span12
-          h3 and then something happened
-          h4 and it were good.
-
-      footer
-        &copy; Company 2013
+  .row
+    .span12
+      h3 and then something happened
+      h4 and it were good.
