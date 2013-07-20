@@ -11,6 +11,7 @@
     "express-resource": "1.0.0",
     "jade": "0.33.0",
     "passport": "0.1.17",
-    "passport-google": "0.3.0"
+    "passport-google": "0.3.0",
+    "mysql": "2.0.0-alpha8"
   }
 }

@@ -47,6 +47,13 @@ require('./config/passport')(app);
 
 
 /**
+ * Setup Dabasase-Specific Settings
+ * Replace file with DB-Type you wish to use
+ */
+require('./db/mysql')(app);
+
+
+/**
  * TODO: Move this up into `configure`, and add to a module
  * Log Request Info
  */
@@ -54,6 +61,8 @@ app.use(function(req, res, next){
   console.log('%s %s', req.method, req.url);
   next();
 });
+
+
 
 /*
 app.configure('development', function(){
