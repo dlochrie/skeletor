@@ -24,6 +24,17 @@ app.configure(function(){
   app.use(express.session());
   app.use(passport.initialize());
   app.use(passport.session());
+
+  /**
+   * Setup Anti-Forgery
+   * usage: (Where `token` is available as a local var)
+   *   input(name="csrf-token",type="hidden,content=token)
+   */
+  app.use(express.csrf());
+  app.use(function(req, res, next) {
+    res.locals.token = req.session._csrf;
+    next();
+  });
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
 });
