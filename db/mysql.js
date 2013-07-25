@@ -47,5 +47,5 @@ module.exports = function(app) {
   });
   
   /** Expose Connection Pool to App */
-  app.db = {mysql: pool};
+  app.db = pool;
  }

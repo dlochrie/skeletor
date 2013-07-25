@@ -34,7 +34,18 @@ html(lang="en")
     include common/top-nav
 
     .container
-      block body
+      .row
+        .span12
+          h1 skeletor
+            small.pull-right feelin' fine.
+
+      hr
+
+      .row
+        .span8
+          block body
+        .span4
+          include common/side-nav
 
       hr
 
