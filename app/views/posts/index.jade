@@ -1,0 +1,11 @@
+extends ../layout
+block body
+
+  if (posts.length)
+    each post in posts
+      .row
+        .span8
+          h3 
+            a= post.title
+          h4 By Someone on Someday
+          div= post.body
