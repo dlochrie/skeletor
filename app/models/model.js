@@ -12,20 +12,24 @@ module.exports = Model;
  * @params {Object} resource (Optional) Resource for contructing model.
  * @constructor
  */
-function Model(resource) {}
+function Model(resource) {
+  this.resource = resource;
+}
 
 
 /**
- * Find one records for a model given the `id`.
+ * Find one records for a model given the search criteria.
+ * @param {?Object} params (Optional) Resource/Criteria to use in search.
  * @param {Function} cb Callback function. 
  * @return function
  */
-Model.prototype.find = function find(id, cb) {
+Model.prototype.find = function(params, cb) {
   var self = this;
+  var params = (params) ? params : self.resource;
   dbOpen(this.app, function(err, dbc) {
     if (err) return cb(err, null);
-    var query = dbc.query('SELECT * FROM ?? WHERE id = ? LIMIT 1', 
-        [self.modelName, id], function(err, result) {
+    var query = dbc.query('SELECT * FROM ?? WHERE ? LIMIT 1', 
+        [self.modelName, params], function(err, result) {
       if (err) return cb(err, null);
       return cb(null, result[0]);
     });
@@ -39,7 +43,7 @@ Model.prototype.find = function find(id, cb) {
  * @param {Function} cb Callback function. 
  * @return function
  */
-Model.prototype.all = function all(cb) {
+Model.prototype.all = function(cb) {
   var self = this;
   dbOpen(this.app, function(err, dbc) {
     if (err) return cb(err, null);
@@ -47,6 +51,27 @@ Model.prototype.all = function all(cb) {
         [self.modelName], function(err, results) {
       if (err) return cb(err, null);
       return cb(null, results);
+    });
+    dbClose();
+    logSQL(query.sql);
+  });
+};
+
+/**
+ * Create a new record for a particular model.
+ * @param {Function} cb Callback function. 
+ * @return function
+ */
+Model.prototype.create = function(cb) {
+  var self = this;
+  self.resource.created = new Date;
+  self.resource.updated = new Date;
+  dbOpen(this.app, function(err, dbc) {
+    if (err) return cb(err, null);
+    var query = dbc.query('INSERT INTO ?? SET ?', 
+        [self.modelName, self.resource], function(err, result) {
+      if (err) return cb(err, null);
+      return cb(null, result);
     });
     dbClose();
     logSQL(query.sql);
