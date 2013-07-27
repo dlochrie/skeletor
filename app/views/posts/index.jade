@@ -1,11 +1,15 @@
 extends ../layout
 block body
 
+  h2 Posts
+
   if (posts.length)
     each post in posts
       .row
         .span8
           h3 
-            a= post.title
-          h4 By Someone on Someday
+            a(href='/posts/#{post.id}/')= post.title
+          h5 by author number #{post.author_id}
+            span.pull-right
+             small #{post.created.toUTCString()}
           div= post.body
