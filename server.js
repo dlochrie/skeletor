@@ -2,13 +2,11 @@
  * Module dependencies.
  */
 
-var express = require('express')
-  , resource = require('express-resource')
-  , http = require('http')
-  , path = require('path');
-
-var passport = require('passport')
-  , GoogleStrategy = require('passport-google').Strategy;
+var express = require('express'),
+  resource = require('express-resource'),
+  http = require('http'),
+  path = require('path'),
+  passport = require('passport');
 
 var app = express();
 
@@ -71,7 +69,7 @@ require('./config/passport')(app);
 
 /**
  * Setup Dabasase-Specific Settings
- * Replace file with DB-Type you wish to use
+ * Replace file with DB-Type you wish to use, ie `redis`
  */
 require('./db/mysql')(app);
 
