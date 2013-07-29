@@ -46,13 +46,15 @@ module.exports = function(app) {
   app.get('/auth/google/return', passport.authenticate('google', 
       {failureRedirect: '/login'}),
     function(req, res) {
-      require('../app/controllers/auth').initialize(req, res);
+      var session = req.session;
+      if (session.passport.user) {
+        session.logged_in = true;
+      }
       res.redirect('/');
     });
 
   app.get('/logout', function(req, res) {
     req.logOut();
-    req.session.user = false;
     res.redirect('/');
   });
 }

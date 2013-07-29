@@ -5,7 +5,7 @@ exports.index = function(req, res) {
   post.all(function(err, posts) {
     if (err) res.send('There was an error getting posts', err);
     if (posts) {
-      res.render('./posts/index', { title: 'Skeletor', posts: posts});
+      res.render('posts/index', { title: 'Skeletor', posts: posts});
     }
   });
 }
@@ -16,7 +16,7 @@ exports.show = function(req, res) {
   post.find(id, function(err, post) {
     if (err) res.send('There was an error getting the post', err);
     if (post) {
-      res.render('./posts/show', { title: 'Skeletor', post: post});
+      res.render('posts/show', { title: 'Skeletor', post: post});
     }
   });
 }

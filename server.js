@@ -41,8 +41,8 @@ app.configure(function(){
    * TODO: Is this necessary every request???
    */
   app.use(function(req, res, next) {
-    if (req.session.passport.user) {
-      res.locals.user = req.session.passport.user || null;
+    if (req.session.logged_in) {
+      res.locals.user = req.session.passport.user;
     }
     next();
   });
