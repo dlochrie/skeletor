@@ -12,6 +12,7 @@ var app = express();
 
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
+  app.set('host', process.env.HOST || '0.0.0.0');
   app.set('views', __dirname + '/app/views');
   app.set('view engine', 'jade');
   app.use(express.favicon());
@@ -94,6 +95,6 @@ app.configure('development', function(){
 /**
  * Start Server
  */
-http.createServer(app).listen(app.get('port'), function(){
+http.createServer(app).listen(app.get('port'), app.get('host'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });

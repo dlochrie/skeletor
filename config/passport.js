@@ -1,7 +1,8 @@
 module.exports = function(app) {
   var passport = require('passport')
     , GoogleStrategy = require('passport-google').Strategy
-    , User = require('../app/models/user');
+    , User = require('../app/models/user')
+    , url = 'http://' + app.get('host') + ':' + app.get('port');
 
   // Passport session setup.
   //   To support persistent login sessions, Passport needs to be able to
@@ -20,8 +21,8 @@ module.exports = function(app) {
 
   // Use the GoogleStrategy within Passport.
   passport.use(new GoogleStrategy({
-      returnURL: 'http://localhost:3000/auth/google/return',
-      realm: 'http://localhost:3000/'
+      returnURL:  url + '/auth/google/return',
+      realm: url + '/'
     },
     function(identifier, profile, done) {
       var resource = {
