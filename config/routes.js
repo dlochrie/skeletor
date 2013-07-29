@@ -8,6 +8,6 @@ module.exports = function(app) {
   app.get('/about', main.about);
   app.get('/contact', main.contact);
 
-  app.resource('posts', require(dir + 'posts'));
-  app.resource('users', require(dir + 'users'));
+  app.resource('posts', posts);
+  app.resource('users', users);
 }
