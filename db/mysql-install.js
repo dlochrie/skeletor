@@ -35,7 +35,7 @@ console.log('Creating table `' + table + '`');
 db.query('DROP TABLE IF EXISTS ' + table);
 db.query('CREATE TABLE ' + table + ' (' + 
   'id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,' + 
-  'author_id INT(10) UNSIGNED NOT NULL,' + 
+  'user_id INT(10) UNSIGNED NOT NULL,' + 
   'title VARCHAR(255) NOT NULL,' + 
   'description TEXT NOT NULL,' + 
   'body TEXT NOT NULL,' + 
@@ -43,7 +43,7 @@ db.query('CREATE TABLE ' + table + ' (' +
   'updated DATETIME NOT NULL,' + 
   'PRIMARY KEY(id),' +
   'UNIQUE(title),' +
-  'INDEX(author_id))');
+  'INDEX(user_id))');
 
 /** Users */
 table = 'user';

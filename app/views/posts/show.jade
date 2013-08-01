@@ -5,7 +5,7 @@ block body
 
   .row
     .span8
-      h5 by author number #{post.author_id}
+      h5 by #{post.displayName}
         span.pull-right
          small #{post.created.toUTCString()}
       div= post.body

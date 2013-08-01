@@ -1,6 +1,7 @@
 var dbc = null
   , orange = '\033[33m'
-  , reset = '\033[0m';
+  , reset = '\033[0m'
+  , mysql = require('mysql');
 
 
 // Expose Model Class
@@ -31,6 +32,7 @@ Model.prototype.find = function(params, cb) {
     var query = dbc.query('SELECT * FROM ?? WHERE ? LIMIT 1', 
         [self.modelName, params], function(err, result) {
       if (err) return cb(err, null);
+      console.log(result);
       return cb(null, result[0]);
     });
     dbClose();
@@ -78,6 +80,18 @@ Model.prototype.create = function(cb) {
   });
 };
 
+Model.prototype.query = function(stmt, where, limit, cb) {
+  dbOpen(this.app, function(err, dbc) {
+    if (err) return cb(err, null);
+    var query = dbc.query(stmt + ' WHERE ? ', [where], function(err, result) {
+      if (err) return cb(err, null);
+      return cb(null, result);
+    });
+    dbClose();
+    logSQL(query.sql);
+  });
+}
+
 /**
  * Get a connection from the DB Pool, 
  * @param {Function} cb Callback function. 
@@ -115,4 +129,107 @@ function dbClose() {
 function logSQL(msg) {
   msg = (msg) ? orange + msg + reset : '';
   console.log(msg);
+}
+
+/** 
+ * Prepare a Query based on a JSON Structure.
+ * it will use the cached query.
+ */
+Model.prototype.prepareQuery = function(struct) {
+  console.log(struct)
+  var primary = mysql.escapeId(struct.primary),
+    where = ''
+    limit = 25;
+  
+  var select = [];
+  for (table in struct.columns) {
+    var table_ = mysql.escapeId(table);
+    struct.columns[table].forEach(function(field) {
+      var field_ = mysql.escapeId(field);
+      select.push(table_ + '.' + field_)
+    });
+  }
+
+  var from = struct.primary;
+
+  var joins = [];
+  if (struct.joins) {
+    struct.joins.forEach(function(join) {
+      var relation = mysql.escapeId(join['relation']);
+      var relationId = mysql.escapeId(join['relation key']);
+      var foreignKey = mysql.escapeId(join['foreign key']);
+      var stmt_ = ' JOIN ' + relation;
+      stmt_ += ' ON ' + relation + '.' + relationId + ' = ' + 
+          primary + '.' + foreignKey;
+      joins.push(stmt_);
+    });
+  }
+
+  var query = 'SELECT ' + select.join(', ') 
+      + ' FROM ' + from + 
+      ' ' + joins.join(', ');
+  return query;
+}
+
+Model.prepareSelect = function(struct, params) {
+  var primary = mysql.escapeId(struct.primary);
+  
+  var select = [];
+  for (table in struct.columns) {
+    var table_ = mysql.escapeId(table);
+    struct.columns[table].forEach(function(field) {
+      var field_ = mysql.escapeId(field);
+      select.push(table_ + '.' + field_)
+    });
+  }
+
+  var from = struct.primary;
+
+  var joins = [];
+  if (struct.joins) {
+    struct.joins.forEach(function(join) {
+      var relation = mysql.escapeId(join['relation']);
+      var relationId = mysql.escapeId(join['relation key']);
+      var foreignKey = mysql.escapeId(join['foreign key']);
+      var stmt_ = ' JOIN ' + relation;
+      stmt_ += ' ON ' + relation + '.' + relationId + ' = ' + 
+          primary + '.' + foreignKey;
+      joins.push(stmt_);
+    });
+  }
+
+  var query = 'SELECT ' + select.join(', ') 
+      + ' FROM ' + from + 
+      ' ' + joins.join(', ');
+    // TODO: HANDLE `WHERE`???
+  if (params.limit) query += ' LIMIT ' + parseInt(params.limit);
+  return query;
+}
+
+Model.prepareUpsert = function(struct, values, params) {
+  var primary = mysql.escapeId(struct.primary);
+  
+  var query = 'INSERT INTO ' + primary + ' SET ?';
+    
+  // TODO: HANDLE `WHERE`???
+  
+  if (params) {
+    var limit = params.limit || null;
+    if (limit) query += ' LIMIT ' + parseInt(limit);
+  }
+  return query;
+}
+
+Model.prepareDelete = function(struct, params) {
+  var primary = mysql.escapeId(struct.primary);
+  
+  var query = 'DELETE FROM ' + primary;
+  
+  // TODO: HANDLE `WHERE`???
+  
+  if (params) {
+    var limit = params.limit || null;
+    if (limit) query += ' LIMIT ' + parseInt(limit);
+  }
+  return query;
 }
