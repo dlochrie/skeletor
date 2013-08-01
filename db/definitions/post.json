@@ -1,0 +1,23 @@
+{
+  "primary": "post",
+  "columns": {
+    "post": [
+      "id", 
+      "title", 
+      "description", 
+      "body",
+      "created",
+      "updated"    
+    ],
+    "user": [
+      "id",
+      "displayName",
+      "email"
+    ]
+  },
+  "joins": [{
+    "relation": "user",
+    "relation key": "id",
+    "foreign key": "user_id"
+  }]
+}

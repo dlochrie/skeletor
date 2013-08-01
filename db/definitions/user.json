@@ -1,0 +1,15 @@
+{
+  "primary": "user",
+  "columns": {
+    "user": [
+      "id", 
+      "displayName", 
+      "email", 
+      "google_id",
+      "facebook_id",
+      "twitter_id",
+      "created",
+      "updated"    
+    ]
+  }
+}
