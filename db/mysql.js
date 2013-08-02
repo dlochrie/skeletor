@@ -49,10 +49,10 @@ module.exports = function(app) {
       connection.end();
     }
   });
-  
+
   /** Expose Connection Pool to App */
   app.set('db', {
-    "connection": pool,
+    "pool": pool,
     models: {}
   });
 

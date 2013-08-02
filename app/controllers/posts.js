@@ -13,7 +13,7 @@ exports.index = function(req, res) {
 exports.show = function(req, res) {
   var post = new Post(req.app, null);
   var id = req.params.post;
-  post.find({'post.id': id}, 1, function(err, post) {
+  post.find({'post.id': id}, function(err, post) {
     post = post[0];
     if (err) res.send('There was an error getting the post', err);
     if (post) {

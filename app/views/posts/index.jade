@@ -8,8 +8,8 @@ block body
       .row
         .span8
           h3 
-            a(href='/posts/#{post.id}/')= post.title
-          h5 by author number #{post.author_id}
+            a(href='/posts/#{post.post_id}/')= post.post_title
+          h5 by #{post.user_displayName}
             span.pull-right
-             small #{post.created.toUTCString()}
+             small #{post.post_created.toUTCString()}
           div= post.body

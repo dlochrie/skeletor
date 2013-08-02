@@ -1,11 +1,11 @@
 extends ../layout
 block body
 
-  h2= post.title
+  h2= post.post_title
 
   .row
     .span8
-      h5 by #{post.displayName}
+      h5 by #{post.user_displayName}
         span.pull-right
-         small #{post.created.toUTCString()}
-      div= post.body
+         small #{post.post_created.toUTCString()}
+      div= post.post_body
