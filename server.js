@@ -1,7 +1,6 @@
 /**
  * Module dependencies.
  */
-
 var express = require('express'),
   resource = require('express-resource'),
   http = require('http'),

@@ -1,7 +1,4 @@
-var dbc = null
-  , orange = '\033[33m'
-  , reset = '\033[0m'
-  , mysql = require('mysql');
+var utils = require('../../util/db-tools');
 
 
 // Expose Model Class
@@ -17,7 +14,6 @@ function Model(resource) {
   var name = this.modelName;
   this.db = this.app.get('db');
   this.pool = this.db.pool;
-  this.connection = null;
   this.model = this.db.models[name];
   this.queries = this.model.queries;
   this.structure = this.model.structure;
@@ -57,8 +53,15 @@ Model.prototype.all = function(opts, cb) {
 };
 
 
+/**
+ * Execute a MySQL Query.
+ * @param {string} sql The SQL query to perform.
+ * @param {Function} cb Callback function. 
+ * @return function
+ */
 Model.prototype.performQuery = function(sql, cb) {
-  dbOpen(function(err, dbc) {
+  var self = this;
+  this.dbOpen(function(err, dbc) {
     if (err) return cb(err, null);
     if (sql) {
       var options = {sql: sql, nestTables: '_'}
@@ -66,17 +69,15 @@ Model.prototype.performQuery = function(sql, cb) {
         if (err) return cb(err, null);
         return cb(null, results);
       });
-      dbClose();
-      logSQL(query.sql);
+      self.dbClose(dbc);
+      utils.logSQL(query.sql);
     }
   });
 };
 
 
 /**
- * Create a new record for a particular model.
- * @param {Function} cb Callback function. 
- * @return function
+ * ...To be implemented
  */
 Model.prototype.create = function(cb) {
   var cb = (arguments.length === 1) ? arguments[0] : cb;
@@ -88,6 +89,9 @@ Model.prototype.create = function(cb) {
 };
 
 
+/**
+ * ...To be implemented
+ */
 Model.prototype.query = function(stmt, where, limit, cb) {
   var cb = (arguments.length === 1) ? arguments[0] : cb;
   var sql = (this.queries['all']) ? this.queries['all'] : null;
@@ -103,7 +107,7 @@ Model.prototype.query = function(stmt, where, limit, cb) {
  * @param {Function} cb Callback function. 
  * @return function
  */
-function dbOpen(cb) {
+Model.prototype.dbOpen = function(cb) {
   var db = this.db;
   if (!db) return cb('There was an error connecting to the database', null);
   db.pool.getConnection(function(err, connection) {
@@ -112,87 +116,19 @@ function dbOpen(cb) {
       return cb(err, null);
     } else {
       console.log('Successfully connected to database:', process.env.MYSQL_DB);
-      dbc = connection;
-      return cb(null, dbc);
+      return cb(null, connection);
     }
   });
 }
 
+
 /**
  * Return DB Connection to Pool (if connection exists).
- * @private
+ * @param {Object} dbc MySQL Connection.
  */
-function dbClose() {
+Model.prototype.dbClose = function(dbc) {
   if (dbc) {
     try { dbc.end(); } 
     catch(e) { console.log('Could not close DB Connection.')}
   }
-}
-
-/**
- * Logs an orange-colored message to the console for easy visibility of SQL.
- * @param msg Message to log. 
- */
-function logSQL(msg) {
-  msg = (msg) ? orange + msg + reset : '';
-  console.log(msg);
-}
-
-/**
- * TODO: All the Prepare Statement Methods should go in a UTIL Class
- */
-Model.prepareSelect = function(struct, params) {
-  var primary = mysql.escapeId(struct.primary);
-  
-  var select = [];
-  for (table in struct.columns) {
-    var table_ = mysql.escapeId(table);
-    struct.columns[table].forEach(function(field) {
-      var field_ = mysql.escapeId(field);
-      select.push(table_ + '.' + field_)
-    });
-  }
-
-  var from = struct.primary;
-
-  var joins = [];
-  if (struct.joins) {
-    struct.joins.forEach(function(join) {
-      var relation = mysql.escapeId(join['relation']);
-      var relationId = mysql.escapeId(join['relation key']);
-      var foreignKey = mysql.escapeId(join['foreign key']);
-      var stmt_ = ' JOIN ' + relation;
-      stmt_ += ' ON ' + relation + '.' + relationId + ' = ' + 
-          primary + '.' + foreignKey;
-      joins.push(stmt_);
-    });
-  }
-
-  var query = 'SELECT ' + select.join(', ') 
-      + ' FROM ' + from + 
-      ' ' + joins.join(', ');
-  if (params.limit) query += ' LIMIT ' + parseInt(params.limit);
-  return query;
-}
-
-
-Model.prepareUpsert = function(struct, values, params) {
-  var primary = mysql.escapeId(struct.primary);
-  var query = 'INSERT INTO ' + primary + ' SET ?';
-  if (params) {
-    var limit = params.limit || null;
-    if (limit) query += ' LIMIT ' + parseInt(limit);
-  }
-  return query;
-}
-
-
-Model.prepareDelete = function(struct, params) {
-  var primary = mysql.escapeId(struct.primary);
-  var query = 'DELETE FROM ' + primary;
-  if (params) {
-    var limit = params.limit || null;
-    if (limit) query += ' LIMIT ' + parseInt(limit);
-  }
-  return query;
 }

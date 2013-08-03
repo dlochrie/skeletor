@@ -4,7 +4,8 @@
  *     connection-to-routes-with-express-js#answer-16800702
  */
 module.exports = function(app) {
-  var mysql = require('mysql');
+  var mysql = require('mysql'),
+    utils = require('../util/db-tools');
   
   /**
    * Set the DB Credentials in your environmental variables:
@@ -27,78 +28,87 @@ module.exports = function(app) {
     connectionLimit: 10
   });
 
-
-  /**
-   * Setup MySQL Sessions, and Log Connection Info to Console
+  /** 
+   * Expose Connection Pool to App 
    */
-   /*
-  pool.on('connection', function(err, connection) {
-    console.log('MySQL Successfully Connected', pool)
-    connection.query('SET SESSION auto_increment_increment=1')
-  });
-  */
-
-  /**
-   * Sanity check: This happens on app startup.
-   */
-  pool.getConnection(function(err, connection) {
-    if (err) {
-      console.log('There was an error connecting to the database:\n', err);
-    } else {
-      console.log('Successfully connected to database:', process.env.MYSQL_DB);
-      connection.end();
-    }
-  });
-
-  /** Expose Connection Pool to App */
   app.set('db', {
-    "pool": pool,
+    pool: pool,
     models: {}
   });
 
   /**
-   * Initialize Model Caching for DB Queries and Model Definitions
+   * Perform caching and DB testing for startup. 
    */
-  cacheModelDefinitions(function(err) {
-    if (!err) {
-      cacheModelQueries(function(err) {
-        if (!err) {
-          console.log('Models successfully loaded.');
-        } else {
-          throw('Could not successfully load models. Aborting.');
-        }
-      });
-    } else {
-      throw('Could not successfully load models. Aborting.');
-    }
+  var block = '/***********************************************\n' +
+      ' * Initializing Models and Database Connections\n' +
+      ' **********************************************/\n';
+  logToConsole(block);
+  checkConnectionPool(pool, function(connection) {
+    logToConsole('Successfully Connected to Database: ' + 
+      process.env.MYSQL_DB);
+    connection.end();
+
+    /**
+     * Initialize Model Caching for DB Queries and Model Definitions
+     */
+    cacheModelDefinitions(function(err) {
+      if (!err) {
+        cacheModelQueries();
+        logToConsole('Models successfully loaded.');
+      } else {
+        throw('Could not successfully load models. Aborting.');
+      }
+    });
   });
 
-  function cacheModelQueries(done) {
+  /**
+   * Logs an light blue-colored message to the console.
+   *
+   * @param {string} msg Message to log.
+   */
+  function logToConsole(msg) {
+    var fontColor = '\033[36m',
+      resetColor = '\033[0m';
+    msg = (msg) ? fontColor + msg + resetColor : '';
+    console.log(msg);
+  }
+
+  /**
+   * Store the SQL Queries for each model for better performance.
+   * This eliminates the need to assemble a new statement for a partucular
+   * query in an ORM-like fashion, and should suffice for most requests.
+   */
+  function cacheModelQueries() {
     var db = app.settings.db;
-    console.log('Begin Caching Queries');
-    var Model = require('../app/models/model');
+    logToConsole('Begin Caching Queries');
     for (model in db.models) {
       var list = {};
       var def = db.models[model].definition;
-      list.find = Model.prepareSelect(def, { limit: 1});
-      list.all = Model.prepareSelect(def, { limit: null});
-      list.latest = Model.prepareSelect(def, { limit: 10});
-      list.create = Model.prepareUpsert(def);
-      list.update = Model.prepareUpsert(def);
-      list.delete = Model.prepareDelete(def);
+      list.find = utils.prepareSelect(def, { limit: 1});
+      list.all = utils.prepareSelect(def, { limit: null});
+      list.latest = utils.prepareSelect(def, { limit: 10});
+      list.create = utils.prepareUpsert(def);
+      list.update = utils.prepareUpsert(def);
+      list.delete = utils.prepareDelete(def);
       db.models[model].queries = list;
-      console.log('-- Loaded', model);
+      logToConsole('-- Loaded ' + model);
     }
-    console.log('Done Caching Queries');
+    logToConsole('Done Caching Queries');
   }
 
+  /**
+   * Cache the JSON structure of each model on the `db` object. This reference
+   * helps to speed up the creation of SQL statements for custom requests.
+   *
+   * @param {Function} done Callback function.
+   */
   function cacheModelDefinitions(done) {
     var db = app.settings.db,
       dir = './db/definitions/';
-    console.log('Begin Loading Definitions');
+    logToConsole('Begin Loading Definitions');
     require('fs').readdir(dir, function(err, files) {
       if (err) {
-        console.log('There was an error reading in Model Definitions');
+        throw('There was an error reading in Model Definitions');
         return done(true);
       }
       function loadModel(file) {
@@ -107,18 +117,38 @@ module.exports = function(app) {
           var data;
           try { 
             data = require(__dirname + '/definitions/' + file);
-            console.log('-- Loaded', file);
+            logToConsole('-- Loaded ' + file);
           } catch(e) {
-            console.log('There was an error Loading:', file);
+            var msg = 'There was an error Loading: ' + file + ', ' + e;
+            throw(msg);
           }
           db.models[name] = {definition: data};
           return loadModel(files.shift());
         } else {
-          console.log('Done Loading Definitions.');
+          logToConsole('Done Loading Definitions.');
           return done(null);
         }
       }
       loadModel(files.shift());
     });
   }
+
+  /**
+   * As a sanity check, test the connection to the MySQL pool. The app should
+   * abort if no connection can be made.
+   * 
+   * @param {Object} pool The MySQL connection pool.
+   * @param {Function} done Callback function.
+   */
+  function checkConnectionPool(pool, done) {
+    pool.getConnection(function(err, connection) {
+      logToConsole('Checking Database Connection Pool');
+      if (err) {
+        var msg = 'There was an error connecting to the database: ' + err;
+        throw(msg);
+      } else {
+        return done(connection);
+      }
+    });
+  } 
 }
