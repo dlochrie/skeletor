@@ -39,8 +39,10 @@ exports.prepareSelect = function(struct, params) {
 
   var query = 'SELECT ' + select.join(', ') 
       + ' FROM ' + from + 
-      ' ' + joins.join(', ');
-  if (params.limit) query += ' LIMIT ' + parseInt(params.limit);
+      joins.join(', ');
+  if (params) {
+    if (params.limit) query += ' LIMIT ' + parseInt(params.limit);
+  }
   return query;
 }
 

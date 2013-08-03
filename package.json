@@ -13,5 +13,12 @@
     "passport": "0.1.17",
     "passport-google": "0.3.0",
     "mysql": "2.0.0-alpha8"
+  },
+  "devDependencies": {
+    "mocha": ">= 0",
+    "should": ">= 0"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --recursive test/"
   }
 }
