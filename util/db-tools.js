@@ -11,7 +11,8 @@ var mysql = require('mysql'),
  *    the SQL statement, such as `LIMIT` or `WHERE`.
  */
 exports.prepareSelect = function(struct, params) {
-  var primary = mysql.escapeId(struct.primary);
+  var primary = mysql.escapeId(struct.primary),
+    params = (params) ? params : {};
   
   var select = [];
   for (table in struct.columns) {
@@ -40,9 +41,7 @@ exports.prepareSelect = function(struct, params) {
   var query = 'SELECT ' + select.join(', ') 
       + ' FROM ' + from + 
       joins.join(', ');
-  if (params) {
-    if (params.limit) query += ' LIMIT ' + parseInt(params.limit);
-  }
+  if (params.limit) query += ' LIMIT ' + parseInt(params.limit);
   return query;
 }
 
@@ -50,15 +49,16 @@ exports.prepareSelect = function(struct, params) {
 /**
  * Prepares an `INSERT` or `UPDATE` SQL statement.
  *
- * ...TO BE IMPLEMENTED
+ * @param {Object} struct JSON object defining the model structure.
+ * @param {?Object} params Object containing parameters on which to customize
+ *    the SQL statement, such as `LIMIT` or `WHERE`.
  */
-exports.prepareUpsert = function(struct, values, params) {
-  var primary = mysql.escapeId(struct.primary);
+exports.prepareUpsert = function(struct, params) {
+  var primary = mysql.escapeId(struct.primary),
+    params = (params) ? params : {};
+
   var query = 'INSERT INTO ' + primary + ' SET ?';
-  if (params) {
-    var limit = params.limit || null;
-    if (limit) query += ' LIMIT ' + parseInt(limit);
-  }
+  if (params.limit) query += ' LIMIT ' + parseInt(params.limit);
   return query;
 }
 
@@ -66,21 +66,23 @@ exports.prepareUpsert = function(struct, values, params) {
 /**
  * Prepares a `DELETE` SQL statement.
  *
- * ...TO BE IMPLEMENTED
+ * @param {Object} struct JSON object defining the model structure.
+ * @param {?Object} params Object containing parameters on which to customize
+ *    the SQL statement, such as `LIMIT` or `WHERE`.
  */
 exports.prepareDelete = function(struct, params) {
-  var primary = mysql.escapeId(struct.primary);
+  var primary = mysql.escapeId(struct.primary),
+    params = (params) ? params : {};
+
   var query = 'DELETE FROM ' + primary;
-  if (params) {
-    var limit = params.limit || null;
-    if (limit) query += ' LIMIT ' + parseInt(limit);
-  }
+  if (params.limit) query += ' LIMIT ' + parseInt(params.limit);
   return query;
 }
 
 
 /**
  * Logs an orange-colored message to the console for easy visibility of SQL.
+ *
  * @param {string} msg Message to log. 
  */
 exports.logSQL = function(msg) {
