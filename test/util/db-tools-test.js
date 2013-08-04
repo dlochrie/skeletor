@@ -2,7 +2,7 @@ var should = require('should'),
   tools = require('../../util/db-tools');
 
 describe('DB Tools', function() {
-  beforeEach(function (done) {
+  beforeEach(function(done) {
     var modelOne = [
       "field1", 
       "field2", 

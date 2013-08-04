@@ -16,7 +16,8 @@
   },
   "devDependencies": {
     "mocha": ">= 0",
-    "should": ">= 0"
+    "should": ">= 0",
+    "sinon": "*"
   },
   "scripts": {
     "test": "./node_modules/.bin/mocha --recursive test/"

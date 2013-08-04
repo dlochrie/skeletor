@@ -36,30 +36,39 @@ module.exports = function(app) {
     models: {}
   });
 
+  initialize(function() {
+    var block = '/*********************************************************\n' +
+      ' * Successfully Loaded Models and Database Connections\n' +
+      ' ********************************************************/\n';
+      logToConsole(block);
+  });
+
   /**
    * Perform caching and DB testing for startup. 
    */
-  var block = '/***********************************************\n' +
+  function initialize(done) {
+    checkConnectionPool(pool, function(connection) {
+      var block = '/***********************************************\n' +
       ' * Initializing Models and Database Connections\n' +
-      ' **********************************************/\n';
-  logToConsole(block);
-  checkConnectionPool(pool, function(connection) {
-    logToConsole('Successfully Connected to Database: ' + 
-      process.env.MYSQL_DB);
-    connection.end();
+      ' **********************************************/';
+      logToConsole(block);
 
-    /**
-     * Initialize Model Caching for DB Queries and Model Definitions
-     */
-    cacheModelDefinitions(function(err) {
-      if (!err) {
-        cacheModelQueries();
-        logToConsole('Models successfully loaded.');
-      } else {
-        throw('Could not successfully load models. Aborting.');
-      }
+      logToConsole('Successfully Connected to Database: ' + 
+        process.env.MYSQL_DB);
+      connection.end();
+
+      /**
+       * Initialize Model Caching for DB Queries and Model Definitions
+       */
+      cacheModelDefinitions(function(err) {
+        if (!err) {
+          cacheModelQueries(done);
+        } else {
+          throw('Could not successfully load models. Aborting.');
+        }
+      });
     });
-  });
+  }
 
   /**
    * Logs an light blue-colored message to the console.
@@ -78,8 +87,10 @@ module.exports = function(app) {
    * This eliminates the need to assemble a new statement for a partucular
    * query in an ORM-like fashion, and should suffice for most requests.
    */
-  function cacheModelQueries() {
+  function cacheModelQueries(done) {
     var db = app.settings.db;
+    var count = Object.keys(db.models).length;
+    var processed = 0;
     logToConsole('Begin Caching Queries');
     for (model in db.models) {
       var list = {};
@@ -92,8 +103,12 @@ module.exports = function(app) {
       list.delete = utils.prepareDelete(def);
       db.models[model].queries = list;
       logToConsole('-- Loaded ' + model);
+      processed++;
+      if (processed === count) {
+        logToConsole('Done Caching Queries');
+        return done();
+      }
     }
-    logToConsole('Done Caching Queries');
   }
 
   /**
