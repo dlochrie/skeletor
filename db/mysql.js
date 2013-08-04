@@ -37,9 +37,9 @@ module.exports = function(app) {
   });
 
   initialize(function() {
-    var block = '/*********************************************************\n' +
-      ' * Successfully Loaded Models and Database Connections\n' +
-      ' ********************************************************/\n';
+    var block = '+---------------------------------------------------------\n' +
+      '| Successfully Loaded Models and Database Connections\n' +
+      '+---------------------------------------------------------';
       logToConsole(block);
   });
 
@@ -48,9 +48,9 @@ module.exports = function(app) {
    */
   function initialize(done) {
     checkConnectionPool(pool, function(connection) {
-      var block = '/***********************************************\n' +
-      ' * Initializing Models and Database Connections\n' +
-      ' **********************************************/';
+      var block = '+--------------------------------------------------------' +
+          '-\n| Initializing Models and Database Connections\n' +
+          '+---------------------------------------------------------';
       logToConsole(block);
 
       logToConsole('Successfully Connected to Database: ' + 
