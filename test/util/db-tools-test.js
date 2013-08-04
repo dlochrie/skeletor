@@ -2,52 +2,48 @@ var should = require('should'),
   tools = require('../../util/db-tools');
 
 describe('DB Tools', function() {
-
-  // TODO: 
-  // See about cloning the `struct` and `joins` to reduce code here.
   beforeEach(function (done) {
-    struct = {
+    var modelOne = [
+      "field1", 
+      "field2", 
+      "modelTwo_id"  
+    ];
+
+    var modelTwo = [
+      "id",
+      "field1"
+    ];
+
+    var modelThree = [
+      "id",
+      "modelOne_id",
+      "field1"
+    ];
+
+    struct_a = {
       "primary": "modelOne",
       "columns": {
-        "modelOne": [
-          "field1", 
-          "field2", 
-          "modelTwo_id"  
-        ],
-        "modelTwo": [
-          "id",
-          "field1"
-        ]
+        "modelOne": modelOne,
+        "modelTwo": modelTwo
       }
     };
 
-    struct2 = {
+    struct_b = {
       "primary": "modelOne",
       "columns": {
-        "modelOne": [
-          "field1", 
-          "field2", 
-          "modelTwo_id"  
-        ],
-        "modelTwo": [
-          "id",
-          "field1"
-        ],
-        "modelThree": [
-          "id",
-          "modelOne_id",
-          "field1"
-        ]
+        "modelOne": modelOne,
+        "modelTwo": modelTwo,
+        "modelThree": modelThree
       }
     };
 
-    joins = [{
+    joins_a = [{
       "relation": "modelTwo",
       "relation key": "id",
       "foreign key": "modelTwo_id"
     }];
 
-    joins2 = [{
+    joins_b = [{
       "relation": "modelTwo",
       "relation key": "id",
       "foreign key": "modelTwo_id"
@@ -61,72 +57,83 @@ describe('DB Tools', function() {
   });
 
 
-  it('should prepare a select statement without joins and without params', 
+  it('should prepare a select statement without joins and without params',
       function(done) {
     var params = null;
-    var expected = 'SELECT `modelOne`.`field1`, `modelOne`.`field2`, ' + 
-        '`modelOne`.`modelTwo_id`, `modelTwo`.`id`, `modelTwo`.`field1` ' + 
+    var expected = 'SELECT `modelOne`.`field1`, `modelOne`.`field2`, ' +
+        '`modelOne`.`modelTwo_id`, `modelTwo`.`id`, `modelTwo`.`field1` ' +
         'FROM modelOne';
-    var query = tools.prepareSelect(struct, params);
+    var query = tools.prepareSelect(struct_a, params);
     query.should.equal(expected);
     done();
   });
 
-
-  it('should prepare a select statement without joins and with params', 
+  it('should prepare a select statement without joins and with params',
       function(done) {
     var params = { limit: 1};
-    var expected = 'SELECT `modelOne`.`field1`, `modelOne`.`field2`, ' + 
-        '`modelOne`.`modelTwo_id`, `modelTwo`.`id`, `modelTwo`.`field1` ' + 
+    var expected = 'SELECT `modelOne`.`field1`, `modelOne`.`field2`, ' +
+        '`modelOne`.`modelTwo_id`, `modelTwo`.`id`, `modelTwo`.`field1` ' +
         'FROM modelOne LIMIT 1';
-    var query = tools.prepareSelect(struct, params);
+    var query = tools.prepareSelect(struct_a, params);
     query.should.equal(expected);
     done();
   });
 
-
-  it('should prepare a select statement with joins and without params', 
+  it('should prepare a select statement with joins and without params',
       function(done) {
-
     var params = null;
-    var expected = 'SELECT `modelOne`.`field1`, `modelOne`.`field2`, ' + 
-        '`modelOne`.`modelTwo_id`, `modelTwo`.`id`, `modelTwo`.`field1` ' + 
-        'FROM modelOne JOIN `modelTwo` ON `modelTwo`.`id` = ' + 
+    var expected = 'SELECT `modelOne`.`field1`, `modelOne`.`field2`, ' +
+        '`modelOne`.`modelTwo_id`, `modelTwo`.`id`, `modelTwo`.`field1` ' +
+        'FROM modelOne JOIN `modelTwo` ON `modelTwo`.`id` = ' +
         '`modelOne`.`modelTwo_id`';
-    struct.joins = joins;
-    var query = tools.prepareSelect(struct, params);
+    struct_a.joins = joins_a;
+    var query = tools.prepareSelect(struct_a, params);
     query.should.equal(expected);
     done();
   });
 
-
-  it('should prepare a select statement with joins and with params', 
+  it('should prepare a select statement with joins and with params',
       function(done) {
     var params = { limit: 1};
-    var expected = 'SELECT `modelOne`.`field1`, `modelOne`.`field2`, ' + 
-        '`modelOne`.`modelTwo_id`, `modelTwo`.`id`, `modelTwo`.`field1` ' + 
-        'FROM modelOne JOIN `modelTwo` ON `modelTwo`.`id` = ' + 
+    var expected = 'SELECT `modelOne`.`field1`, `modelOne`.`field2`, ' +
+        '`modelOne`.`modelTwo_id`, `modelTwo`.`id`, `modelTwo`.`field1` ' +
+        'FROM modelOne JOIN `modelTwo` ON `modelTwo`.`id` = ' +
         '`modelOne`.`modelTwo_id` LIMIT 1';
-    struct.joins = joins;
-    var query = tools.prepareSelect(struct, params);
+    struct_a.joins = joins_a;
+    var query = tools.prepareSelect(struct_a, params);
     query.should.equal(expected);
     done();
   });
 
-  it('should prepare a select statement with joins and with params', 
+  it('should prepare a select statement with multiple joins and without params', 
       function(done) {
-    var params = { limit: 1};
+    var params = null;
     var expected =  'SELECT `modelOne`.`field1`, `modelOne`.`field2`, ' + 
         '`modelOne`.`modelTwo_id`, `modelTwo`.`id`, `modelTwo`.`field1`, ' + 
         '`modelThree`.`id`, `modelThree`.`modelOne_id`, ' + 
         '`modelThree`.`field1` FROM modelOne JOIN `modelTwo` ON ' + 
         '`modelTwo`.`id` = `modelOne`.`modelTwo_id`,  ' +  
         'JOIN `modelThree` ON `modelThree`.`ModelOne_id` = ' + 
-        '`modelOne`.`id` LIMIT 1';
-    struct2.joins = joins2;
-    var query = tools.prepareSelect(struct2, params);
+        '`modelOne`.`id`';
+    struct_b.joins = joins_b;
+    var query = tools.prepareSelect(struct_b, params);
     query.should.equal(expected);
     done();
   });
 
+  it('should prepare a select statement with multiple joins and with params',
+      function(done) {
+    var params = { limit: 1};
+    var expected =  'SELECT `modelOne`.`field1`, `modelOne`.`field2`, ' +
+        '`modelOne`.`modelTwo_id`, `modelTwo`.`id`, `modelTwo`.`field1`, ' +
+        '`modelThree`.`id`, `modelThree`.`modelOne_id`, ' +
+        '`modelThree`.`field1` FROM modelOne JOIN `modelTwo` ON ' +
+        '`modelTwo`.`id` = `modelOne`.`modelTwo_id`,  ' +
+        'JOIN `modelThree` ON `modelThree`.`ModelOne_id` = ' +
+        '`modelOne`.`id` LIMIT 1';
+    struct_b.joins = joins_b;
+    var query = tools.prepareSelect(struct_b, params);
+    query.should.equal(expected);
+    done();
+  });
 });
