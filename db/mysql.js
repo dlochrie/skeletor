@@ -47,12 +47,11 @@ module.exports = function(app) {
    * Perform caching and DB testing for startup. 
    */
   function initialize(done) {
+    var block = '+--------------------------------------------------------' +
+        '-\n| Initializing Models and Database Connections\n' +
+        '+---------------------------------------------------------';
+    logToConsole(block);
     checkConnectionPool(pool, function(connection) {
-      var block = '+--------------------------------------------------------' +
-          '-\n| Initializing Models and Database Connections\n' +
-          '+---------------------------------------------------------';
-      logToConsole(block);
-
       logToConsole('Successfully Connected to Database: ' + 
         process.env.MYSQL_DB);
       connection.end();
@@ -89,26 +88,29 @@ module.exports = function(app) {
    */
   function cacheModelQueries(done) {
     var db = app.settings.db;
-    var count = Object.keys(db.models).length;
-    var processed = 0;
-    logToConsole('Begin Caching Queries');
-    for (model in db.models) {
-      var list = {};
-      var def = db.models[model].definition;
-      list.find = utils.prepareSelect(def, { limit: 1});
-      list.all = utils.prepareSelect(def, { limit: null});
-      list.latest = utils.prepareSelect(def, { limit: 10});
-      list.create = utils.prepareUpsert(def);
-      list.update = utils.prepareUpsert(def);
-      list.delete = utils.prepareDelete(def);
-      db.models[model].queries = list;
-      logToConsole('-- Loaded ' + model);
-      processed++;
-      if (processed === count) {
-        logToConsole('Done Caching Queries');
+    var models = Object.keys(db.models);
+    if (!models.length) return done();
+
+    function cacheQuery(model) {
+      if (model) {
+        var list = {};
+        var def = db.models[model].definition;
+        list.find = utils.prepareSelect(def, { limit: 1});
+        list.all = utils.prepareSelect(def, { limit: null});
+        list.latest = utils.prepareSelect(def, { limit: 10});
+        list.create = utils.prepareUpsert(def);
+        list.update = utils.prepareUpsert(def);
+        list.delete = utils.prepareDelete(def);
+        db.models[model].queries = list;
+        logToConsole('-- Loaded ' + model);
+        cacheQuery(models.shift());
+      } else {
+        logToConsole('...Done Caching Queries');
         return done();
       }
     }
+    logToConsole('Begin Caching Queries...');
+    cacheQuery(models.shift());
   }
 
   /**
@@ -120,7 +122,7 @@ module.exports = function(app) {
   function cacheModelDefinitions(done) {
     var db = app.settings.db,
       dir = './db/definitions/';
-    logToConsole('Begin Loading Definitions');
+    logToConsole('Begin Loading Definitions...');
     require('fs').readdir(dir, function(err, files) {
       if (err) {
         throw('There was an error reading in Model Definitions');
@@ -140,7 +142,7 @@ module.exports = function(app) {
           db.models[name] = {definition: data};
           return loadModel(files.shift());
         } else {
-          logToConsole('Done Loading Definitions.');
+          logToConsole('...Done Loading Definitions');
           return done(null);
         }
       }
