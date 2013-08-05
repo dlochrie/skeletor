@@ -134,7 +134,7 @@ describe('DB Tools', function() {
   it('should prepare an insert statement without params',
       function(done) {
     var expected =  'INSERT INTO `modelOne` SET ?';
-    var query = tools.prepareUpsert(struct_a, null);
+    var query = tools.prepareInsert(struct_a, null);
     query.should.equal(expected);
     done();
   });
@@ -142,7 +142,23 @@ describe('DB Tools', function() {
   it('should prepare an insert statement with params',
       function(done) {
     var expected =  'INSERT INTO `modelOne` SET ? LIMIT 1';
-    var query = tools.prepareUpsert(struct_a, {limit: 1});
+    var query = tools.prepareInsert(struct_a, {limit: 1});
+    query.should.equal(expected);
+    done();
+  });
+
+  it('should prepare an update statement without params',
+      function(done) {
+    var expected =  'UPDATE `modelOne` SET ?';
+    var query = tools.prepareUpdate(struct_a, null);
+    query.should.equal(expected);
+    done();
+  });
+
+  it('should prepare an update statement with params',
+      function(done) {
+    var expected =  'UPDATE `modelOne` SET ? LIMIT 1';
+    var query = tools.prepareUpdate(struct_a, {limit: 1});
     query.should.equal(expected);
     done();
   });
@@ -162,5 +178,4 @@ describe('DB Tools', function() {
     query.should.equal(expected);
     done();
   });
-
 });

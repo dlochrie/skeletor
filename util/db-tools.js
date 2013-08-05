@@ -47,17 +47,34 @@ exports.prepareSelect = function(struct, params) {
 
 
 /**
- * Prepares an `INSERT` or `UPDATE` SQL statement.
+ * Prepares an `INSERT` SQL statement.
  *
  * @param {Object} struct JSON object defining the model structure.
  * @param {?Object} params Object containing parameters on which to customize
  *    the SQL statement, such as `LIMIT` or `WHERE`.
  */
-exports.prepareUpsert = function(struct, params) {
+exports.prepareInsert = function(struct, params) {
   var primary = mysql.escapeId(struct.primary),
     params = (params) ? params : {};
 
   var query = 'INSERT INTO ' + primary + ' SET ?';
+  if (params.limit) query += ' LIMIT ' + parseInt(params.limit);
+  return query;
+}
+
+
+/**
+ * Prepares an `UPDATE` SQL statement.
+ *
+ * @param {Object} struct JSON object defining the model structure.
+ * @param {?Object} params Object containing parameters on which to customize
+ *    the SQL statement, such as `LIMIT` or `WHERE`.
+ */
+exports.prepareUpdate = function(struct, params) {
+  var primary = mysql.escapeId(struct.primary),
+    params = (params) ? params : {};
+
+  var query = 'UPDATE ' + primary + ' SET ?';
   if (params.limit) query += ' LIMIT ' + parseInt(params.limit);
   return query;
 }

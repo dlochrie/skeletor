@@ -24,7 +24,7 @@ describe('MySQL Initialization', function() {
     var db = app.settings.db;
     for (name in db.models) {
       var model = db.models[name];
-      model.should.be.a('object');
+      model.definition.should.be.a('object');
       var primaryTable = model.definition.primary;
       primaryTable.should.be.equal(name);
     }
@@ -32,6 +32,16 @@ describe('MySQL Initialization', function() {
   });
 
   it('should cache model queries', function(done) {
+    var db = app.settings.db;
+    for (name in db.models) {
+      var model = db.models[name];
+      model.queries.should.be.a('object');
+      // More verbose SQL tests should go in `db-tools-test.js`.
+      // These test for existence of statement, and not its accuracy.
+      model.queries['all'].should.include('SELECT');
+      model.queries['create'].should.include('INSERT');
+      model.queries['delete'].should.include('DELETE');
+    }
     done();
   });
 });

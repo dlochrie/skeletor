@@ -98,8 +98,8 @@ module.exports = function(app) {
         list.find = utils.prepareSelect(def, { limit: 1});
         list.all = utils.prepareSelect(def, { limit: null});
         list.latest = utils.prepareSelect(def, { limit: 10});
-        list.create = utils.prepareUpsert(def);
-        list.update = utils.prepareUpsert(def);
+        list.create = utils.prepareInsert(def);
+        list.update = utils.prepareUpdate(def);
         list.delete = utils.prepareDelete(def);
         db.models[model].queries = list;
         logToConsole('-- Loaded ' + model);
