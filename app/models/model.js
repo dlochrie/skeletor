@@ -54,6 +54,22 @@ Model.prototype.all = function(opts, cb) {
 
 
 /**
+ * Find the latest records for a model. Default is 10.
+ * @param {?Object} opts (Optional) Resource/Criteria to use in search.
+ * @param {Function} cb Callback function. 
+ * @return function
+ */
+Model.prototype.latest = function(opts, cb) {
+  var cb = (arguments.length === 1) ? arguments[0] : cb;
+  var sql = (this.queries['latest']) ? this.queries['latest'] : null;
+  if (!sql) {
+    sql = ''; // generate the query here based on structure
+  }
+  this.performQuery(sql, cb);
+};
+
+
+/**
  * Execute a MySQL Query.
  * @param {string} sql The SQL query to perform.
  * @param {Function} cb Callback function. 
@@ -115,7 +131,6 @@ Model.prototype.dbOpen = function(cb) {
       console.log('There was an error connecting to the database:\n', err);
       return cb(err, null);
     } else {
-      console.log('Successfully connected to database:', process.env.MYSQL_DB);
       return cb(null, connection);
     }
   });

@@ -43,7 +43,7 @@ exports.prepareSelect = function(struct, params) {
       joins.join(', ');
   if (params.limit) query += ' LIMIT ' + parseInt(params.limit);
   return query;
-}
+};
 
 
 /**
@@ -60,7 +60,7 @@ exports.prepareInsert = function(struct, params) {
   var query = 'INSERT INTO ' + primary + ' SET ?';
   if (params.limit) query += ' LIMIT ' + parseInt(params.limit);
   return query;
-}
+};
 
 
 /**
@@ -77,7 +77,7 @@ exports.prepareUpdate = function(struct, params) {
   var query = 'UPDATE ' + primary + ' SET ?';
   if (params.limit) query += ' LIMIT ' + parseInt(params.limit);
   return query;
-}
+};
 
 
 /**
@@ -94,7 +94,7 @@ exports.prepareDelete = function(struct, params) {
   var query = 'DELETE FROM ' + primary;
   if (params.limit) query += ' LIMIT ' + parseInt(params.limit);
   return query;
-}
+};
 
 
 /**
@@ -105,4 +105,4 @@ exports.prepareDelete = function(struct, params) {
 exports.logSQL = function(msg) {
   msg = (msg) ? orange + msg + reset : '';
   console.log(msg);
-}
+};
