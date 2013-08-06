@@ -31,8 +31,8 @@ module.exports = function(app) {
         email: profile.emails[0].value
       }
       var model = new User(app, resource);
-      model.find({email: resource.email}, function(err, user) {
-        if (user) return done(null, user);
+      model.find({limit: 1}, function(err, user) {
+        if (user) return done(null, user[0]);
         if (err || !user) {
           model.create(function(err, user) {
             done(err, null);

@@ -95,9 +95,9 @@ module.exports = function(app) {
       if (model) {
         var list = {};
         var def = db.models[model].definition;
-        list.find = utils.prepareSelect(def, { limit: 1});
-        list.all = utils.prepareSelect(def, { limit: null});
-        list.latest = utils.prepareSelect(def, { limit: 10});
+        list.find = utils.prepareSelect(def, {limit: 1});
+        list.all = utils.prepareSelect(def);
+        list.latest = utils.prepareSelect(def, {limit: 10});
         list.create = utils.prepareInsert(def);
         list.update = utils.prepareUpdate(def);
         list.delete = utils.prepareDelete(def);

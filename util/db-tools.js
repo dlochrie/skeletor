@@ -38,9 +38,10 @@ exports.prepareSelect = function(struct, params) {
     });
   }
 
-  var query = 'SELECT ' + select.join(', ') 
-      + ' FROM ' + from + 
+  var query = 'SELECT ' + select.join(', ') +
+      ' FROM ' + from +
       joins.join(', ');
+  query += ' WHERE ?';
   if (params.limit) query += ' LIMIT ' + parseInt(params.limit);
   return query;
 };

@@ -23,64 +23,85 @@ function Model(resource) {
 
 /**
  * Find one record for a model given the search criteria.
- * @param {?Object} opts (Optional) Resource/Criteria to use in search.
+ * @param {?Object} params (Optional) Resource/Criteria to use in search.
  * @param {Function} cb Callback function. 
  * @return function
  */
-Model.prototype.find = function(opts, cb) {
-  var cb = (arguments.length === 1) ? arguments[0] : cb;
-  var sql = (this.queries['find']) ? this.queries['find'] : null;
-  if (!sql) {
-    sql = ''; // generate the query here based on structure
+Model.prototype.find = function(params, cb) {
+  if (arguments.length === 1) {
+    cb = arguments[0];
+    params = null;
   }
-  this.performQuery(sql, cb);
+  return this.select('find', params, cb);
 };
 
 
 /**
  * Find all records for a model.
- * @param {?Object} opts (Optional) Resource/Criteria to use in search.
+ * @param {?Object} params (Optional) Resource/Criteria to use in search.
  * @param {Function} cb Callback function. 
  * @return function
  */
-Model.prototype.all = function(opts, cb) {
-  var cb = (arguments.length === 1) ? arguments[0] : cb;
-  var sql = (this.queries['all']) ? this.queries['all'] : null;
-  if (!sql) {
-    sql = ''; // generate the query here based on structure
+Model.prototype.all = function(params, cb) {
+  if (arguments.length === 1) {
+    cb = arguments[0];
+    params = null;
   }
-  this.performQuery(sql, cb);
+  return this.select('all', params, cb);
 };
 
 
 /**
  * Find the latest records for a model. Default is 10.
- * @param {?Object} opts (Optional) Resource/Criteria to use in search.
+ * @param {?Object} params (Optional) Resource/Criteria to use in search.
  * @param {Function} cb Callback function. 
  * @return function
  */
-Model.prototype.latest = function(opts, cb) {
-  var cb = (arguments.length === 1) ? arguments[0] : cb;
-  var sql = (this.queries['latest']) ? this.queries['latest'] : null;
-  if (!sql) {
-    sql = ''; // generate the query here based on structure
+Model.prototype.latest = function(params, cb) {
+  if (arguments.length === 1) {
+    cb = arguments[0];
+    params = null;
   }
-  this.performQuery(sql, cb);
+  return this.select('latest', params, cb);
+};
+
+
+/**
+ * Wrapper function for performing SELECT statements.
+ * @param {string} type Type of query to look up in cache.
+ * @param {?Object} params (Optional) Resource/Criteria to use in search.
+ * @param {Function} cb Callback function. 
+ */
+Model.prototype.select = function(type, params, cb) {
+  var sql = (this.queries[type]) ? this.queries[type] : null;
+  params = (params) ? params : {};
+  params.where = params.where || 1;
+  params.limit = params.limit || null;
+  if (!sql || params.limit) {
+    // If there is a LIMIT to add, create a new query
+    sql = ''; // TODO: generate the query here based on structure
+  }
+  this.performQuery(sql, params, cb);
 };
 
 
 /**
  * Execute a MySQL Query.
  * @param {string} sql The SQL query to perform.
+ * @param {?Object} params (Optional) Values to Update, Delete, or Select from.
  * @param {Function} cb Callback function. 
  * @return function
  */
-Model.prototype.performQuery = function(sql, cb) {
+Model.prototype.performQuery = function(sql, params, cb) {
   var self = this;
   this.dbOpen(function(err, dbc) {
     if (err) return cb(err, null);
     if (sql) {
-      var options = {sql: sql, nestTables: '_'}
+      var options = {
+        sql: sql,
+        values: (params.where) ? params.where : null,
+        nestTables: '_'
+      };
       query = dbc.query(options, function(err, results) {
         if (err) return cb(err, null);
         return cb(null, results);
