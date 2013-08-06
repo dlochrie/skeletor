@@ -41,7 +41,18 @@ exports.prepareSelect = function(struct, params) {
   var query = 'SELECT ' + select.join(', ') +
       ' FROM ' + from +
       joins.join(', ');
-  query += ' WHERE ?';
+
+  if (params.where) {
+    var where = [];
+    for (key in params.where) {
+      where.push(mysql.escapeId(key) + ' = ' +
+          mysql.escapeId(params.where[key]));
+    }
+    query += ' WHERE ' + where.join(' AND ');
+  } else {
+    query += ' WHERE ?';
+  }
+
   if (params.limit) query += ' LIMIT ' + parseInt(params.limit);
   return query;
 };
