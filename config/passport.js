@@ -30,12 +30,14 @@ module.exports = function(app) {
         google_id: identifier,
         email: profile.emails[0].value
       }
-      var model = new User(app, resource);
-      model.find({limit: 1}, function(err, user) {
-        if (user) return done(null, user[0]);
+      var model = new User(app, null);
+      model.find({where: {email: resource.email}}, function(err, user) {
+        user = (user.length) ? user[0] : null;
+        if (user) return done(null, user);
         if (err || !user) {
-          model.create(function(err, user) {
-            done(err, null);
+          model.create({values: resource}, function(err, user) {
+            if (user) return done(null, user[0]);
+            return done(err, null);
           });
         }
       });
