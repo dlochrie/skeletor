@@ -9,7 +9,7 @@ block body
         .span8
           h3 
             a(href='/posts/#{post.post_id}')= post.post_title
-          h5 by
+          h5 by 
             a(href='/users/#{post.user_id}')= post.user_displayName
             span.pull-right
              small #{post.post_created.toUTCString()}

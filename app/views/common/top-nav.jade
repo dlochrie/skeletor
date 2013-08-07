@@ -10,7 +10,7 @@
       .nav-collapse.collapse
         p.navbar-text.pull-right
           if user
-            span #{user.user_displayName} |
+            span #{user.user_displayName} | 
             a(href="/logout").navbar-link Logout
           else
             a(href="/auth/google").navbar-link login
