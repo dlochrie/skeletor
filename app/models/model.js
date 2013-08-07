@@ -140,8 +140,12 @@ Model.prototype.upsert = function(type, params, cb) {
   var sql = (this.queries[type]) ? this.queries[type] : null;
   var self = this;
   params = (params) ? params : {};
-  params.where = params.where || 1;
+  params.where = params.where || 1; // Needed only for update...
   params.values = params.values || null;
+  if (params.values) {
+    if (type === 'create') params.values.created = new Date;
+    params.values.updated = new Date;
+  }
   params.limit = params.limit || null;
   if (!sql || params.limit) {
     // If there is a LIMIT to add, create a new query

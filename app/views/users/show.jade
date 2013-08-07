@@ -1,0 +1,20 @@
+extends ../layout
+block body
+
+  h2 #{user.user_displayName}
+
+  .row
+    .span8
+      table.table.table-striped
+        tr
+          th Profile Photo
+          td 
+            a.thumbnail.span1(href='mailto:#{user.user_email}')
+              img(src="http://placehold.it/100x100",alt='#{user.user_displayName}')
+        tr
+          th Member Since
+          td #{user.user_created}
+        tr
+          th Email
+          td 
+            a(href='mailto:#{user.user_email}') #{user.user_email}
