@@ -5,7 +5,7 @@ exports.index = function(req, res) {
   var sections = [{
     name: 'Posts',
     actions: [
-      {title: 'List', path:'index'},
+      {title: 'List', path:'admin/posts/'},
       {title: 'Create', path:'new'}
     ]
   }, { 

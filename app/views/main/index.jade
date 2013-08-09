@@ -12,5 +12,5 @@ block body
           h5 by 
             a(href='/users/#{post.user_id}')= post.user_displayName
             span.pull-right
-             small #{post.post_created.toUTCString()}
-          div= post.body
+              small #{post.post_created.toUTCString()}
+          div #{post.post_description}
