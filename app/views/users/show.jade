@@ -5,12 +5,14 @@ block body
 
   .row
     .span8
-      table.table.table-striped
+      table.table.table-striped.table-hover
         tr
           th Profile Photo
           td 
-            a.thumbnail.span1(href='mailto:#{user.user_email}')
-              img(src="http://placehold.it/100x100",alt='#{user.user_displayName}')
+            ul.thumbnails
+              li.span1
+                div.thumbnail
+                  img(src="#{user.gravatar}", alt='#{user.user_displayName}')
         tr
           th Member Since
           td #{user.user_created}
