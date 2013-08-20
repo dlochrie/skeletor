@@ -3,6 +3,7 @@
  */
 var express = require('express'),
   resource = require('express-resource'),
+  flash = require('connect-flash'),
   http = require('http'),
   path = require('path'),
   passport = require('passport');
@@ -12,6 +13,9 @@ var app = express();
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
   app.set('host', process.env.HOST || '0.0.0.0');
+  app.use(express.static(app.root + '/public', {
+    maxAge: 86400000
+  }));
   app.set('views', __dirname + '/app/views');
   app.set('view engine', 'jade');
   app.use(express.favicon());
@@ -20,6 +24,7 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(express.cookieParser('feelinfine0987654321'));
   app.use(express.session());
+  app.use(flash());
   app.use(passport.initialize());
   app.use(passport.session());
 
@@ -43,6 +48,14 @@ app.configure(function(){
       res.locals.user = req.session.passport.user;
     }
     next();
+  });
+
+  /**
+   * Expose Flash Middleware to Views.
+   */
+  app.use(function(req, res, next) {
+    res.locals.messages = req.flash();
+    next()
   });
 
   app.use(app.router);
@@ -93,6 +106,7 @@ app.configure('development', function(){
 
 /**
  * Start Server
+ * TODO: Should do this after initialization.
  */
 http.createServer(app).listen(app.get('port'), app.get('host'), function(){
   console.log("Express server listening on port " + app.get('port'));

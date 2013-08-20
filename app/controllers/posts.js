@@ -12,7 +12,8 @@ exports.index = function(req, res) {
 
 exports.show = function(req, res) {
   var post = new Post(req.app, null);
-  var id = req.params.post;
+  // TODO: Make sure all IDs are being parsed as integers....
+  var id = parseInt(req.params.post);
   post.find({where: {'post.id': id}}, function(err, post) {
     post = post[0];
     if (err) res.send('There was an error getting the post', err);

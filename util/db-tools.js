@@ -86,7 +86,7 @@ exports.prepareUpdate = function(struct, params) {
   var primary = mysql.escapeId(struct.primary),
     params = (params) ? params : {};
 
-  var query = 'UPDATE ' + primary + ' SET ?';
+  var query = 'UPDATE ' + primary + ' SET ? WHERE ?';
   if (params.limit) query += ' LIMIT ' + parseInt(params.limit);
   return query;
 };

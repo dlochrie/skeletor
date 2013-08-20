@@ -13,4 +13,4 @@ block body
             a(href='/users/#{post.user_id}')= post.user_displayName
             span.pull-right
               small #{post.post_created.toUTCString()}
-          div #{post.post_description}
+          div!= post.post_description

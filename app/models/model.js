@@ -153,7 +153,8 @@ Model.prototype.upsert = function(type, params, cb) {
   }
   this.performQuery(sql, params, function(err, result) {
     if (!err && result) {
-      return self.select('find', {where: {id: result.insertId}}, cb);
+      var where = (result.insertId !== 0) ? result.insertId : params.where;
+      return self.select('find', {where: where}, cb);
     }
     return cb(err, null);
   });

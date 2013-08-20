@@ -9,3 +9,11 @@ exports.index = function(req, res) {
     }
   });
 };
+
+exports.about = function(req, res) {
+  res.render('main/about', {title: 'Skeletor'});
+};
+
+exports.contact = function(req, res) {
+  res.render('main/contact', {title: 'Skeletor'});
+};

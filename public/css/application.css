@@ -42,3 +42,8 @@ body {
 }
 
 th {text-align: left;}
+
+p { text-align: justify; }
+.alert:empty {
+  display: none;
+};

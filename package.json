@@ -1,23 +1,24 @@
 {
   "name": "skeletor",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "scripts": {
     "start": "node server"
   },
   "dependencies": {
-    "express": "3.0.3",
+    "express": "3.3.5",
     "ejs": "0.8.4",
     "express-resource": "1.0.0",
-    "jade": "0.33.0",
+    "jade": "0.34.1",
     "passport": "0.1.17",
     "passport-google": "0.3.0",
-    "mysql": "2.0.0-alpha8"
+    "mysql": "2.0.0-alpha8",
+    "connect-flash": "0.1.1",
+    "marked": "0.2.9"
   },
   "devDependencies": {
-    "mocha": ">= 0",
-    "should": ">= 0",
-    "sinon": "*"
+    "mocha": "1.12.0",
+    "should": "1.2.2"
   },
   "scripts": {
     "test": "./node_modules/.bin/mocha --recursive test/"

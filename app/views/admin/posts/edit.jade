@@ -4,6 +4,11 @@ block body
   h2 Editing Post - 
     em #{post.post_title} 
 
+  if messages
+    .alert.alert-success #{messages.success}
+    .alert.alert-error #{messages.error}
+    .alert.alert-info #{messages.info}
+
   <!--TODO: REMEMBER THAT EXPRESS ROUTES REQUIRES "PUT" VERB! IN OVERRIDE-->
   form(action='/admin/posts/#{post.post_id}',method='post')
     .control-group
