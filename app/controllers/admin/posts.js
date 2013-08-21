@@ -11,6 +11,40 @@ exports.index = function(req, res) {
 };
 
 
+exports.new = function(req, res) {
+  var post = new Post(req.app);
+  var user = res.locals.user || null;
+  if (!user) {
+    req.flash('error', 'You should be logged in...');
+    return res.redirect('/');
+  }
+  post.user_displayName = user.user_displayName;
+  post.post_user_id = parseInt(user.user_id);
+  res.render('admin/posts/new', {
+    title: 'Create Post',
+    post: post,
+    token: res.locals.token
+  });
+};
+
+
+exports.create = function(req, res) {
+  var post = new Post(req.app, null);
+  var params = req.body;
+  markDownPost(params, ['body', 'description'], function(err, body) {
+    delete params._csrf;
+    post.create({values: params}, function(err, post) {
+      if (err) {
+        res.send(err);
+      } else {
+        req.flash('success', 'Post Successfully Created');
+        res.redirect('/admin/posts');
+      }
+    });
+  });
+};
+
+
 exports.edit = function(req, res) {
   var post = new Post(req.app, null);
   // TODO: Make sure all IDs are being parsed as integers....
@@ -19,10 +53,12 @@ exports.edit = function(req, res) {
     post = post[0];
     if (err) res.send('There was an error getting the post', err);
     if (post) {
-      res.render('admin/posts/edit', {title: 'Post Edit', post: post, token:res.locals.token});
+      res.render('admin/posts/edit', {
+        title: 'Post Edit', post: post, token: res.locals.token
+      });
     }
   });
-}
+};
 
 
 exports.update = function(req, res) {

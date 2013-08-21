@@ -82,7 +82,7 @@ Model.prototype.create = function(params, cb) {
 
 
 /**
- * ...To Be Implemented
+ * Update a Record for a particular model.
  * @param {?Object} params (Optional) Resource/Criteria to use in search.
  * @param {Function} cb Callback function.
  * @return function
@@ -138,9 +138,11 @@ Model.prototype.select = function(type, params, cb) {
  */
 Model.prototype.upsert = function(type, params, cb) {
   var sql = (this.queries[type]) ? this.queries[type] : null;
-  var self = this;
+  var self = this,
+    where = {};
+
   params = (params) ? params : {};
-  params.where = params.where || 1; // Needed only for update...
+  params.where = params.where || null;
   params.values = params.values || null;
   if (params.values) {
     if (type === 'create') params.values.created = new Date;
@@ -153,10 +155,17 @@ Model.prototype.upsert = function(type, params, cb) {
   }
   this.performQuery(sql, params, function(err, result) {
     if (!err && result) {
-      var where = (result.insertId !== 0) ? result.insertId : params.where;
+      if (params.where) {
+        where = params.where;
+      } else if (result.insertId !== 0) {
+        var id = result.insertId;
+        var field = self.modelName + '.id';
+        where[field] = parseInt(id);
+      } else {
+        return cb(err, null);
+      }
       return self.select('find', {where: where}, cb);
     }
-    return cb(err, null);
   });
 };
 
@@ -218,6 +227,6 @@ Model.prototype.dbOpen = function(cb) {
 Model.prototype.dbClose = function(dbc) {
   if (dbc) {
     try { dbc.end(); } 
-    catch(e) { console.log('Could not close DB Connection.')}
+    catch(e) { console.log('Could not close DB Connection.'); }
   }
 }
