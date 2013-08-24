@@ -4,9 +4,9 @@ var should = require('should'),
 describe('DB Tools', function() {
   beforeEach(function(done) {
     var modelOne = [
-      "field1", 
-      "field2", 
-      "modelTwo_id"  
+      "field1",
+      "field2",
+      "modelTwo_id"
     ];
 
     var modelTwo = [
@@ -71,7 +71,7 @@ describe('DB Tools', function() {
     var expected = 'SELECT `modelOne`.`field1`, `modelOne`.`field2`, ' +
         '`modelOne`.`modelTwo_id`, `modelTwo`.`id`, `modelTwo`.`field1` ' +
         'FROM modelOne WHERE `field1` = `red` AND `field2` = `blue` LIMIT 1';
-    var query = tools.prepareSelect(struct_a, {limit: 1, 
+    var query = tools.prepareSelect(struct_a, {limit: 1,
         where: {field1: 'red', field2: 'blue'}});
     query.should.equal(expected);
     done();
@@ -101,14 +101,14 @@ describe('DB Tools', function() {
     done();
   });
 
-  it('should prepare a select statement with multiple joins and without params', 
+  it('should prepare a select statement with multiple joins and without params',
       function(done) {
-    var expected =  'SELECT `modelOne`.`field1`, `modelOne`.`field2`, ' + 
-        '`modelOne`.`modelTwo_id`, `modelTwo`.`id`, `modelTwo`.`field1`, ' + 
-        '`modelThree`.`id`, `modelThree`.`modelOne_id`, ' + 
-        '`modelThree`.`field1` FROM modelOne JOIN `modelTwo` ON ' + 
-        '`modelTwo`.`id` = `modelOne`.`modelTwo_id`,  ' +  
-        'JOIN `modelThree` ON `modelThree`.`ModelOne_id` = ' + 
+    var expected =  'SELECT `modelOne`.`field1`, `modelOne`.`field2`, ' +
+        '`modelOne`.`modelTwo_id`, `modelTwo`.`id`, `modelTwo`.`field1`, ' +
+        '`modelThree`.`id`, `modelThree`.`modelOne_id`, ' +
+        '`modelThree`.`field1` FROM modelOne JOIN `modelTwo` ON ' +
+        '`modelTwo`.`id` = `modelOne`.`modelTwo_id`,  ' +
+        'JOIN `modelThree` ON `modelThree`.`ModelOne_id` = ' +
         '`modelOne`.`id` WHERE ?';
     struct_b.joins = joins_b;
     var query = tools.prepareSelect(struct_b, null);
@@ -149,7 +149,7 @@ describe('DB Tools', function() {
 
   it('should prepare an update statement without params',
       function(done) {
-    var expected =  'UPDATE `modelOne` SET ?';
+    var expected =  'UPDATE `modelOne` SET ? WHERE ?';
     var query = tools.prepareUpdate(struct_a, null);
     query.should.equal(expected);
     done();
@@ -157,15 +157,16 @@ describe('DB Tools', function() {
 
   it('should prepare an update statement with params',
       function(done) {
-    var expected =  'UPDATE `modelOne` SET ? LIMIT 1';
-    var query = tools.prepareUpdate(struct_a, {limit: 1});
+    var expected =  'UPDATE `modelOne` SET ? WHERE ? LIMIT 5';
+    var query = tools.prepareUpdate(struct_a, {
+        limit: 5, where: {modelOne_id: 1}});
     query.should.equal(expected);
     done();
   });
 
   it('should prepare an delete statement without params',
       function(done) {
-    var expected =  'DELETE FROM `modelOne`';
+    var expected =  'DELETE FROM `modelOne` WHERE ? LIMIT 1';
     var query = tools.prepareDelete(struct_a, null);
     query.should.equal(expected);
     done();
@@ -173,8 +174,8 @@ describe('DB Tools', function() {
 
   it('should prepare an delete statement with params',
       function(done) {
-    var expected =  'DELETE FROM `modelOne` LIMIT 1';
-    var query = tools.prepareDelete(struct_a, {limit: 1});
+    var expected =  'DELETE FROM `modelOne` WHERE ? LIMIT 5';
+    var query = tools.prepareDelete(struct_a, {limit: 5});
     query.should.equal(expected);
     done();
   });
