@@ -13,7 +13,8 @@ module.exports = function(app) {
   app.resource('posts', posts);
   app.resource('users', users);
 
-  // TODO: This namespace should be protected by ACL 
+  // TODO: This namespace should be protected by ACL
   app.resource('admin', adminPanel);
   app.resource('admin/posts', adminPosts);
+  app.get('/admin/posts/:post/delete', adminPosts.delete);
 }

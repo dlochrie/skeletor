@@ -56,7 +56,6 @@ describe('DB Tools', function() {
     done();
   });
 
-
   it('should prepare a select statement without joins and without params',
       function(done) {
     var expected = 'SELECT `modelOne`.`field1`, `modelOne`.`field2`, ' +

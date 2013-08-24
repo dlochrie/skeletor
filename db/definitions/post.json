@@ -2,13 +2,15 @@
   "primary": "post",
   "columns": {
     "post": [
-      "id", 
-      "title", 
+      "id",
+      "title",
       "user_id",
-      "description", 
+      "description",
+      "description_md",
       "body",
+      "body_md",
       "created",
-      "updated"    
+      "updated"
     ],
     "user": [
       "id",

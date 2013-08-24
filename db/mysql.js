@@ -6,10 +6,10 @@
 module.exports = function(app) {
   var mysql = require('mysql'),
     utils = require('../util/db-tools');
-  
+
   /**
    * Set the DB Credentials in your environmental variables:
-   *   Set Temporarily: 
+   *   Set Temporarily:
    *   -- export MYSQL_HOST=localhost
    *   -- export etc=etc
    *   Set Permanently: (in ~/.pam_environment [ubuntu] OR ~/.bashrc)
@@ -17,7 +17,7 @@ module.exports = function(app) {
    *   -- export etc=etc
    *
    * NOTE: Name your vars what you want, just make sure that you modify
-   * the process.env.{} object to reflect that below. i.e., instead of 
+   * the process.env.{} object to reflect that below. i.e., instead of
    * `MYSQL_DB`, you can change to `APPNAME_DB`.
    */
   var pool = mysql.createPool({
@@ -28,8 +28,8 @@ module.exports = function(app) {
     connectionLimit: 10
   });
 
-  /** 
-   * Expose Connection Pool to App 
+  /**
+   * Expose Connection Pool to App
    */
   app.set('db', {
     pool: pool,
@@ -44,7 +44,7 @@ module.exports = function(app) {
   });
 
   /**
-   * Perform caching and DB testing for startup. 
+   * Perform caching and DB testing for startup.
    */
   function initialize(done) {
     var block = '+--------------------------------------------------------' +
@@ -52,7 +52,7 @@ module.exports = function(app) {
         '+---------------------------------------------------------';
     logToConsole(block);
     checkConnectionPool(pool, function(connection) {
-      logToConsole('Successfully Connected to Database: ' + 
+      logToConsole('Successfully Connected to Database: ' +
         process.env.MYSQL_DB);
       connection.end();
 
@@ -132,7 +132,7 @@ module.exports = function(app) {
         if (file) {
           var name = file.replace(/\.[^/.]+$/, "");
           var data;
-          try { 
+          try {
             data = require(__dirname + '/definitions/' + file);
             logToConsole('-- Loaded ' + file);
           } catch(e) {
@@ -153,7 +153,7 @@ module.exports = function(app) {
   /**
    * As a sanity check, test the connection to the MySQL pool. The app should
    * abort if no connection can be made.
-   * 
+   *
    * @param {Object} pool The MySQL connection pool.
    * @param {Function} done Callback function.
    */
@@ -167,5 +167,5 @@ module.exports = function(app) {
         return done(connection);
       }
     });
-  } 
+  }
 }

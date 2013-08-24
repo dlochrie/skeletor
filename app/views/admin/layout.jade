@@ -43,6 +43,13 @@ html(lang="en")
 
       .row
         .span12
+          if messages
+            .alert.alert-success #{messages.success}
+            .alert.alert-error #{messages.error}
+            .alert.alert-info #{messages.info}
+
+      .row
+        .span12
           block body
 
       hr

@@ -1,7 +1,7 @@
 var utils = require('../../util/db-tools');
 
 
-// Expose Model Class
+// Expose Base Model
 module.exports = Model;
 
 
@@ -24,7 +24,7 @@ function Model(resource) {
 /**
  * Find one record for a model given the search criteria.
  * @param {?Object} params (Optional) Resource/Criteria to use in search.
- * @param {Function} cb Callback function. 
+ * @param {Function} cb Callback function.
  * @return function
  */
 Model.prototype.find = function(params, cb) {
@@ -39,7 +39,7 @@ Model.prototype.find = function(params, cb) {
 /**
  * Find all records for a model.
  * @param {?Object} params (Optional) Resource/Criteria to use in search.
- * @param {Function} cb Callback function. 
+ * @param {Function} cb Callback function.
  * @return function
  */
 Model.prototype.all = function(params, cb) {
@@ -54,7 +54,7 @@ Model.prototype.all = function(params, cb) {
 /**
  * Find the latest records for a model. Default is 10.
  * @param {?Object} params (Optional) Resource/Criteria to use in search.
- * @param {Function} cb Callback function. 
+ * @param {Function} cb Callback function.
  * @return function
  */
 Model.prototype.latest = function(params, cb) {
@@ -107,7 +107,21 @@ Model.prototype.delete = function(params, cb) {
     cb = arguments[0];
     params = null;
   }
-  // return this.upsert('delete', params, cb);
+
+  var sql = this.queries['delete'] || null;
+  params = (params) ? params : {};
+  params.where = params.where || null;
+  params.limit = params.limit || null;
+
+  if (!sql || params.limit) {
+    // If there is a LIMIT to add, create a new query
+    sql = ''; // TODO: generate the query here based on structure
+  }
+
+  this.performQuery(sql, params, function(err, result) {
+    if (!err && !result.affectedRows) err = true;
+    return cb(err, null);
+  });
 };
 
 
@@ -115,10 +129,10 @@ Model.prototype.delete = function(params, cb) {
  * Wrapper function for performing SELECT statements.
  * @param {string} type Type of query to look up in cache.
  * @param {?Object} params (Optional) Resource/Criteria to use in search.
- * @param {Function} cb Callback function. 
+ * @param {Function} cb Callback function.
  */
 Model.prototype.select = function(type, params, cb) {
-  var sql = (this.queries[type]) ? this.queries[type] : null;
+  var sql = this.queries[type] || null;
   params = (params) ? params : {};
   params.where = params.where || 1;
   params.limit = params.limit || null;
@@ -137,7 +151,7 @@ Model.prototype.select = function(type, params, cb) {
  * @param {Function} cb Callback function.
  */
 Model.prototype.upsert = function(type, params, cb) {
-  var sql = (this.queries[type]) ? this.queries[type] : null;
+  var sql = this.queries[type] || null;
   var self = this,
     where = {};
 
@@ -174,7 +188,7 @@ Model.prototype.upsert = function(type, params, cb) {
  * Execute a MySQL Query.
  * @param {string} sql The SQL query to perform.
  * @param {?Object} params (Optional) Values to Update, Delete, or Select from.
- * @param {Function} cb Callback function. 
+ * @param {Function} cb Callback function.
  * @return function
  */
 Model.prototype.performQuery = function(sql, params, cb) {
@@ -202,8 +216,8 @@ Model.prototype.performQuery = function(sql, params, cb) {
 
 
 /**
- * Get a connection from the DB Pool, 
- * @param {Function} cb Callback function. 
+ * Get a connection from the DB Pool,
+ * @param {Function} cb Callback function.
  * @return function
  */
 Model.prototype.dbOpen = function(cb) {
@@ -226,7 +240,7 @@ Model.prototype.dbOpen = function(cb) {
  */
 Model.prototype.dbClose = function(dbc) {
   if (dbc) {
-    try { dbc.end(); } 
+    try { dbc.end(); }
     catch(e) { console.log('Could not close DB Connection.'); }
   }
 }

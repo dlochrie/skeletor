@@ -1,7 +1,8 @@
-var Post = require('../../models/post');
+var Post = require('../../models/post'),
+  markdown = require('../../../util/markdown');
 
 exports.index = function(req, res) {
-  var post = new Post(req.app, null);
+  var post = new Post(req.app);
   post.all(function(err, posts) {
     if (err) res.send('There was an error getting posts', err);
     if (posts) {
@@ -31,7 +32,7 @@ exports.new = function(req, res) {
 exports.create = function(req, res) {
   var post = new Post(req.app, null);
   var params = req.body;
-  markDownPost(params, ['body', 'description'], function(err, body) {
+  markdown.convert(params, ['body', 'description'], function(err, body) {
     delete params._csrf;
     post.create({values: params}, function(err, post) {
       if (err) {
@@ -65,7 +66,9 @@ exports.update = function(req, res) {
   var post = new Post(req.app, null);
   var id = parseInt(req.params.post);
   var params = req.body;
-  markDownPost(params, ['body', 'description'], function(err, body) {
+  params.body_md = params.body.toString().trim();
+  params.description_md = params.description.toString().trim();
+  markdown.convert(params, ['body', 'description'], function(params) {
     delete params._csrf;
     post.update({where: {'post.id': id}, values: params}, function(err, post) {
       if (err) {
@@ -79,27 +82,31 @@ exports.update = function(req, res) {
 };
 
 
-/**
- * Perform Markdown Conversion on Selected Fields.
- * TODO: This should be a SHARED Method
- * @param {Object} params Request parameters.
- * @param {Array.string} fields Parameters which will be converted.
- * @param {Function} done Callback function.
- */
-function markDownPost(params, fields, done) {
-  var md = require('marked'),
-    opts = {};
-
-  function reformat(field) {
-    if (params[field]) {
-      md(params[field].toString(), opts, function(err, out) {
-        params[field] = (err) ? params.field : out;
-        reformat(fields.shift())
+exports.delete = function(req, res) {
+  var post = new Post(req.app, null),
+    id = parseInt(req.params.post);
+  post.find({where: {'post.id': id}}, function(err, post) {
+    post = post[0];
+    if (err) res.send('There was an error getting the post', err);
+    if (post) {
+      res.render('admin/posts/delete', {
+        title: 'Post Delete', post: post, token: res.locals.token
       });
-    } else {
-      done(params);
     }
-  }
+  });
+};
 
-  reformat(fields.shift());
-}
+
+exports.destroy = function(req, res) {
+  var post = new Post(req.app, null),
+    id = parseInt(req.params.post);
+  post.delete({where: {'post.id': id}}, function(err, result) {
+    if (err) {
+      req.flash('error', 'There was an error deleting the post.');
+      res.redirect('/admin/posts/' + id + '/delete');
+    } else {
+      req.flash('success', 'Post Successfully Deleted.');
+      res.redirect('/admin/posts');
+    }
+  });
+};

@@ -1,5 +1,5 @@
 var mysql = require('mysql'),
-  orange = '\033[33m', 
+  orange = '\033[33m',
   reset = '\033[0m';
 
 
@@ -13,7 +13,7 @@ var mysql = require('mysql'),
 exports.prepareSelect = function(struct, params) {
   var primary = mysql.escapeId(struct.primary),
     params = (params) ? params : {};
-  
+
   var select = [];
   for (table in struct.columns) {
     var table_ = mysql.escapeId(table);
@@ -32,7 +32,7 @@ exports.prepareSelect = function(struct, params) {
       var relationId = mysql.escapeId(join['relation key']);
       var foreignKey = mysql.escapeId(join['foreign key']);
       var stmt_ = ' JOIN ' + relation;
-      stmt_ += ' ON ' + relation + '.' + relationId + ' = ' + 
+      stmt_ += ' ON ' + relation + '.' + relationId + ' = ' +
           primary + '.' + foreignKey;
       joins.push(stmt_);
     });
@@ -103,8 +103,9 @@ exports.prepareDelete = function(struct, params) {
   var primary = mysql.escapeId(struct.primary),
     params = (params) ? params : {};
 
-  var query = 'DELETE FROM ' + primary;
-  if (params.limit) query += ' LIMIT ' + parseInt(params.limit);
+  var query = 'DELETE FROM ' + primary + ' WHERE ?';
+  var limit = parseInt(params.limit) || null;
+  query += (limit) ? ' LIMIT ' + limit : ' LIMIT 1';
   return query;
 };
 
@@ -112,7 +113,7 @@ exports.prepareDelete = function(struct, params) {
 /**
  * Logs an orange-colored message to the console for easy visibility of SQL.
  *
- * @param {string} msg Message to log. 
+ * @param {string} msg Message to log.
  */
 exports.logSQL = function(msg) {
   msg = (msg) ? orange + msg + reset : '';

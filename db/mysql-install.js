@@ -33,14 +33,16 @@ db.query('USE `' + database + '`');
 table = 'post';
 console.log('Creating table `' + table + '`');
 db.query('DROP TABLE IF EXISTS ' + table);
-db.query('CREATE TABLE ' + table + ' (' + 
-  'id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,' + 
-  'user_id INT(10) UNSIGNED NOT NULL,' + 
-  'title VARCHAR(255) NOT NULL,' + 
-  'description TEXT NOT NULL,' + 
-  'body TEXT NOT NULL,' + 
-  'created DATETIME NOT NULL,' + 
-  'updated DATETIME NOT NULL,' + 
+db.query('CREATE TABLE ' + table + ' (' +
+  'id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,' +
+  'user_id INT(10) UNSIGNED NOT NULL,' +
+  'title VARCHAR(255) NOT NULL,' +
+  'description TEXT NOT NULL,' +
+  'description_md TEXT NOT NULL,' +
+  'body TEXT NOT NULL,' +
+  'body_md TEXT NOT NULL,' +
+  'created DATETIME NOT NULL,' +
+  'updated DATETIME NOT NULL,' +
   'PRIMARY KEY(id),' +
   'UNIQUE(title),' +
   'INDEX(user_id))');
@@ -49,15 +51,15 @@ db.query('CREATE TABLE ' + table + ' (' +
 table = 'user';
 console.log('Creating table `' + table + '`');
 db.query('DROP TABLE IF EXISTS ' + table);
-db.query('CREATE TABLE ' + table + ' (' + 
+db.query('CREATE TABLE ' + table + ' (' +
   'id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,' +
   'displayName VARCHAR(100),' +
   'email VARCHAR(100),' +
-  'google_id VARCHAR(100),' + 
-  'facebook_id VARCHAR(100),' + 
-  'twitter_id VARCHAR(100),' + 
-  'created DATETIME NOT NULL,' + 
-  'updated DATETIME NOT NULL,' + 
+  'google_id VARCHAR(100),' +
+  'facebook_id VARCHAR(100),' +
+  'twitter_id VARCHAR(100),' +
+  'created DATETIME NOT NULL,' +
+  'updated DATETIME NOT NULL,' +
   'PRIMARY KEY(id),' +
   'UNIQUE(displayName),' +
   'UNIQUE(email))');

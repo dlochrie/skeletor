@@ -1,13 +1,10 @@
 extends ../layout
 block body
 
-  h2 Editing Post - 
-    em #{post.post_title} 
+  h2 Editing Post -
+    em #{post.post_title}
 
-  if messages
-    .alert.alert-success #{messages.success}
-    .alert.alert-error #{messages.error}
-    .alert.alert-info #{messages.info}
+  a.pull-right(href='/admin') Admin Home
 
   <!--TODO: REMEMBER THAT EXPRESS ROUTES REQUIRES "PUT" VERB! IN OVERRIDE-->
   form(action='/admin/posts/#{post.post_id}',method='post')
@@ -28,14 +25,14 @@ block body
       .controls
         textarea.span12(rows=2,name='description',
             placeholder='Add a Description here, for Lists and RSS')
-          =post.post_description
+            !=post.post_description_md
 
     .control-group
       label.control-label(for='body') Body Content
       .controls
         textarea.span12(rows=5,name='body',
             placeholder='Neil Armstrong, we hardly knew ye...')
-          =post.post_body
+          =post.post_body_md
 
     input(type='hidden',name='user_id',value=post.post_user_id)
     input(type='hidden',name='_csrf',value=token)
@@ -44,6 +41,6 @@ block body
     .form-actions
       button.btn.btn-primary
         i.icon-ok.icon-white
-        |  Update Post 
-      |  or         
+        |  Update Post
+      |  or
       a.btn(href='/admin/posts') Cancel
