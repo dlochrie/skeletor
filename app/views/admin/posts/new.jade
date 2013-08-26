@@ -1,8 +1,7 @@
 extends ../layout
 block body
 
-  h2 New Post - 
-    em #{post.post_title} 
+  h2 Create a New Post
 
   if messages
     .alert.alert-success #{messages.success}
@@ -14,7 +13,7 @@ block body
     .control-group
       label.control-label(for='title') Title
       .controls
-        input.span12(type='text',name='title',value='#{post.post_title}',
+        input.span12(type='text',name='title',value=(post.post_title) ? post.post_title : "",
             placeholder='Man Lands on the Moon!')
 
     .control-group
@@ -45,6 +44,6 @@ block body
     .form-actions
       button.btn.btn-primary
         i.icon-ok.icon-white
-        |  Update Post 
-      |  or         
+        |  Create Post
+      |  or
       a.btn(href='/admin/posts') Cancel

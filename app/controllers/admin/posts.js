@@ -32,7 +32,8 @@ exports.new = function(req, res) {
 exports.create = function(req, res) {
   var post = new Post(req.app, null);
   var params = req.body;
-  markdown.convert(params, ['body', 'description'], function(err, body) {
+  markdown.convert(params, ['body', 'description'], function(params) {
+    // TODO: Model Validation should replace this. This is a hack.
     delete params._csrf;
     post.create({values: params}, function(err, post) {
       if (err) {
@@ -105,7 +106,7 @@ exports.destroy = function(req, res) {
       req.flash('error', 'There was an error deleting the post.');
       res.redirect('/admin/posts/' + id + '/delete');
     } else {
-      req.flash('success', 'Post Successfully Deleted.');
+      req.flash('info', 'Post Successfully Deleted.');
       res.redirect('/admin/posts');
     }
   });
