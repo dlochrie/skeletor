@@ -2,7 +2,7 @@
   .navbar-inner
     .container
       button(type="button",data-toggle="collapse",
-          data-target=".nav-collapse").btn.btn-navbar 
+          data-target=".nav-collapse").btn.btn-navbar
         span.icon-bar
         span.icon-bar
         span.icon-bar
@@ -10,18 +10,18 @@
       .nav-collapse.collapse
         p.navbar-text.pull-right
           if user
-            span #{user.user_displayName} | 
+            span #{user.user_displayName} |&nbsp;
             a(href="/logout").navbar-link Logout
           else
             a(href="/auth/google").navbar-link login
         ul.nav
-          li.active 
+          li.active
             a(href="/") Home
-          li.active 
+          li.active
             a(href="/posts") Posts
           li
-            a(href="#about") About
+            a(href="/about") About
           li
-            a(href="#contact") Contact
+            a(href="/contact") Contact
           li
             a(href="/admin") Admin

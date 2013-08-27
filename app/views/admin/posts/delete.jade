@@ -2,10 +2,12 @@ extends ../layout
 block body
 
   h2 Deleting Post
-    small
-      a.pull-right(href='/admin') Admin Home
+    .btn-group.pull-right
+      a.btn(href='/admin') Admin Home
+      a.btn(href='/admin/posts') Posts Administration
+      a.btn(href='/admin') Admin Home
 
-  .alert.alert-danger Are you sure you want to delete this post?
+  h3.text-warning Are you sure you want to delete this post?
   form(action='/admin/posts/#{post.post_id}',method='post')
     article
       table.table.table-hover
@@ -25,8 +27,8 @@ block body
     input(type='hidden',name='_method',value='delete')
 
     .form-actions
-      button.btn.btn-danger
-        i.icon-remove.icon-white
-        |  Delete Post
-      |  or
-      a.btn(href='/admin/posts') Cancel
+      .btn-group
+        button.btn.btn-danger
+          i.icon-remove.icon-white
+          |&nbsp;Delete Post
+        a.btn(href='/admin/posts') Cancel
