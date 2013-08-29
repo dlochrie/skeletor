@@ -36,10 +36,23 @@ html(lang="en")
     .container
       .row
         .span12
-          h1 skeletor
-            small.pull-right feelin' fine.
+          .page-header
+            h1 skeletor
+              small.pull-right.bottom Feelin' fine.
 
-      hr
+      .row
+        .span12
+          ul.inline
+            li
+              a
+                i.icon-home
+            li
+              a
+                i.icon-print
+
+            li
+              a
+                i.icon-envelope
 
       .row
         .span8
@@ -47,7 +60,4 @@ html(lang="en")
         .span4
           include common/side-nav
 
-      hr
-
-      footer
-        &copy; Skeletor Incorporated 2013
+      include common/footer
