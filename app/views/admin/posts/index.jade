@@ -1,4 +1,4 @@
-extends ../layout
+extends ../../templates/admin
 block body
 
   h2 Manage Posts
@@ -20,17 +20,17 @@ block body
     if (posts.length)
       each post in posts
         tr
-          td
-            a(href='/admin/posts/#{post.post_id}/edit') #{post.post_title}
-          td
-            a(href='/users/#{post.user_id}/') #{post.user_displayName}
-          td
-            span.badge.badge-info 8
+          td: a(href='/admin/posts/#{post.post_id}/edit') #{post.post_title}
+          td: a(href='/users/#{post.user_id}/') #{post.user_displayName}
+          td: span.badge.badge-info 8
           td= post.post_updated.toUTCString("en-US", {weekday: "long", month: "long", day: "numeric", year: "numeric", hour12: true})
           td
-            a(href='/admin/posts/#{post.post_id}/edit') Edit |&nbsp;
-            a(href='/admin/posts/#{post.post_id}/delete',
-                data-method='delete') Delete
+            a(href='/admin/posts/#{post.post_id}/edit', class='btn')
+              i.icon-edit
+            | 
+            a(href='/admin/posts/#{post.post_id}/delete', data-method='delete',
+                class='btn btn-danger')
+              i.icon-remove.icon-white
     else
       tr
         td(colspan=5) No Posts Found.

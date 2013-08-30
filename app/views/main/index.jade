@@ -1,4 +1,4 @@
-extends ../layouts/main
+extends ../templates/main
 block body
 
   if (posts.length)
@@ -10,9 +10,8 @@ block body
             small.pull-right.bottom
               span.badge
                 i.icon-white.icon-comment
-                |&nbsp;5
-          h5 by&nbsp;
+                |  5
+          h5 by 
             a(href='/users/#{post.user_id}')= post.user_displayName
-            span.pull-right
-              small #{post.post_created.toUTCString()}
+            span.pull-right: small #{post.post_created.toUTCString()}
           div!= post.post_description

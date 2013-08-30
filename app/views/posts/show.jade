@@ -1,11 +1,19 @@
-extends ../layouts/content
+extends ../templates/main
 block body
 
   h2= post.post_title
 
   .row
+    .span12
+      ul.inline
+        li: a: i.icon-home
+        li: a: i.icon-print
+        li: a: i.icon-envelope
+        li: a Share on Facebook
+
+  .row
     .span8
-      h5 by&nbsp;
+      h5 by 
         a(href='/users/#{post.user_id}')= post.user_displayName
         span.pull-right
           small #{post.post_created.toUTCString()}

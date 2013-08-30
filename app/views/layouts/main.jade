@@ -1,13 +1,14 @@
 doctype 5
 html(lang="en")
   head
-    include ../shared/head
+    title title
+    block head
 
   body
-    include ../shared/top-nav
+    block top-nav
 
     .container
-      include ../shared/header
+      block header
 
       .row
         .span8
@@ -16,4 +17,4 @@ html(lang="en")
           include ../common/archives
           include ../common/side-nav
 
-      include ../shared/footer
+      block footer
