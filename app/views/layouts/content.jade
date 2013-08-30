@@ -1,0 +1,29 @@
+doctype 5
+html(lang="en")
+  head
+    include ../shared/head
+
+  body
+    include ../shared/top-nav
+
+    .container
+      .row
+        .span12
+          ul.inline
+            li
+              a
+                i.icon-home
+            li
+              a
+                i.icon-print
+            li
+              a
+                i.icon-envelope
+
+      .row
+        .span8
+          block body
+        .span4
+          include ../common/side-nav
+
+      include ../shared/footer

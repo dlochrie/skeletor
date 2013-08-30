@@ -1,0 +1,19 @@
+doctype 5
+html(lang="en")
+  head
+    include ../shared/head
+
+  body
+    include ../shared/top-nav
+
+    .container
+      include ../shared/header
+
+      .row
+        .span8
+          block body
+        .span4
+          include ../common/archives
+          include ../common/side-nav
+
+      include ../shared/footer
