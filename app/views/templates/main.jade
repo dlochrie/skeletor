@@ -41,10 +41,10 @@ block top-nav
         a.brand(href="/") Skeletor
         .nav-collapse.collapse
           ul.nav
-            li: a(href="/posts") Posts
-            li: a(href="/about") About
-            li: a(href="/contact") Contact
-            li: a(href="/admin") Admin
+            li: a(href="/posts") posts
+            li: a(href="/about") about
+            li: a(href="/contact") contact
+            li: a(href="/admin") admin
           ul.nav.pull-right
             if user
               li.dropdown
@@ -59,9 +59,9 @@ block top-nav
               li: a(href="/auth/google").navbar-link login
 
 block header
-    .page-header
-      h1 skeletor
-        small.pull-right Feelin' fine.
+  .page-header
+    h1 skeletor
+      small.pull-right Feelin' fine.
 
 block footer
   footer.footer
