@@ -34,33 +34,7 @@ html(lang="en")
   body
     <!--Begin Top-Nav-->
     block top-nav
-      .navbar.navbar-fixed-top
-        .navbar-inner
-          .container
-            button(type="button",data-toggle="collapse",
-                data-target=".nav-collapse").btn.btn-navbar
-              span.icon-bar
-              span.icon-bar
-              span.icon-bar
-            a.brand(href="/") Skeletor
-            .nav-collapse.collapse
-              ul.nav
-                li: a(href="/posts") posts
-                li: a(href="/about") about
-                li: a(href="/contact") contact
-                li: a(href="/admin") admin
-              ul.nav.pull-right
-                if user
-                  li.dropdown
-                    a(class='dropdown', data-toggle='dropdown', href='#')
-                      = user.user_displayName
-                      |&nbsp;
-                      b.caret
-                    ul.dropdown-menu
-                      li: a(href="/profile") profile
-                      li: a(href="/logout") logout
-                else
-                  li: a(href="/auth/google").navbar-link login
+      include ../partials/top-nav
 
     <!--Begin Content Container-->
     .container
@@ -78,20 +52,4 @@ html(lang="en")
 
       <!--Begin Footer-->
       block footer
-        footer.footer
-          .row
-            .span4
-              ul.unstyled
-                li: a(href='#') Home
-                li: a(href='#') Posts
-            .span4
-              ul.unstyled
-                li: a(href='#') Users
-                li: a(href='#') Projects
-            .span4
-              ul.unstyled
-                li: a(href='#') About
-                li: a(href='#') Sitemap
-          .row
-            .span12
-              &copy; Skeletor Incorporated 2013
+        include ../partials/footer

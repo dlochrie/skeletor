@@ -30,67 +30,35 @@ html(lang="en")
 
       script(src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
       script(src="/js/bootstrap.min.js")
+      script(src="/js/date-format.js")
 
   body
+    <!--Begin Top-Nav-->
     block top-nav
-      .navbar.navbar-fixed-top
-        .navbar-inner
-          .container
-            button(type="button",data-toggle="collapse",
-                data-target=".nav-collapse").btn.btn-navbar
-              span.icon-bar
-              span.icon-bar
-              span.icon-bar
-            a.brand(href="/") Skeletor
-            .nav-collapse.collapse
-              ul.nav
-                li: a(href="/posts") posts
-                li: a(href="/about") about
-                li: a(href="/contact") contact
-                li: a(href="/admin") admin
-              ul.nav.pull-right
-                if user
-                  li.dropdown
-                    a(class='dropdown', data-toggle='dropdown', href='#')
-                      = user.user_displayName
-                      |&nbsp;
-                      b.caret
-                    ul.dropdown-menu
-                      li: a(href="/profile") profile
-                      li: a(href="/logout") logout
-                else
-                  li: a(href="/auth/google").navbar-link login
+      include ../partials/top-nav
 
+    <!--Begin Content Container-->
     .container
+      <!--Begin Header-->
       block header
-        .page-header
-          h1 skeletor
-            small.pull-right Feelin' fine.
+        .row: .span12
+          .page-header
+            h1 administration panel
+              small.pull-right Feelin' fine.
 
+      <!--Begin Main Content-->
       .row
         .span8
+          <!--Begin Body Content-->
           block body
         .span4
+          <!--Begin Sidebar-->
+          p.date.text-info Date
           block sidebar
-            include ../common/date
-            include ../common/archives
-            include ../common/side-nav
+            include ../partials/side-nav-links
+            include ../partials/side-nav-tags
+            include ../partials/side-nav-archives
 
+      <!--Begin Footer-->
       block footer
-        footer.footer
-          .row
-            .span4
-              ul.unstyled
-                li: a(href='#') Home
-                li: a(href='#') Posts
-            .span4
-              ul.unstyled
-                li: a(href='#') Users
-                li: a(href='#') Projects
-            .span4
-              ul.unstyled
-                li: a(href='#') About
-                li: a(href='#') Sitemap
-          .row
-            .span12
-              &copy; Skeletor Incorporated 2013
+        include ../partials/footer
