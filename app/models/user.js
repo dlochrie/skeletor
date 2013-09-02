@@ -6,7 +6,7 @@ module.exports = User;
 
 
 /**
- * 
+ * @constructor
  */
 function User(app, resource) {
   this.app = app;
