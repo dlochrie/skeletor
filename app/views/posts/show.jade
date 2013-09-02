@@ -1,10 +1,9 @@
-extends ../templates/main
+extends ../layouts/main
+
 block body
-
   h2= post.post_title
-
   .row
-    .span12
+    .span8
       ul.inline
         li: a: i.icon-home
         li: a: i.icon-print
@@ -12,7 +11,6 @@ block body
         li
           .g-plusone(data-size='medium',width=50)
           a(href="https://twitter.com/share",class="twitter-share-button") Tweet
-
   .row
     .span8
       h5 by 

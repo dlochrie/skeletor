@@ -1,6 +1,6 @@
-extends ../templates/main
-block body
+extends ../layouts/main
 
+block body
   h2 Posts
 
   if (posts.length)
@@ -12,3 +12,7 @@ block body
             a(href='/users/#{post.user_id}')= post.user_displayName
             span.pull-right: small #{post.post_created.toUTCString()}
           div!= post.post_description
+  else
+    .row
+      .span8
+        h3 There are no posts to display.
