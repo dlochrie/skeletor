@@ -1,0 +1,32 @@
+extends ../../layouts/admin
+
+block body
+  h2 Manage Users
+    .btn-group.pull-right
+      a.btn.btn-primary(href="/admin/users/new")
+        i.icon-plus.icon-white
+        |&nbsp;New Post
+      a.btn(href='/admin') Admin Home
+
+  table.table.table-hover.table-striped
+    thead
+      tr
+        th Display Name
+        th Created
+        th Actions
+    tbody
+    if (users.length)
+      each user in users
+        tr
+          td: a(href='/users/#{user.user_id}/') #{user.user_displayName}
+          td= user.user_updated
+          td
+            a(href='/admin/users/#{user.user_id}/edit', class='btn')
+              i.icon-edit
+            | 
+            a(href='/admin/users/#{user.user_id}/delete', data-method='delete',
+                class='btn btn-danger')
+              i.icon-remove.icon-white
+    else
+      tr
+        td(colspan=4) No Users Found.
