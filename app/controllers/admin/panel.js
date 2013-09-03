@@ -8,24 +8,27 @@ exports.index = function(req, res) {
       {title: 'List', path:'/admin/posts/'},
       {title: 'Create', path:'/admin/posts/new'}
     ]
-  }, { 
+  }, {
     name: 'Users',
     actions: [
       {title: 'List', path:'/admin/users'},
       {title: 'Create', path:'/admin/users/new'}
     ]
-  }, { 
+  }, {
     name: 'Comments',
     actions: [
       {title: 'List', path:'index'},
       {title: 'Create', path:'new'}
     ]
-  }, { 
+  }, {
     name: 'Photos',
     actions: [
       {title: 'List', path:'index'},
       {title: 'Create', path:'new'}
     ]
   }];
-  res.render('admin/index', {title: 'Admin Panel', sections: sections});
+  res.render('admin/index', {
+    title: 'Admin Panel',
+    sections: sections
+  });
 };

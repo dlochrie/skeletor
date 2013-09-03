@@ -1,7 +1,7 @@
 doctype 5
 html(lang="en")
   head
-    title title
+    title= title || 'skeletor'
     block head
       meta(charset="utf-8")
       meta(name="viewport",content="width=device-width, initial-scale=1.0")
@@ -43,7 +43,7 @@ html(lang="en")
       block header
         .row: .span12
           .page-header
-            h1 administration panel
+            h1= title || 'skeletor'
               small.pull-right Feelin' fine.
 
       <!--Begin Main Content-->
