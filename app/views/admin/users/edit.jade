@@ -4,14 +4,9 @@ append breadcrumbs
   li
     a(href="/admin/users") user administration
     span.divider /
-  li.active users edit
+  li.active= title
 
 block body
-  h2 Edit User
-    .btn-group.pull-right
-      a.btn(href='/admin/users') Users Administration
-      a.btn(href='/admin') Admin Home
-
   form(action='/admin/users/#{user.user_id}', method='post')
     include _form
 

@@ -4,14 +4,9 @@ append breadcrumbs
   li
     a(href="/admin/posts") posts administration
     span.divider /
-  li.active create new post
+  li.active= title
 
 block body
-  h2 Create a New Post
-    .btn-group.pull-right
-      a.btn(href='/admin/posts') Posts Administration
-      a.btn(href='/admin') Admin Home
-
   form(action='/admin/posts',method='post')
     include _form
 

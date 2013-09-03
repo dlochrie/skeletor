@@ -8,7 +8,7 @@ exports.index = function(req, res) {
     if (err) res.send('There was an error getting users', err);
     if (users) {
       res.render('admin/users/index', {
-        title: 'Users Administration',
+        title: 'users administration',
         users: users
       });
     }
@@ -24,7 +24,7 @@ exports.edit = function(req, res) {
     if (err) res.send('There was an error getting the user', err);
     if (user) {
       res.render('admin/users/edit', {
-        title: 'User Edit', user: user, token: res.locals.token
+        title: 'edit user', user: user, token: res.locals.token
       });
     }
   });
@@ -59,7 +59,7 @@ exports.delete = function(req, res) {
         res.render('./users/show', {title: 'Skeletor', user: user});
       });
       res.render('admin/users/delete', {
-        title: 'User Delete', user: user, token: res.locals.token
+        title: 'delete user', user: user, token: res.locals.token
       });
     }
   });

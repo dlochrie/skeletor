@@ -11,14 +11,12 @@ exports.index = function(req, res) {
   }, {
     name: 'Users',
     actions: [
-      {title: 'List', path:'/admin/users'},
-      {title: 'Create', path:'/admin/users/new'}
+      {title: 'List', path:'/admin/users'}
     ]
   }, {
     name: 'Comments',
     actions: [
-      {title: 'List', path:'index'},
-      {title: 'Create', path:'new'}
+      {title: 'List', path:'index'}
     ]
   }, {
     name: 'Photos',

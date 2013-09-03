@@ -4,15 +4,9 @@ append breadcrumbs
   li
     a(href="/admin/posts") posts administration
     span.divider /
-  li.active posts delete
+  li.active= title
 
 block body
-  h2 Deleting Post
-    .btn-group.pull-right
-      a.btn(href='/admin') Admin Home
-      a.btn(href='/admin/posts') Posts Administration
-      a.btn(href='/admin') Admin Home
-
   h3.text-warning Are you sure you want to delete this post?
   form(action='/admin/posts/#{post.post_id}',method='post')
     article

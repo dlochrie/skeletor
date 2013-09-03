@@ -8,7 +8,7 @@ exports.index = function(req, res) {
     if (err) res.send('There was an error getting posts', err);
     if (posts) {
       res.render('admin/posts/index', {
-        title: 'Posts Administration',
+        title: 'posts administration',
         posts: posts
       });
     }
@@ -26,7 +26,7 @@ exports.new = function(req, res) {
   post.user_displayName = user.user_displayName;
   post.post_user_id = parseInt(user.user_id);
   res.render('admin/posts/new', {
-    title: 'Create Post',
+    title: 'create post',
     post: post,
     token: res.locals.token
   });
@@ -62,7 +62,7 @@ exports.edit = function(req, res) {
     if (err) res.send('There was an error getting the post', err);
     if (post) {
       res.render('admin/posts/edit', {
-        title: 'Post Edit', post: post, token: res.locals.token
+        title: 'edit post', post: post, token: res.locals.token
       });
     }
   });
@@ -97,7 +97,7 @@ exports.delete = function(req, res) {
     if (err) res.send('There was an error getting the post', err);
     if (post) {
       res.render('admin/posts/delete', {
-        title: 'Post Delete', post: post, token: res.locals.token
+        title: 'delete post', post: post, token: res.locals.token
       });
     }
   });

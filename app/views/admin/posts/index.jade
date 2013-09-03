@@ -1,19 +1,12 @@
 extends ../../layouts/admin
 
 append breadcrumbs
-  li
-    a(href="/admin/posts") posts administration
-    span.divider /
-  li.active list posts
+  li.active= title
 
 block body
-  h2 Manage Posts
-    .btn-group.pull-right
-      a.btn.btn-primary(href="/admin/posts/new")
-        i.icon-plus.icon-white
-        |&nbsp;New Post
-      a.btn(href='/admin') Admin Home
-
+  p.pull-right: a.btn.btn-primary
+    i.icon-plus.icon-white
+    |  Create Post
   table.table.table-hover.table-striped
     thead
       tr
@@ -40,5 +33,4 @@ block body
                 class='btn btn-danger')
               i.icon-remove.icon-white
     else
-      tr
-        td(colspan=5) No Posts Found.
+      tr: td(colspan=5) No Posts Found.
