@@ -1,0 +1,12 @@
+if messages
+  .row
+    .span12
+      if messages.success
+        .alert.alert-success #{messages.success}
+          a.close(data-dismiss="alert", href="#") &times;
+      if messages.error
+        .alert.alert-error #{messages.error}
+          a.close(data-dismiss="alert", href="#") &times;
+      if messages.info
+        .alert.alert-info #{messages.info}
+          a.close(data-dismiss="alert", href="#") &times;

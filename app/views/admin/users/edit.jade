@@ -1,0 +1,20 @@
+extends ../../layouts/admin
+
+block body
+  h2 Edit User
+    .btn-group.pull-right
+      a.btn(href='/admin/users') Users Administration
+      a.btn(href='/admin') Admin Home
+
+  form(action='/admin/users/#{user.user_id}', method='post')
+    include _form
+
+    input(type='hidden',name='_csrf',value=token)
+    input(type='hidden',name='_method',value='put')
+
+    .form-actions
+      .btn-group
+        button.btn.btn-primary
+          i.icon-ok.icon-white
+          |&nbsp;Update User
+        a.btn(href='/admin/users') Cancel
