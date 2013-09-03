@@ -1,27 +1,35 @@
 extends ../../layouts/admin
 
+append breadcrumbs
+  li
+    a(href="/admin/users") user administration
+    span.divider /
+  li.active users delete
+
 block body
-  h2 Deleting Post
+  h2 Deleting User
     .btn-group.pull-right
       a.btn(href='/admin') Admin Home
-      a.btn(href='/admin/posts') Posts Administration
+      a.btn(href='/admin/users') Users Administration
       a.btn(href='/admin') Admin Home
 
-  h3.text-warning Are you sure you want to delete this post?
-  form(action='/admin/posts/#{post.post_id}',method='post')
-    article
-      table.table.table-hover
+  h3.text-warning Are you sure you want to delete this user?
+  form(action='/admin/users/#{user.user_id}',method='post')
+    h2 #{user.user_displayName}
+    .row: .span8
+      table.table.table-striped.table-hover
         tr
-          th Title
-          td #{post.post_title}
+          th Profile Photo
+          td: ul.thumbnails
+            li.span2
+              div.thumbnail
+                img(src="#{user.gravatar}", alt='#{user.user_displayName}')
         tr
-          th Author
-          td #{post.user_displayName}
-
-      h4 Description
-      .well!= post.post_description
-      h4 Body
-      .well!= post.post_body
+          th Member Since
+          td #{user.user_created}
+        tr
+          th Email
+          td: a(href='mailto:#{user.user_email}') #{user.user_email}
 
     input(type='hidden',name='_csrf',value=token)
     input(type='hidden',name='_method',value='delete')
@@ -30,5 +38,5 @@ block body
       .btn-group
         button.btn.btn-danger
           i.icon-remove.icon-white
-          |&nbsp;Delete Post
-        a.btn(href='/admin/posts') Cancel
+          |&nbsp;Delete User
+        a.btn(href='/admin/users') Cancel

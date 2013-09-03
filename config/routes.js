@@ -19,4 +19,5 @@ module.exports = function(app) {
   app.resource('admin/posts', adminPosts);
   app.get('/admin/posts/:post/delete', adminPosts.delete);
   app.resource('admin/users', adminUsers);
+  app.get('/admin/users/:user/delete', adminUsers.delete);
 }

@@ -1,4 +1,5 @@
-var User = require('../../models/user');
+var User = require('../../models/user'),
+  crypto = require('crypto');
 
 
 exports.index = function(req, res) {
@@ -53,6 +54,10 @@ exports.delete = function(req, res) {
     user = user[0];
     if (err) res.send('There was an error getting the user', err);
     if (user) {
+      getGravatarHash(user.user_email, function(hash) {
+        user.gravatar = '//www.gravatar.com/avatar/' + hash + '?s=200&amp;d=mm';
+        res.render('./users/show', {title: 'Skeletor', user: user});
+      });
       res.render('admin/users/delete', {
         title: 'User Delete', user: user, token: res.locals.token
       });
@@ -74,3 +79,22 @@ exports.destroy = function(req, res) {
     }
   });
 };
+
+
+// TODO: Gravatar Method should be put somewhere shared...
+
+/**
+ * Generate a MD5 hash for retrieving a Gravatar Image.
+ * According to: https://en.gravatar.com/site/implement/hash/
+ * 1. Trim leading and trailing whitespace from an email address
+ * 2. Force all characters to lower-case
+ * 3. md5 hash the final string
+ *
+ * @param {string} email Email address to get hash for.
+ * @param {Function} done Callback function to execute when done.
+ * @private
+ */
+function getGravatarHash(email, done) {
+  email = email.trim().toLowerCase();
+  done(crypto.createHash('md5').update(email).digest("hex"));
+}

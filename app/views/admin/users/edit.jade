@@ -1,5 +1,11 @@
 extends ../../layouts/admin
 
+append breadcrumbs
+  li
+    a(href="/admin/users") user administration
+    span.divider /
+  li.active users edit
+
 block body
   h2 Edit User
     .btn-group.pull-right

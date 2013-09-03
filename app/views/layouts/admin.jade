@@ -19,6 +19,13 @@ html(lang="en")
             h1= title || 'site administration'
               small.pull-right Feelin' fine.
 
+      <!--Begin Breadcrumbs-->
+      ul.breadcrumb
+        block breadcrumbs
+          li
+            a(href="/admin") admin panel
+            span.divider /
+
       <!--Begin Alerts-->
       include ../partials/alerts
 

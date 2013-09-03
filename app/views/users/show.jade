@@ -1,22 +1,18 @@
-extends ../templates/main
+extends ../layouts/main
+
 block body
-
   h2 #{user.user_displayName}
-
-  .row
-    .span8
-      table.table.table-striped.table-hover
-        tr
-          th Profile Photo
-          td 
-            ul.thumbnails
-              li.span2
-                div.thumbnail
-                  img(src="#{user.gravatar}", alt='#{user.user_displayName}')
-        tr
-          th Member Since
-          td #{user.user_created}
-        tr
-          th Email
-          td 
-            a(href='mailto:#{user.user_email}') #{user.user_email}
+  .row: .span8
+    table.table.table-striped.table-hover
+      tr
+        th Profile Photo
+        td: ul.thumbnails
+          li.span2
+            div.thumbnail
+              img(src="#{user.gravatar}", alt='#{user.user_displayName}')
+      tr
+        th Member Since
+        td #{user.user_created}
+      tr
+        th Email
+        td: a(href='mailto:#{user.user_email}') #{user.user_email}

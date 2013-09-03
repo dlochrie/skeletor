@@ -1,5 +1,11 @@
 extends ../../layouts/admin
 
+append breadcrumbs
+  li
+    a(href="/admin/posts") posts administration
+    span.divider /
+  li.active posts delete
+
 block body
   h2 Deleting Post
     .btn-group.pull-right
