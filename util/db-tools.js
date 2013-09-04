@@ -53,6 +53,17 @@ exports.prepareSelect = function(struct, params) {
     query += ' WHERE ?';
   }
 
+  if (params.order) {
+    var order = [];
+    var re = /^(asc|desc)$/i;
+    params.order.forEach(function(by) {
+      if (by.direction.match(re)) {
+        order.push(mysql.escapeId(by.field) + ' ' + by.direction.toUpperCase());
+      }
+    });
+    query += ' ORDER BY ' + order.join(', ');
+  }
+
   if (params.limit) query += ' LIMIT ' + parseInt(params.limit);
   return query;
 };

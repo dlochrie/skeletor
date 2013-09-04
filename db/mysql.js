@@ -95,9 +95,11 @@ module.exports = function(app) {
       if (model) {
         var list = {};
         var def = db.models[model].definition;
-        list.find = utils.prepareSelect(def, {limit: 1});
-        list.all = utils.prepareSelect(def);
-        list.latest = utils.prepareSelect(def, {limit: 10});
+        var primary = db.models[model].definition.primary;
+        var order = [{field: primary + '.updated', direction: 'DESC'}];
+        list.find = utils.prepareSelect(def, {limit: 1, order: order});
+        list.all = utils.prepareSelect(def, {order: order});
+        list.latest = utils.prepareSelect(def, {limit: 10, order: order});
         list.create = utils.prepareInsert(def);
         list.update = utils.prepareUpdate(def);
         list.delete = utils.prepareDelete(def);
