@@ -20,7 +20,7 @@ exports.show = function(req, res) {
     if (user) {
       getGravatarHash(user.user_email, function(hash) {
         user.gravatar = '//www.gravatar.com/avatar/' + hash + '?s=200&amp;d=mm';
-        res.render('./users/show', {title: 'Skeletor', user: user});
+        res.render('./users/show', {title: 'Skeletor', siteUser: user});
       });
     }
   });

@@ -1,18 +1,31 @@
 extends ../layouts/main
 
 block body
-  h2 #{user.user_displayName}
+  h2 #{siteUser.user_displayName}
   .row: .span8
     table.table.table-striped.table-hover
       tr
         th Profile Photo
         td: ul.thumbnails
-          li.span2
-            div.thumbnail
-              img(src="#{user.gravatar}", alt='#{user.user_displayName}')
+          li.span2: div.thumbnail
+            img(src="#{siteUser.gravatar}", alt='#{siteUser.user_displayName}')
       tr
         th Member Since
-        td #{user.user_created}
+        td #{siteUser.user_created}
       tr
         th Email
-        td: a(href='mailto:#{user.user_email}') #{user.user_email}
+        td: a(href='mailto:#{siteUser.user_email}') #{siteUser.user_email}
+
+  hr
+
+  h2 Comments
+    <!--TODO: Please Fill this in, this is just a demo!!!-->
+  - var comments = [{'body': 'This page rocks!', post_id: 1, post_title: 'Super Awesome' }]
+  if (comments)
+    each comment in comments
+      .row: .span8
+        p On 
+          a(href="#", title="comment.post_title") #{comment.post_title}:
+        blockquote #{comment.body}
+  else
+    p.text-info This user has not posted any comments yet.
