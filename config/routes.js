@@ -1,5 +1,6 @@
 var dir = ('../app/controllers/')
   , main = require(dir + 'main')
+  , comments = require(dir + 'comments')
   , posts = require(dir + 'posts')
   , users = require(dir + 'users')
   , adminPanel = require(dir + 'admin/panel')
@@ -11,6 +12,7 @@ module.exports = function(app) {
   app.get('/about', main.about);
   app.get('/contact', main.contact);
 
+  app.resource('comments', comments);
   app.resource('posts', posts);
   app.resource('users', users);
 

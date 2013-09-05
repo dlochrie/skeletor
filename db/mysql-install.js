@@ -65,6 +65,18 @@ db.query('CREATE TABLE ' + table + ' (' +
   'UNIQUE(email))');
 
 /** Comments */
+table = 'comment';
+console.log('Creating table `' + table + '`');
+db.query('DROP TABLE IF EXISTS ' + table);
+db.query('CREATE TABLE ' + table + ' (' +
+  'id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,' +
+  'user_id INT(10),' +
+  'body TEXT NOT NULL,' +
+  'flagged TINYINT(1),' +
+  'created DATETIME NOT NULL,' +
+  'updated DATETIME NOT NULL,' +
+  'PRIMARY KEY(id),' +
+  'INDEX(user_id))');
 
 /** Categories */
 

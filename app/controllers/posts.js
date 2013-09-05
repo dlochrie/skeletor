@@ -18,7 +18,11 @@ exports.show = function(req, res) {
     post = post[0];
     if (err) res.send('There was an error getting the post', err);
     if (post) {
-      res.render('posts/show', {title: 'Skeletor', post: post});
+      res.render('posts/show', {
+        title: 'Skeletor',
+        post: post,
+        token: res.locals.token
+      });
     }
   });
 }

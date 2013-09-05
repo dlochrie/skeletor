@@ -2,41 +2,67 @@ extends ../layouts/main
 
 block body
   h2= post.post_title
-  .row
-    .span8
-      ul.inline
-        li: a: i.icon-home
-        li: a: i.icon-print
-        li: a: i.icon-envelope
-        li
-          .g-plusone(data-size='medium',width=50)
-          a(href="https://twitter.com/share",class="twitter-share-button") Tweet
-  .row
-    .span8
-      h5 by 
-        a(href='/users/#{post.user_id}')= post.user_displayName
-        span.pull-right
-          small #{post.post_created.toUTCString()}
-      div!= post.post_body
+  .row: .span8
+    ul.inline
+      li: a: i.icon-home
+      li: a: i.icon-print
+      li: a: i.icon-envelope
+      li
+        .g-plusone(data-size='medium',width=50)
+        a(href="https://twitter.com/share",class="twitter-share-button") Tweet
 
-    script
-      (function() {
-        var po = document.createElement('script');
-        po.type = 'text/javascript';
-        po.async = true;
-        po.src = 'https://apis.google.com/js/plusone.js';
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(po, s);
-      })();
+  .row: .span8
+    h5 by 
+      a(href='/users/#{post.user_id}')= post.user_displayName
+      span.pull-right
+        small #{post.post_created.toUTCString()}
+    div!= post.post_body
 
-    script
-      !function(d,s,id){
-        var js,
-          fjs=d.getElementsByTagName(s)[0],
-          p=/^http:/.test(d.location)?'http':'https';
-        if(!d.getElementById(id)){
-          js=d.createElement(s);
-          js.id=id;js.src=p+'://platform.twitter.com/widgets.js';
-          fjs.parentNode.insertBefore(js,fjs);
-        }
-      }(document, 'script', 'twitter-wjs');
+  .row: .span8
+    form(action='/comments', method='post'): fieldset
+      legend Leave a Comment
+
+      .control-group
+        label.control-label(for="displayName") Display Name
+        .controls
+          input.span4(name="displayName", value="commentor.name")
+      .control-group
+        label.control-label(for="body") Comment Body
+        .controls
+          textarea.span8(name="body", rows="4")
+
+      input(type="hidden", name="user_id", value="user.id")
+      input(type="hidden", name="post_id", value="post.id")
+      input(type='hidden',name='_csrf',value=token)
+      input(type='hidden',name='_method', value="post")
+
+      .form-actions
+        button.btn.btn-primary
+          i.icon-ok.icon-white
+          |  Post Comment
+
+    p
+      | You must be logged in to leave a comment.
+      | Click <%- link_to("here", "/login") %> to login.
+
+script.
+  (function() {
+    var po = document.createElement('script');
+    po.type = 'text/javascript';
+    po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(po, s);
+  })();
+
+script.
+  !function(d,s,id){
+    var js,
+      fjs=d.getElementsByTagName(s)[0],
+      p=/^http:/.test(d.location)?'http':'https';
+    if(!d.getElementById(id)){
+      js=d.createElement(s);
+      js.id=id;js.src=p+'://platform.twitter.com/widgets.js';
+      fjs.parentNode.insertBefore(js,fjs);
+    }
+  }(document, 'script', 'twitter-wjs');

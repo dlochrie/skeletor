@@ -23,8 +23,6 @@ exports.prepareSelect = function(struct, params) {
     });
   }
 
-  var from = struct.primary;
-
   var joins = [];
   if (struct.joins) {
     struct.joins.forEach(function(join) {
@@ -39,7 +37,7 @@ exports.prepareSelect = function(struct, params) {
   }
 
   var query = 'SELECT ' + select.join(', ') +
-      ' FROM ' + from +
+      ' FROM ' + mysql.escapeId(struct.primary) +
       joins.join(', ');
 
   if (params.where) {
