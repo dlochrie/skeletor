@@ -88,23 +88,6 @@ require('./db/mysql')(app);
 
 
 /**
- * TODO: Move this up into `configure`, and add to a module
- * Log Request Info
- */
-app.use(function(req, res, next){
-  console.log('%s %s', req.method, req.url);
-  next();
-});
-
-
-/*
-app.configure('development', function(){
-  app.use(express.errorHandler());
-});
-*/
-
-
-/**
  * Start Server
  * TODO: Should do this after initialization.
  */

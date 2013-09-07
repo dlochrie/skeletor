@@ -1,4 +1,5 @@
-var Post = require('../models/post');
+var Post = require('../models/post'),
+  Comment = require('../models/comment');
 
 exports.index = function(req, res) {
   var post = new Post(req.app, null);
@@ -18,10 +19,14 @@ exports.show = function(req, res) {
     post = post[0];
     if (err) res.send('There was an error getting the post', err);
     if (post) {
-      res.render('posts/show', {
-        title: 'Skeletor',
-        post: post,
-        token: res.locals.token
+      var comment = new Comment(req.app, null);
+      comment.all({where: {'post_id': id}}, function(err, comments) {
+        res.render('posts/show', {
+          title: 'Skeletor',
+          post: post,
+          comments: comments,
+          token: res.locals.token
+        });
       });
     }
   });

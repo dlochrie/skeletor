@@ -38,7 +38,7 @@ exports.prepareSelect = function(struct, params) {
 
   var query = 'SELECT ' + select.join(', ') +
       ' FROM ' + mysql.escapeId(struct.primary) +
-      joins.join(', ');
+      joins.join(' ');
 
   if (params.where) {
     var where = [];

@@ -1,0 +1,31 @@
+{
+  "primary": "comment",
+  "columns": {
+    "comment": [
+      "id",
+      "user_id",
+      "body",
+      "flagged",
+      "created",
+      "updated"
+    ],
+    "user": [
+      "id",
+      "displayName",
+      "email"
+    ],
+    "post": [
+      "id",
+      "title"
+    ]
+  },
+  "joins": [{
+    "relation": "user",
+    "relation key": "id",
+    "foreign key": "user_id"
+  }, {
+    "relation": "post",
+    "relation key": "id",
+    "foreign key": "post_id"
+  }]
+}

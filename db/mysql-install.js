@@ -70,13 +70,16 @@ console.log('Creating table `' + table + '`');
 db.query('DROP TABLE IF EXISTS ' + table);
 db.query('CREATE TABLE ' + table + ' (' +
   'id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,' +
-  'user_id INT(10),' +
+  'user_id INT(10) UNSIGNED NOT NULL,' +
+  'post_id INT(10) UNSIGNED NOT NULL,' +
   'body TEXT NOT NULL,' +
+  'body_md TEXT NOT NULL,' +
   'flagged TINYINT(1),' +
   'created DATETIME NOT NULL,' +
   'updated DATETIME NOT NULL,' +
   'PRIMARY KEY(id),' +
-  'INDEX(user_id))');
+  'INDEX(user_id),' +
+  'INDEX(post_id))');
 
 /** Categories */
 

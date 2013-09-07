@@ -14,6 +14,7 @@ block body
     | Here's another paragraph for good measure.
 
   h3 Latest Posts
+  <!--TODO: SHOULD THIS INHERIT/SHARE FROM THE POSTS INDEX???-->
   if (posts.length)
     each post in posts
       .row
@@ -24,7 +25,6 @@ block body
               span.badge.badge-info
                 i.icon-white.icon-comment
                 |  5
-          h5 by 
+          h5.byline by 
             a(href='/users/#{post.user_id}')= post.user_displayName
             span.pull-right: small #{post.post_created.toUTCString()}
-          //div!= post.post_description

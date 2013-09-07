@@ -127,6 +127,11 @@ Model.prototype.delete = function(params, cb) {
 
 /**
  * Wrapper function for performing SELECT statements.
+ *
+ * Concerning `where`: The node mysql driver does a great job of escaping this
+ * field, but if you are `joining` records, be cautious that you don't send
+ * an 'abmibigous' id, e.g. `comment.user_id` is preferred to `user_id`.
+ *
  * @param {string} type Type of query to look up in cache.
  * @param {?Object} params (Optional) Resource/Criteria to use in search.
  * @param {Function} cb Callback function.
@@ -146,6 +151,7 @@ Model.prototype.select = function(type, params, cb) {
 
 /**
  * Wrapper function for performing UPDATE AND INSERT statements.
+ * TODO: Rework the 'Where' functionality here...
  * @param {string} type Type of query to look up in cache.
  * @param {?Object} params (Optional) Resource/Criteria to use in search.
  * @param {Function} cb Callback function.

@@ -1,0 +1,17 @@
+extends ../layouts/main
+
+block body
+  h2 Users
+
+  .row: .span8
+    table.table.table-striped.table-hover
+      tr
+        th Display Name
+        th Member Since
+      if (users.length)
+        each user in users
+          tr
+            td: a(href="/users/#{user.user_displayName}", title="#{user.user_displayName}")= user.user_displayName
+            td= user.user_created
+      else
+        tr: td(colspan="2") No Users Found.

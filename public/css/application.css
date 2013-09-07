@@ -76,9 +76,14 @@ h5 {
  */
 .page-header h1 small { line-height: 2; }
 
-/** Make sure the smaller text wraps when the screen is smaller than 180px */
-@media (max-width: 479px) {
-  .page-header h1 small.pull-right { float: none; }
+h3.headline a,
+h3.headline a:hover {
+  color: #207B56;
+}
+
+h5.byline a,
+h5.byline a:hover {
+  color: #8B876F;
 }
 
 .footer {
@@ -109,6 +114,12 @@ td {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+
+/** Make sure the smaller text wraps when the screen is smaller than 180px */
+@media (max-width: 479px) {
+  .page-header h1 small.pull-right { float: none; }
 }
 
 /**

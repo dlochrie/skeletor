@@ -15,6 +15,7 @@ module.exports = function(app) {
   app.resource('comments', comments);
   app.resource('posts', posts);
   app.resource('users', users);
+  app.get('/account', users.account);
 
   // TODO: This namespace should be protected by ACL
   app.resource('admin', adminPanel);
