@@ -12,8 +12,10 @@ exports.create = function(req, res) {
       if (err) {
         res.send(err);
       } else {
+        comment = comment[0];
         req.flash('success', 'Comment Successfully Created');
-        res.redirect('/admin/comments');
+        res.redirect('/posts/' + params.post_id + '#comment' +
+            comment.comment_id);
       }
     });
   });

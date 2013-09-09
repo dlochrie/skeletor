@@ -2,6 +2,7 @@ var User = require('../models/user'),
   Comment = require('../models/comment');
   crypto = require('crypto');
 
+
 exports.index = function(req, res) {
   var user = new User(req.app, null);
   user.all(function(err, users) {
@@ -15,7 +16,8 @@ exports.index = function(req, res) {
 
 
 exports.show = function(req, res) {
-  var user = new User(req.app, null);
+  var app = req.app;
+  var user = new User(app, null);
   var id = req.params.user;
   user.find({
     where: {'user.displayName': id}
@@ -26,11 +28,14 @@ exports.show = function(req, res) {
       req.flash('error', 'User not found.');
       return res.redirect('/users');
     }
-    getGravatarHash(user.user_email, function(hash) {
-      user.gravatar = '//www.gravatar.com/avatar/' + hash + '?s=200&amp;d=mm';
-      res.render('./users/show', {
-        title: 'Skeletor',
-        siteUser: user
+    loadComments(app, user.user_id, function(comments) {
+      getGravatarHash(user.user_email, function(hash) {
+        user.gravatar = '//www.gravatar.com/avatar/' + hash + '?s=200&amp;d=mm';
+        res.render('./users/show', {
+          title: 'Showing User',
+          comments: comments,
+          siteUser: user
+        });
       });
     });
   });
@@ -38,26 +43,40 @@ exports.show = function(req, res) {
 
 
 exports.account = function(req, res) {
+  var app = req.app;
   var user = res.locals.user || null;
   if (!user) {
     req.flash('error', 'You must be logged in to view your account.');
     return res.redirect('/');
   }
-  var comment = new Comment(req.app);
-  comment.all({
-    where: {'comment.user_id': user.user_id}
-  },
-  function(err, comments) {
+  loadComments(app, user.user_id, function(comments) {
     getGravatarHash(user.user_email, function(hash) {
       user.gravatar = '//www.gravatar.com/avatar/' + hash + '?s=200&amp;d=mm';
       res.render('./users/show', {
-        title: 'Skeletor',
+        title: 'My Account',
         comments: comments,
         siteUser: user
       });
     });
   });
 };
+
+
+/**
+ * Load comments for a user.
+ * @param app {Function} Express App function.
+ * @param {number} userId User's Id.
+ * @param {Function} cb The callback function to call when done.
+ * @private
+ */
+function loadComments(app, userId, cb) {
+  var comment = new Comment(app);
+  comment.all({where: {'comment.user_id': userId}},
+  function(err, comments) {
+    if (err) comments = null;
+    cb(comments);
+  });
+}
 
 
 /**

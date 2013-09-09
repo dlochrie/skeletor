@@ -6,12 +6,15 @@ block body
   .row: .span8
     table.table.table-striped.table-hover
       tr
-        th Display Name
+        th Name
+        th Last Comment
         th Member Since
       if (users.length)
         each user in users
           tr
-            td: a(href="/users/#{user.user_displayName}", title="#{user.user_displayName}")= user.user_displayName
+            td: a(href="/users/#{user.user_displayName}",
+              title="#{user.user_displayName}")= user.user_displayName
+            td Mary had a little lamb, her fleece was white as...
             td= user.user_created
       else
         tr: td(colspan="2") No Users Found.

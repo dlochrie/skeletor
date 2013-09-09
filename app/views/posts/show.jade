@@ -22,7 +22,7 @@ block body
     if (comments.length)
       h3 Comments
       each comment in comments
-        div.post-comment
+        div.post-comment(id="comment#{comment.comment_id}")
           p
             a.text-info(href="/users/#{comment.user_id}")
               = comment.user_displayName
@@ -49,7 +49,7 @@ block body
           .controls
             textarea.span8(name="body", rows="4")
 
-        input(type="hidden", name="user_id", value="#{post.user_id}")
+        input(type="hidden", name="user_id", value="#{user.user_id}")
         input(type="hidden", name="post_id", value="#{post.post_id}")
         input(type='hidden', name='_csrf', value=token)
         input(type='hidden', name='_method', value="post")

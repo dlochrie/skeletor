@@ -116,6 +116,8 @@ td {
   text-overflow: ellipsis;
 }
 
+post.comment blockquote p { font-size: 110%; }
+
 
 /** Make sure the smaller text wraps when the screen is smaller than 180px */
 @media (max-width: 479px) {
