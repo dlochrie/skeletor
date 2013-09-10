@@ -1,0 +1,14 @@
+if (posts.length)
+    each post in posts
+      .row
+        .span8
+          h3.headline
+            a(href='/posts/#{post.post_id}')= post.post_title
+            small.pull-right.bottom
+              span.badge.badge-info
+                i.icon-white.icon-comment 
+                | 
+                = post._comments
+          h5.byline by 
+            a(href='/users/#{post.user_id}')= post.user_displayName
+            span.pull-right: small #{post.post_created.toUTCString()}

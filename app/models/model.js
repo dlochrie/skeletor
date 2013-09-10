@@ -198,7 +198,8 @@ Model.prototype.upsert = function(type, params, cb) {
  * @return function
  */
 Model.prototype.performQuery = function(sql, params, cb) {
-  var self = this;
+  var self = this,
+    params = params || {};
   this.dbOpen(function(err, dbc) {
     if (err) return cb(err, null);
     var values = [];
