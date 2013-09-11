@@ -99,12 +99,35 @@ h5.byline a:hover {
   color: #8B876F;
 }
 
-.post-comment {
+#comment-form p {
+  color: #5C5747;
+  font-size: 15px;
+  margin: 3px 0;
+}
+
+#comment-form p a { color: #DD4225; }
+
+#comment-form .accordion-inner { padding-top: 10px; }
+
+#comment-form form { margin-bottom: 0; }
+
+#comment-form form input:disabled { margin-bottom: 5px; }
+
+#comment-form a.accordion-toggle {
+  color: #DD4225;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.post-comment:not(:last-child) {
   border-bottom: 1px solid #eeeeee;
   margin-bottom: 10px;
 }
 
 .post-comment blockquote { margin-bottom: 10px; }
+
+#post-share { margin-top: 10px; }
+#post-share ul.inline { margin-bottom: 10px; }
 
 .comment-status a.flag {
   color: #BBBBBB;

@@ -3,22 +3,33 @@ extends ../layouts/main
 block body
   h2= post.post_title
   .row: .span8
-    ul.inline
-      li: a: i.icon-home
-      li: a: i.icon-print
-      li: a: i.icon-envelope
-      li
-        .g-plusone(data-size='medium',width=50)
-        a(href="https://twitter.com/share",class="twitter-share-button") Tweet
-
-  .row: .span8
     h5 by 
       a(href='/users/#{post.user_id}')= post.user_displayName
       span.pull-right
         small #{post.post_created.toUTCString()}
     div!= post.post_body
 
-  .row: .span8
+  .row#post-share: .span8
+    ul.inline
+      li: a: i.icon-home
+      li: a: i.icon-print
+      li: a: i.icon-envelope
+      li
+        .g-plusone(data-size='medium', width=50)
+          a(href="https://twitter.com/share",
+              class="twitter-share-button") Tweet
+
+  .row#comment-form: .span8
+    if (user)
+      include ../comments/_form
+    else
+      p
+        | You must be logged in to leave a comment.
+        | Click 
+        a(href='/auth/google') here
+        |  to login.
+
+  .row#comments: .span8
     if (comments.length)
       h3 Comments
       each comment in comments
@@ -30,47 +41,12 @@ block body
           blockquote.clearfix!= comment.comment_body
           p.comment-status
             if (comment.comment_flagged)
-              span.badge.badge-important
-                i.icon-flag.icon-white
+              i.icon-flag
             else
               a.flag(href="/comments/#{comment.comment_id}/flag",
                   data-id="comment.id") Flag as inappropriate
     else
       h3 There are no Comments to display.
-
-  .row: .span8
-    if (user)
-      form(action='/comments', method='post'): fieldset
-        legend Leave a Comment
-
-        .control-group
-          label.control-label(for="displayName") Display Name
-          .controls
-            input.span4(disabled, value="#{user.user_displayName}")
-            span.help-block
-              | You can change your Display Name at any time in your 
-              a(href="/account", title="my account") account settings
-              |.
-        .control-group
-          label.control-label(for="body") Comment Body
-          .controls
-            textarea.span8(name="body", rows="4")
-
-        input(type="hidden", name="user_id", value="#{user.user_id}")
-        input(type="hidden", name="post_id", value="#{post.post_id}")
-        input(type='hidden', name='_csrf', value=token)
-        input(type='hidden', name='_method', value="post")
-
-        .form-actions
-          button.btn.btn-primary
-            i.icon-ok.icon-white
-            |  Post Comment
-    else
-      p
-        | You must be logged in to leave a comment.
-        | Click 
-        a(href='/auth/google') here
-        |  to login.
 
 script.
   (function() {
