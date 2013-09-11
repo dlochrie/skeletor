@@ -126,6 +126,9 @@ h5.byline a:hover {
 
 .post-comment blockquote { margin-bottom: 10px; }
 
+/** This ensures commmentors don't add large fonts like h1's */
+.post-comment blockquote * { font-size: 110%; }
+
 #post-share { margin-top: 10px; }
 #post-share ul.inline { margin-bottom: 10px; }
 
