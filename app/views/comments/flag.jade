@@ -1,0 +1,30 @@
+extends ../layouts/main
+
+block body
+  h3.text-warning Are you sure you want to flag this comment?
+  form(action='/comments/flag',method='post')
+    article
+      table.table.table-hover
+        tr
+          th Post Title
+          td: a(href="/posts/#{comment.post_id}") #{comment.post_title}
+        tr
+          th Comment Author
+          td #{comment.user_displayName}
+        tr
+          th Comment Date
+          td #{comment.comment_created}
+
+      h4 Comment Text
+      blockquote!= comment.comment_body
+
+    input(type='hidden',name='_csrf', value=token)
+    input(type='hidden',name='_method', value='post')
+    input(type='hidden',name='comment_id', value='#{comment.comment_id}')
+
+    .form-actions
+      .btn-group
+        button.btn.btn-primary
+          i.icon-ok.icon-white
+          |&nbsp;Flag Comment
+        a.btn(href='/admin/posts') Cancel

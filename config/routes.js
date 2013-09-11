@@ -13,6 +13,8 @@ module.exports = function(app) {
   app.get('/contact', main.contact);
 
   app.resource('comments', comments);
+  app.get('/comments/:comment/flag', comments.flag);
+  app.post('/comments/flag', comments.flag_confirm);
 
   app.resource('posts', posts);
   app.get('/posts/:post/comments', posts.comments);

@@ -27,7 +27,14 @@ block body
             a.text-info(href="/users/#{comment.user_id}")
               = comment.user_displayName
             |  said on #{comment.comment_created.toUTCString()}:
-          blockquote!= comment.comment_body
+          blockquote.clearfix!= comment.comment_body
+          p.comment-status
+            if (comment.comment_flagged)
+              span.badge.badge-important
+                i.icon-flag.icon-white
+            else
+              a.flag(href="/comments/#{comment.comment_id}/flag",
+                  data-id="comment.id") Flag as inappropriate
     else
       h3 There are no Comments to display.
 
@@ -61,7 +68,9 @@ block body
     else
       p
         | You must be logged in to leave a comment.
-        | Click <%- link_to("here", "/login") %> to login.
+        | Click 
+        a(href='/auth/google') here
+        |  to login.
 
 script.
   (function() {
