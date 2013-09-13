@@ -21,6 +21,6 @@ if (posts.length)
             strong t 
             | &#8658; 3
         h5.byline by 
-          a(href='/users/#{post.user_id}')= post.user_displayName
+          a(href='/users/#{post.user_slug}')= post.user_displayName
           span.pull-right: small #{post.post_created.toUTCString()}
         .description!= post.post_description

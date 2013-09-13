@@ -19,15 +19,13 @@ require('util').inherits(Post, Model);
 
 
 Post.prototype.latest = function(params, cb) {
-  var sql = 'SELECT DISTINCT `post`.`id`, `post`.`title`, `post`.`user_id`, ' +
-      '`post`.`description`, `post`.`description_md`, `post`.`body`, ' +
-      '`post`.`body_md`, `post`.`created`, `post`.`updated`, `user`.`id`, ' +
-      '`user`.`displayName`, `user`.`email`, `post`.`slug`, ' +
-      'COUNT(*) AS `comments` ' +
+  var sql = 'SELECT `post`.`id`, `post`.`title`, `post`.`description`, ' +
+      '`post`.`created`, `user`.`displayName`, `user`.`slug`, `post`.`slug`, ' +
+      'COUNT(`comment`.`post_id`) AS `comments` ' +
       'FROM `post` ' +
       'LEFT JOIN `user` ON `user`.`id` = `post`.`user_id` ' +
       'LEFT JOIN `comment` ON `comment`.`post_id` = `post`.`id` ' +
-      'GROUP BY `post`.`id` ' +
+      'GROUP BY `comment`.`post_id` ' +
       'ORDER BY `post`.`updated` DESC LIMIT 10 ';
   this.performQuery(sql, params, cb);
 };

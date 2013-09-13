@@ -4,7 +4,7 @@ block body
   h2= post.post_title
   .row: .span8
     h5 by 
-      a(href='/users/#{post.user_id}')= post.user_displayName
+      a(href='/users/#{post.user_slug}')= post.user_displayName
       span.pull-right
         small #{post.post_created.toUTCString()}
     div!= post.post_body
@@ -35,7 +35,7 @@ block body
       each comment in comments
         div.post-comment(id="comment#{comment.comment_id}")
           p
-            a.text-info(href="/users/#{comment.user_id}")
+            a.text-info(href="/users/#{comment.user_slug}")
               = comment.user_displayName
             |  said on #{comment.comment_created.toUTCString()}:
           blockquote.clearfix!= comment.comment_body

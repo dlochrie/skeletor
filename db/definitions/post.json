@@ -16,6 +16,7 @@
     "user": [
       "id",
       "displayName",
+      "slug",
       "email"
     ]
   },
