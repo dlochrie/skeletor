@@ -3,16 +3,16 @@
     .well
       ul.nav.nav-list
         li.nav-header Navigational Components
-        li
-          a Comments
-        li
-          a Users
-        li
-          a RSS
+        li: a(href="/", title="Home")
+          | home
+        li: a(href="/posts", title="Posts")
+          | posts
+        li: a(href="/users", title="Users")
+          | users
         li.nav-header More Navigational Components
-        li
-          a Links
-        li
-          a Projects
-        li
-          a Contact
+        li: a(href="/projects", title="Projects")
+          | projects
+        li: a(href="/links", title="Links")
+          | links
+        li: a(href="/contact", title="Contacts")
+          | contact
