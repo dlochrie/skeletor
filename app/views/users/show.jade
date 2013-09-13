@@ -29,7 +29,9 @@ block body
             each comment in comments
               .comment-block
                 p On 
-                  a(href="#", title="comment.post_title") #{comment.post_title}:
+                  a(href="/posts/#{comment.post_slug}#comment#{comment.comment_id}",
+                      title="comment.post_title")
+                    | #{comment.post_title}:
                 blockquote!= comment.comment_body
             else
               p.text-info This user has not posted any comments yet.

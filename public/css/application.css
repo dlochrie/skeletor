@@ -83,15 +83,9 @@ h3.headline a:hover {
   color: #207B56;
 }
 
-.flairline .badge {
-  font-weight: normal;
-  line-height: 15px;
-  height: 17px;
-}
-
-.flairline .badge strong {
-  font-weight: bold;
-  font-size: 13px;
+ul.flairline li,
+ul.flairline li a {
+  color: #8B876F;
 }
 
 h5.byline a,

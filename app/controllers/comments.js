@@ -61,7 +61,7 @@ exports.flag_confirm = function(req, res) {
     } else {
       comment = comment[0];
       req.flash('success', 'The comment has been flagged.');
-      res.redirect('/posts/' + comment.post_id);
+      res.redirect('/posts/' + comment.post_slug);
     }
   });
 };

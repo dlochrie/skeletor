@@ -5,7 +5,7 @@ var Post = require('../../models/post'),
 
 exports.index = function(req, res) {
   var post = new Post(req.app);
-  post.all(function(err, posts) {
+  post.adminList(null, function(err, posts) {
     if (err) res.send('There was an error getting posts', err);
     if (posts) {
       res.render('admin/posts/index', {

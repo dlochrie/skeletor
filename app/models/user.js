@@ -5,6 +5,7 @@ var Model = require('./model');
 module.exports = User;
 
 
+
 /**
  * @constructor
  */

@@ -22,7 +22,11 @@
                 |&nbsp;
                 b.caret
               ul.dropdown-menu
-                li: a(href="/account") my account
-                li: a(href="/logout") logout
+                li: a(href="/account")
+                  i.icon-user 
+                  | my account
+                li: a(href="/logout")
+                  i.icon-signout 
+                  | logout
           else
             li: a(href="/auth/google").navbar-link login

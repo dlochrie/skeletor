@@ -7,7 +7,7 @@ block body
       table.table.table-hover
         tr
           th Post Title
-          td: a(href="/posts/#{comment.post_id}") #{comment.post_title}
+          td: a(href="/posts/#{comment.post_slug}") #{comment.post_title}
         tr
           th Comment Author
           td #{comment.user_displayName}
@@ -27,4 +27,4 @@ block body
         button.btn.btn-primary
           i.icon-ok.icon-white
           |&nbsp;Flag Comment
-        a.btn(href='/admin/posts') Cancel
+        a.btn(href="/posts/#{comment.post_slug}") Cancel

@@ -3,24 +3,16 @@ if (posts.length)
       .post-list-entry
         h3.headline
           a(href='/posts/#{post.post_slug}')= post.post_title
-        .flairline
-          span.badge
-            i.icon-white.icon-comment 
-            | 
-            = post._comments
-          | &nbsp;
-          span.badge
-            strong f 
-            | &#8658; 20
-          | &nbsp;
-          span.badge
-            strong g 
-            | &#8658; 22
-          | &nbsp;
-          span.badge
-            strong t 
-            | &#8658; 3
         h5.byline by 
           a(href='/users/#{post.user_slug}')= post.user_displayName
           span.pull-right: small #{post.post_created.toUTCString()}
         .description!= post.post_description
+        ul.flairline.inline
+          li: i.icon-white.icon-comment 
+            | #{post._comments}
+          li: i.icon-white.icon-facebook 
+            | 20
+          li: i.icon-white.icon-twitter 
+            | 22
+          li: i.icon-white.icon-google-plus 
+            | 3

@@ -21,9 +21,7 @@ block body
         tr
           td: a(href='/admin/posts/#{post.post_id}/edit') #{post.post_title}
           td: a(href='/users/#{post.user_id}/') #{post.user_displayName}
-          td: span.badge.badge-info
-            i.icon-white.icon-comment
-            |  5
+          td #{post._comments}
           td= post.post_updated.toUTCString("en-US", {weekday: "long", month: "long", day: "numeric", year: "numeric", hour12: true})
           td
             a(href='/admin/posts/#{post.post_id}/edit', class='btn')
