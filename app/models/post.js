@@ -22,11 +22,11 @@ Post.prototype.latest = function(params, cb) {
   var sql = 'SELECT DISTINCT `post`.`id`, `post`.`title`, `post`.`user_id`, ' +
       '`post`.`description`, `post`.`description_md`, `post`.`body`, ' +
       '`post`.`body_md`, `post`.`created`, `post`.`updated`, `user`.`id`, ' +
-      '`user`.`displayName`, `user`.`email`, ' +
+      '`user`.`displayName`, `user`.`email`, `post`.`slug`, ' +
       'COUNT(*) AS `comments` ' +
       'FROM `post` ' +
-      'JOIN `user` ON `user`.`id` = `post`.`user_id` ' +
-      'JOIN `comment` ON `comment`.`post_id` = `post`.`id` ' +
+      'LEFT JOIN `user` ON `user`.`id` = `post`.`user_id` ' +
+      'LEFT JOIN `comment` ON `comment`.`post_id` = `post`.`id` ' +
       'GROUP BY `post`.`id` ' +
       'ORDER BY `post`.`updated` DESC LIMIT 10 ';
   this.performQuery(sql, params, cb);

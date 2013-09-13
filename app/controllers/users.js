@@ -1,5 +1,5 @@
 var User = require('../models/user'),
-  Comment = require('../models/comment');
+  Comment = require('../models/comment'),
   crypto = require('crypto');
 
 
@@ -15,12 +15,13 @@ exports.index = function(req, res) {
 };
 
 
+// TODO: What if they are viewing their own account?
 exports.show = function(req, res) {
   var app = req.app;
   var user = new User(app, null);
-  var id = req.params.user;
+  var slug = req.params.user;
   user.find({
-    where: {'user.displayName': id}
+    where: {'user.slug': slug}
   },
   function(err, user) {
     user = user[0];

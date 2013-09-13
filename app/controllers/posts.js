@@ -4,7 +4,7 @@ var Post = require('../models/post'),
 exports.index = function(req, res) {
   var post = new Post(req.app, null);
   post.latest(null, function(err, posts) {
-    if (err) res.send('There was an error getting posts', err);
+    if (err) return res.send('There was an error getting posts', err);
     if (posts) {
       res.render('posts/index', {title: 'Skeletor', posts: posts});
     }
@@ -14,13 +14,14 @@ exports.index = function(req, res) {
 
 exports.show = function(req, res) {
   var post = new Post(req.app, null);
-  // TODO: Make sure all IDs are being parsed as integers....
-  var id = parseInt(req.params.post);
-  post.find({where: {'post.id': id}}, function(err, post) {
+  var slug = req.params.post;
+  post.find({where: {'post.slug': slug}}, function(err, post) {
     post = post[0] || null;
-    if (err || !post) res.send('There was an error getting the post', err);
+    if (err || !post) {
+      return res.send(404);
+    }
     var comment = new Comment(req.app, null);
-    comment.all({where: {'post_id': id}}, function(err, comments) {
+    comment.all({where: {'post_id': post.post_id}}, function(err, comments) {
       res.render('posts/show', {
         title: 'Skeletor',
         post: post,

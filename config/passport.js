@@ -1,8 +1,9 @@
 module.exports = function(app) {
-  var passport = require('passport')
-    , GoogleStrategy = require('passport-google').Strategy
-    , User = require('../app/models/user')
-    , url = 'http://' + app.get('host') + ':' + app.get('port');
+  var passport = require('passport'),
+    GoogleStrategy = require('passport-google').Strategy,
+    User = require('../app/models/user'),
+    string = require('../util/string'),
+    url = 'http://' + app.get('host') + ':' + app.get('port');
 
   // Passport session setup.
   //   To support persistent login sessions, Passport needs to be able to
@@ -35,6 +36,7 @@ module.exports = function(app) {
         user = (user.length) ? user[0] : null;
         if (user) return done(null, user);
         if (err || !user) {
+          resource.slug = string.convertToSlug(resource.displayName);
           model.create({values: resource}, function(err, user) {
             if (user) return done(null, user[0]);
             return done(err, null);
@@ -43,10 +45,10 @@ module.exports = function(app) {
       });
     }
   ));
-  
+
   app.get('/auth/google', passport.authenticate('google'));
-  
-  app.get('/auth/google/return', passport.authenticate('google', 
+
+  app.get('/auth/google/return', passport.authenticate('google',
       {failureRedirect: '/login'}),
     function(req, res) {
       var session = req.session;

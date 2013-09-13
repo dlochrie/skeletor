@@ -37,6 +37,7 @@ db.query('CREATE TABLE ' + table + ' (' +
   'id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,' +
   'user_id INT(10) UNSIGNED NOT NULL,' +
   'title VARCHAR(255) NOT NULL,' +
+  'slug VARCHAR(255) NOT NULL,' +
   'description TEXT NOT NULL,' +
   'description_md TEXT NOT NULL,' +
   'body TEXT NOT NULL,' +
@@ -53,8 +54,9 @@ console.log('Creating table `' + table + '`');
 db.query('DROP TABLE IF EXISTS ' + table);
 db.query('CREATE TABLE ' + table + ' (' +
   'id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,' +
-  'displayName VARCHAR(100),' +
-  'email VARCHAR(100),' +
+  'displayName VARCHAR(100) NOT NULL,' +
+  'slug VARCHAR(100) NOT NULL,' +
+  'email VARCHAR(100) NOT NULL,' +
   'google_id VARCHAR(100),' +
   'facebook_id VARCHAR(100),' +
   'twitter_id VARCHAR(100),' +
@@ -74,7 +76,7 @@ db.query('CREATE TABLE ' + table + ' (' +
   'post_id INT(10) UNSIGNED NOT NULL,' +
   'body TEXT NOT NULL,' +
   'body_md TEXT NOT NULL,' +
-  'flagged TINYINT(1),' +
+  'flagged TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,' +
   'created DATETIME NOT NULL,' +
   'updated DATETIME NOT NULL,' +
   'PRIMARY KEY(id),' +

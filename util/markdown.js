@@ -20,4 +20,4 @@ exports.convert = function(params, fields, done) {
   }
 
   reformat(fields.shift());
-}
+};

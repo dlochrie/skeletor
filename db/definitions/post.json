@@ -4,6 +4,7 @@
     "post": [
       "id",
       "title",
+      "slug",
       "user_id",
       "description",
       "description_md",

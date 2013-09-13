@@ -1,5 +1,6 @@
 var Post = require('../../models/post'),
-  markdown = require('../../../util/markdown');
+  markdown = require('../../../util/markdown'),
+  string = require('../../../util/string');
 
 
 exports.index = function(req, res) {
@@ -38,16 +39,17 @@ exports.create = function(req, res) {
   var params = req.body;
   params.body_md = params.body.toString().trim();
   params.description_md = params.description.toString().trim();
+  params.slug = string.convertToSlug(params.title);
   markdown.convert(params, ['body', 'description'], function(params) {
-    // TODO: Model Validation should replace this. This is a hack.
-    delete params._csrf;
-    post.create({values: params}, function(err, post) {
-      if (err) {
-        res.send(err);
-      } else {
-        req.flash('success', 'Post Successfully Created');
-        res.redirect('/admin/posts');
-      }
+    post.validate(params, function(err, resource) {
+      post.create({values: resource}, function(err, post) {
+        if (err) {
+          res.send(err);
+        } else {
+          req.flash('success', 'Post Successfully Created');
+          res.redirect('/admin/posts');
+        }
+      });
     });
   });
 };
@@ -69,6 +71,12 @@ exports.edit = function(req, res) {
 };
 
 
+/**
+ * Update the post.
+ * Note: The Slug will NOT be modified here so that bookmarks are persisted.
+ * @param {} req
+ * @param {} res
+ */
 exports.update = function(req, res) {
   var post = new Post(req.app, null);
   var id = parseInt(req.params.post);

@@ -4,6 +4,7 @@
     "comment": [
       "id",
       "user_id",
+      "post_id",
       "body",
       "flagged",
       "created",
@@ -12,11 +13,13 @@
     "user": [
       "id",
       "displayName",
+      "slug",
       "email"
     ],
     "post": [
       "id",
-      "title"
+      "title",
+      "slug"
     ]
   },
   "joins": [{

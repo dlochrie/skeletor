@@ -16,7 +16,7 @@ function Model(resource) {
   this.pool = this.db.pool;
   this.model = this.db.models[name];
   this.queries = this.model.queries;
-  this.structure = this.model.structure;
+  this.definition = this.model.definition;
   this.resource = resource;
 }
 
@@ -238,7 +238,7 @@ Model.prototype.dbOpen = function(cb) {
       return cb(null, connection);
     }
   });
-}
+};
 
 
 /**
@@ -250,4 +250,38 @@ Model.prototype.dbClose = function(dbc) {
     try { dbc.end(); }
     catch(e) { console.log('Could not close DB Connection.'); }
   }
-}
+};
+
+
+/**
+ * Compares params to in-memory definition and returns those that exist.
+ *
+ * TODO: This should also perform validation methods that a particular model
+ * model provides, ie, make sure id's are int's, title's aren't longer than
+ * 255, empty fields, etc.
+ *
+ * @param {Object} params Resource Object to validate.
+ * @param {Function} cb Callback function to call when done.
+ */
+Model.prototype.validate = function(params, cb) {
+  var modelName = this.modelName || null;
+  if (!modelName) return cb(true, null);
+
+  var definition;
+  try {
+    definition = this.definition.columns[modelName];
+  } catch(e) {
+    definition = null;
+  }
+
+  if (!definition || !params) return cb(true, null);
+  var fields = Object.keys(params);
+  var resource = {};
+  fields.forEach(function(field) {
+    if (definition.indexOf(field) !== -1) {
+      resource[field] = params[field];
+    }
+  });
+
+  return cb(null, resource);
+};

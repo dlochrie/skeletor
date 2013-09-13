@@ -6,17 +6,17 @@ exports.create = function(req, res) {
   var params = req.body;
   params.body_md = params.body.toString().trim();
   markdown.convert(params, ['body'], function(params) {
-    // TODO: Model Validation should replace this. This is a hack.
-    delete params._csrf;
-    comment.create({values: params}, function(err, comment) {
-      if (err) {
-        res.send(err);
-      } else {
-        comment = comment[0];
-        req.flash('success', 'Comment Successfully Created');
-        res.redirect('/posts/' + params.post_id + '#comment' +
-            comment.comment_id);
-      }
+    comment.validate(params, function(err, resource) {
+      comment.create({values: resource}, function(err, comment) {
+        if (err) {
+          res.send(err);
+        } else {
+          comment = comment[0];
+          req.flash('success', 'Comment Successfully Created');
+          res.redirect('/posts/' + params.post_slug + '#comment' +
+              comment.comment_id);
+        }
+      });
     });
   });
 };

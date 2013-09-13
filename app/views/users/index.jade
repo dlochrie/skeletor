@@ -12,7 +12,7 @@ block body
       if (users.length)
         each user in users
           tr
-            td: a(href="/users/#{user.user_displayName}",
+            td: a(href="/users/#{user.user_slug}",
               title="#{user.user_displayName}")= user.user_displayName
             td Mary had a little lamb, her fleece was white as...
             td= user.user_created

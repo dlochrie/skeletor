@@ -1,5 +1,6 @@
 var User = require('../../models/user'),
-  crypto = require('crypto');
+  crypto = require('crypto'),
+  string = require('../../../util/string');;
 
 
 exports.index = function(req, res) {

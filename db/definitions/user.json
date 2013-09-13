@@ -4,6 +4,7 @@
     "user": [
       "id",
       "displayName",
+      "slug",
       "email",
       "google_id",
       "facebook_id",
