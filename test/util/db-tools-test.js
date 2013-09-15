@@ -60,7 +60,7 @@ describe('DB Tools', function() {
       function(done) {
     var expected = 'SELECT `modelOne`.`field1`, `modelOne`.`field2`, ' +
         '`modelOne`.`modelTwo_id`, `modelTwo`.`id`, `modelTwo`.`field1` ' +
-        'FROM modelOne WHERE ?';
+        'FROM `modelOne` WHERE ?';
     var query = tools.prepareSelect(struct_a, null);
     query.should.equal(expected);
     done();
@@ -70,7 +70,7 @@ describe('DB Tools', function() {
       function(done) {
     var expected = 'SELECT `modelOne`.`field1`, `modelOne`.`field2`, ' +
         '`modelOne`.`modelTwo_id`, `modelTwo`.`id`, `modelTwo`.`field1` ' +
-        'FROM modelOne WHERE `field1` = `red` AND `field2` = `blue` LIMIT 1';
+        'FROM `modelOne` WHERE `field1` = `red` AND `field2` = `blue` LIMIT 1';
     var query = tools.prepareSelect(struct_a, {limit: 1,
         where: {field1: 'red', field2: 'blue'}});
     query.should.equal(expected);
@@ -81,7 +81,7 @@ describe('DB Tools', function() {
       function(done) {
     var expected = 'SELECT `modelOne`.`field1`, `modelOne`.`field2`, ' +
         '`modelOne`.`modelTwo_id`, `modelTwo`.`id`, `modelTwo`.`field1` ' +
-        'FROM modelOne JOIN `modelTwo` ON `modelTwo`.`id` = ' +
+        'FROM `modelOne` JOIN `modelTwo` ON `modelTwo`.`id` = ' +
         '`modelOne`.`modelTwo_id` WHERE ?';
     struct_a.joins = joins_a;
     var query = tools.prepareSelect(struct_a, null);
@@ -93,7 +93,7 @@ describe('DB Tools', function() {
       function(done) {
     var expected = 'SELECT `modelOne`.`field1`, `modelOne`.`field2`, ' +
         '`modelOne`.`modelTwo_id`, `modelTwo`.`id`, `modelTwo`.`field1` ' +
-        'FROM modelOne JOIN `modelTwo` ON `modelTwo`.`id` = ' +
+        'FROM `modelOne` JOIN `modelTwo` ON `modelTwo`.`id` = ' +
         '`modelOne`.`modelTwo_id` WHERE ? LIMIT 1';
     struct_a.joins = joins_a;
     var query = tools.prepareSelect(struct_a, {limit: 1});
@@ -106,8 +106,8 @@ describe('DB Tools', function() {
     var expected =  'SELECT `modelOne`.`field1`, `modelOne`.`field2`, ' +
         '`modelOne`.`modelTwo_id`, `modelTwo`.`id`, `modelTwo`.`field1`, ' +
         '`modelThree`.`id`, `modelThree`.`modelOne_id`, ' +
-        '`modelThree`.`field1` FROM modelOne JOIN `modelTwo` ON ' +
-        '`modelTwo`.`id` = `modelOne`.`modelTwo_id`,  ' +
+        '`modelThree`.`field1` FROM `modelOne` JOIN `modelTwo` ON ' +
+        '`modelTwo`.`id` = `modelOne`.`modelTwo_id`  ' +
         'JOIN `modelThree` ON `modelThree`.`ModelOne_id` = ' +
         '`modelOne`.`id` WHERE ?';
     struct_b.joins = joins_b;
@@ -121,8 +121,8 @@ describe('DB Tools', function() {
     var expected =  'SELECT `modelOne`.`field1`, `modelOne`.`field2`, ' +
         '`modelOne`.`modelTwo_id`, `modelTwo`.`id`, `modelTwo`.`field1`, ' +
         '`modelThree`.`id`, `modelThree`.`modelOne_id`, ' +
-        '`modelThree`.`field1` FROM modelOne JOIN `modelTwo` ON ' +
-        '`modelTwo`.`id` = `modelOne`.`modelTwo_id`,  ' +
+        '`modelThree`.`field1` FROM `modelOne` JOIN `modelTwo` ON ' +
+        '`modelTwo`.`id` = `modelOne`.`modelTwo_id`  ' +
         'JOIN `modelThree` ON `modelThree`.`ModelOne_id` = ' +
         '`modelOne`.`id` WHERE ? LIMIT 1';
     struct_b.joins = joins_b;
