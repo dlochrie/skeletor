@@ -23,22 +23,22 @@ exports.prepareSelect = function(struct, params) {
     });
   }
 
+  var query = 'SELECT ' + select.join(', ') +
+      ' FROM ' + mysql.escapeId(struct.primary);
+
   var joins = [];
   if (struct.joins) {
     struct.joins.forEach(function(join) {
       var relation = mysql.escapeId(join['relation']);
       var relationId = mysql.escapeId(join['relation key']);
       var foreignKey = mysql.escapeId(join['foreign key']);
-      var stmt_ = ' JOIN ' + relation;
+      var stmt_ = 'JOIN ' + relation;
       stmt_ += ' ON ' + relation + '.' + relationId + ' = ' +
           primary + '.' + foreignKey;
       joins.push(stmt_);
     });
+    query += ' ' + joins.join(' ');
   }
-
-  var query = 'SELECT ' + select.join(', ') +
-      ' FROM ' + mysql.escapeId(struct.primary) +
-      joins.join(' ');
 
   if (params.where) {
     var where = [];

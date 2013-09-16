@@ -107,7 +107,7 @@ describe('DB Tools', function() {
         '`modelOne`.`modelTwo_id`, `modelTwo`.`id`, `modelTwo`.`field1`, ' +
         '`modelThree`.`id`, `modelThree`.`modelOne_id`, ' +
         '`modelThree`.`field1` FROM `modelOne` JOIN `modelTwo` ON ' +
-        '`modelTwo`.`id` = `modelOne`.`modelTwo_id`  ' +
+        '`modelTwo`.`id` = `modelOne`.`modelTwo_id` ' +
         'JOIN `modelThree` ON `modelThree`.`ModelOne_id` = ' +
         '`modelOne`.`id` WHERE ?';
     struct_b.joins = joins_b;
@@ -122,7 +122,7 @@ describe('DB Tools', function() {
         '`modelOne`.`modelTwo_id`, `modelTwo`.`id`, `modelTwo`.`field1`, ' +
         '`modelThree`.`id`, `modelThree`.`modelOne_id`, ' +
         '`modelThree`.`field1` FROM `modelOne` JOIN `modelTwo` ON ' +
-        '`modelTwo`.`id` = `modelOne`.`modelTwo_id`  ' +
+        '`modelTwo`.`id` = `modelOne`.`modelTwo_id` ' +
         'JOIN `modelThree` ON `modelThree`.`ModelOne_id` = ' +
         '`modelOne`.`id` WHERE ? LIMIT 1';
     struct_b.joins = joins_b;
