@@ -1,5 +1,5 @@
 var should = require('should'),
-  tools = require('../../util/db-tools');
+  tools = require('../../../util/db-tools');
 
 describe('DB Tools', function() {
   beforeEach(function(done) {
