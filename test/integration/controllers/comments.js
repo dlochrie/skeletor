@@ -16,8 +16,6 @@ describe('Functional Test <Sessions>:', function () {
       },
       logged_in: true
     };
-    // app.res.locals.user = app.req.session.passport.user;
-    console.log(app.request.session);
     done();
   });
 
@@ -26,41 +24,40 @@ describe('Functional Test <Sessions>:', function () {
       .get('/')
       .expect(200)
       .end(function (err, res) {
-        console.log('err', err)
-        console.log('res', res)
-        // res.body.id.should.equal('1');
-        // res.body.short_name.should.equal('Test user');
-        // res.body.email.should.equal('user_test@example.com');
-        // Save the cookie to use it later to retrieve the session
-        // Cookies = res.headers['set-cookie'].pop().split(';')[0];
-        // console.log(Cookies)
+        if (err) return done(err);
+        var session = request.text;
+        res.text.should.include('Testing Tester');
+        res.text.should.not.include('login');
         done();
     });
   });
-  // it('should get user session for current user', function (done) {
-  //   var req = request(app).get('/v1/sessions');
-  //   // Set cookie to get saved user session
-  //   req.cookies = Cookies;
-  //   req.set('Accept','application/json')
-  //     .expect('Content-Type', /json/)
-  //     .expect(200)
-  //     .end(function (err, res) {
-  //       res.body.id.should.equal('1');
-  //       res.body.short_name.should.equal('Test user');
-  //       res.body.email.should.equal('user_test@example.com');
-  //       done();
-  //     });
-  // });
-});
 
-
-describe('GET /account', function(){
-  it('should respond with json', function(done){
-    request.get('/account')
-      .end(function(err, response) {
-        console.log('err', err)
-        console.log('res', response.res)
+  it('should do something on the admin page', function (done) {
+    request(app)
+      .get('/admin')
+      .expect(200)
+      .end(function (err, res) {
+        if (err) return done(err);
+        var session = request.text;
+        res.text.should.include('Administration Portals');
         done();
+    });
+  });
+
+  it('should log the user out', function (done) {
+    request(app)
+      .get('/logout')
+      .end(function (err, res) {
+        if (err) return done(err);
+        request(app)
+          .get('/')
+          .end(function (err, res) {
+            if (err) return done(err);
+            res.text.should.not.include('Testing Tester');
+            res.text.should.include('login');
+            done();
+          });
       });
   });
+
 });
