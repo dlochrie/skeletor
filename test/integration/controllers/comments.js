@@ -19,7 +19,7 @@ describe('Functional Test <Sessions>:', function () {
     done();
   });
 
-  it('should create user session for valid user', function (done) {
+  it('should create a new comment for a post', function (done) {
     request(app)
       .get('/')
       .expect(200)

@@ -1,19 +1,25 @@
-var express = require('../node_modules/express')
-  , mysql = require('../node_modules/mysql')
-  , database = process.env.MYSQL_DB
-  , table;
+var express = require('../node_modules/express'),
+  mysql = require('../node_modules/mysql'),
+  table;
 
+var env = process.env;
+var mode = String(env.NODE_ENV || 'dev').toUpperCase();
+
+var database = env[mode + '_' + 'MYSQL_DB'];
 var config = {
-  host: process.env.MYSQL_HOST,
-  user: process.env.MYSQL_USER,
-  password: process.env.MYSQL_PASS
+  host: env[mode + '_' + 'MYSQL_HOST'],
+  user: env[mode + '_' + 'MYSQL_USER'],
+  password: env[mode + '_' + 'MYSQL_PASS']
 };
 
+if (!database || !config.host || !config.user || !config.password) {
+  console.log('Could not access database environmental variables.');
+}
+
 /**
- * Init Client
+ * Inititialize Client
  */
 var db = mysql.createConnection(config);
-
 db.on('error', function(err) {
   console.log('There was an error connecting to the database:\n', err);
 });

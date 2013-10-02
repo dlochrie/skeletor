@@ -20,6 +20,8 @@ module.exports = function(app) {
    * the process.env.{} object to reflect that below. i.e., instead of
    * `MYSQL_DB`, you can change to `APPNAME_DB`.
    */
+
+  /** TODO!!!!!!!! Change this to match what's in mysql-install.js... **/
   var pool = mysql.createPool({
     host: process.env.MYSQL_HOST,
     user: process.env.MYSQL_USER,

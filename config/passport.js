@@ -60,6 +60,11 @@ module.exports = function(app) {
 
   app.get('/logout', function(req, res) {
     req.logOut();
-    res.redirect('/');
+    // TODO: This *might* be redundant after `logout()`,
+    // but just to be safe, do it anyway.
+    req.session.regenerate(function(err) {
+      console.log(req.session)
+      res.redirect('/');
+    });
   });
 }
