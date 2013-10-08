@@ -3,7 +3,16 @@
  * http://stackoverflow.com/questions/16800418/how-to-properly-pass-mysql-
  *     connection-to-routes-with-express-js#answer-16800702
  */
-module.exports = function(app) {
+
+/**
+ * Load the Database and Model configuration into memory for quick access.
+ * Since the callback is typically the listener for the server, any error
+ * here would prevent the server from running.
+ *
+ * @param {Object} app Express application object.
+ * @param {Function} cb The callback to run when done.
+ */
+module.exports = function(app, cb) {
   var mysql = require('mysql'),
     utils = require('../util/db-tools');
 
@@ -40,9 +49,10 @@ module.exports = function(app) {
 
   initialize(function() {
     var block = '+---------------------------------------------------------\n' +
-      '| Successfully Loaded Models and Database Connections\n' +
-      '+---------------------------------------------------------';
-      logToConsole(block);
+        '| Successfully Loaded Models and Database Connections\n' +
+        '+---------------------------------------------------------';
+    logToConsole(block);
+    cb();
   });
 
   /**
@@ -55,7 +65,7 @@ module.exports = function(app) {
     logToConsole(block);
     checkConnectionPool(pool, function(connection) {
       logToConsole('Successfully Connected to Database: ' +
-        process.env.MYSQL_DB);
+          process.env.MYSQL_DB);
       connection.end();
 
       /**
@@ -172,4 +182,4 @@ module.exports = function(app) {
       }
     });
   }
-}
+};

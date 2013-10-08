@@ -81,18 +81,14 @@ require('./config/passport')(app);
  * Setup Dabasase-Specific Settings
  * Replace file with DB-Type you wish to use, ie `redis`
  */
-require('./db/mysql')(app);
+require('./db/mysql')(app, function() {
+  http.createServer(app).listen(app.get('port'), app.get('host'), function(){
+    console.log("Express server listening on port " + app.get('port'));
+  });
+});
 
 /**
  * Expose the app module.
  * This is required for functional testing.
  */
 module.exports = app;
-
-/**
- * Start Server
- * TODO: Should do this after initialization of DB.
- */
-http.createServer(app).listen(app.get('port'), app.get('host'), function(){
-  console.log("Express server listening on port " + app.get('port'));
-});
