@@ -28,7 +28,7 @@ describe('Authentication', function () {
       .end(function (err, res) {
         if (err) return done(err);
         // Follow redirect
-        request.call(this, app)
+        request(app)
           .get('/')
           .end(function (err, res) {
             if (err) return done(err);
@@ -51,5 +51,24 @@ describe('Authentication', function () {
         res.text.should.include('Administration Portals');
         done();
     });
+  });
+
+  // TODO: Move this to an ACL Test
+  it('should not let someone do anything on the admin page if not logged in',
+  function (done) {
+    request(app)
+      .get('/logout')
+      .end(function (err, res) {
+        if (err) return done(err);
+        request(app)
+          .get('/admin')
+          .end(function (err, res) {
+            if (err) return done(err);
+            res.text.should.include('Administration Portals');
+            res.text.should.not.include('Testing Tester');
+            res.text.should.include('login');
+            done();
+          });
+      });
   });
 });
