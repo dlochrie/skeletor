@@ -16,11 +16,15 @@ module.exports = function(app) {
     done(null, user);
   });
 
+
   passport.deserializeUser(function(obj, done) {
     done(null, obj);
   });
 
-  // Use the GoogleStrategy within Passport.
+
+  /**
+   * Use the Google OpenId Strategy within Passport.
+   */
   passport.use(new GoogleStrategy({
       returnURL:  url + '/auth/google/return',
       realm: url + '/'
@@ -46,8 +50,16 @@ module.exports = function(app) {
     }
   ));
 
+
+  /**
+   * Authenticate the User against the Google OpenId API.
+   */
   app.get('/auth/google', passport.authenticate('google'));
 
+
+  /**
+   * Handle the Response from the Google OpenId API.
+   */
   app.get('/auth/google/return', passport.authenticate('google',
       {failureRedirect: '/login'}),
     function(req, res) {
@@ -58,14 +70,18 @@ module.exports = function(app) {
       res.redirect('/');
     });
 
+
+  /**
+   * Log the user completely out.
+   * Regenerate a new session and set `logged_in` to false.
+   */
   app.get('/logout', function(req, res) {
-    req.logOut();
     var session = req.session;
+    session.logged_in = false;
+    req.logOut();
     if (!session || !session.regenerate) return res.redirect('/');
-    // TODO: This *might* be redundant after `logout()`,
-    // but just to be safe, do it anyway.
     session.regenerate(function(err) {
       res.redirect('/');
     });
   });
-}
+};

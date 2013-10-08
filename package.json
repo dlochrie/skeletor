@@ -23,6 +23,6 @@
     "supertest": "0.8.0"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha --recursive test/"
+    "test": "./node_modules/.bin/mocha --require test/setup --recursive test/"
   }
 }

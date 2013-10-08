@@ -1,7 +1,5 @@
 var should = require('should'),
-  express = require('express'),
-  app = express(),
-  config = require('../../../db/mysql')(app);
+  express = require('express');
 
 describe('MySQL Initialization', function() {
   beforeEach(function(done) {

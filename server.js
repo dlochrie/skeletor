@@ -62,25 +62,20 @@ app.configure(function(){
   app.use(express.static(path.join(__dirname, 'public')));
 });
 
-module.exports = app;
-
 /**
  * Setup Routes
  */
 require('./config/routes')(app);
-
 
 /**
  * Setup Environment-Specific Settings
  */
 require('./config/environment')(app);
 
-
 /**
  * Setup Passport-Specific Settings
  */
 require('./config/passport')(app);
-
 
 /**
  * Setup Dabasase-Specific Settings
@@ -88,10 +83,15 @@ require('./config/passport')(app);
  */
 require('./db/mysql')(app);
 
+/**
+ * Expose the app module.
+ * This is required for functional testing.
+ */
+module.exports = app;
 
 /**
  * Start Server
- * TODO: Should do this after initialization.
+ * TODO: Should do this after initialization of DB.
  */
 http.createServer(app).listen(app.get('port'), app.get('host'), function(){
   console.log("Express server listening on port " + app.get('port'));

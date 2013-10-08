@@ -1,11 +1,16 @@
-// Build DB for tests.
-require('../db/mysql-install');
+var isSet = this.app || null;
+app = (isSet) ? app : require('../server');
 
+/**
+ * Create a mock session class and expose it to `app`.
+ */
+function Session() {
+  this.logged_in = true;
+  this.passport = {
+    user: {
+      user_displayName:  'Testing Tester'
+    }
+  };
+};
 
-
-
-exports.app = require('../server');
-
-// Seed DB for tests.
-// ...
-
+app.request.session = new Session();
