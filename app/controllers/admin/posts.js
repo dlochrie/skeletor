@@ -4,6 +4,15 @@ var Post = require('../../models/post'),
 
 
 exports.index = function(req, res) {
+  /**
+   * TODO: Shouldn't a block like this be in a `before` method?
+   */
+  var user = res.locals.user || null;
+  if (!user) {
+    req.flash('error', 'You should be logged in...');
+    return res.redirect('/');
+  }
+
   var post = new Post(req.app);
   post.adminList(null, function(err, posts) {
     if (err) res.send('There was an error getting posts', err);
@@ -18,12 +27,13 @@ exports.index = function(req, res) {
 
 
 exports.new = function(req, res) {
-  var post = new Post(req.app);
   var user = res.locals.user || null;
   if (!user) {
     req.flash('error', 'You should be logged in...');
     return res.redirect('/');
   }
+
+  var post = new Post(req.app);
   post.user_displayName = user.user_displayName;
   post.post_user_id = parseInt(user.user_id);
   res.render('admin/posts/new', {

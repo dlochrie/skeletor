@@ -4,23 +4,22 @@ var request = require('supertest'),
 describe('Authentication', function() {
   var session;
   beforeEach(function(done) {
+    app.request.session = new app.session();
     session = app.request.session;
-    done();
-  });
-
-  it('should have a valid logged in user session', function(done) {
     session.logged_in.should.be.true;
     session.passport.should.be.an.Object;
     done();
   });
 
-  it('should create user session for valid user', function(done) {
+  it('should display name and logout link if user is logged in',
+      function(done) {
     request(app)
       .get('/')
       .expect(200)
       .end(function (err, res) {
         if (err) return done(err);
         res.text.should.include('Testing Tester');
+        res.text.should.include('logout');
         res.text.should.not.include('login');
         done();
     });
@@ -58,7 +57,7 @@ describe('Authentication', function() {
   });
 
   // TODO: Move this to an ACL Test
-  it('should not let someone do anything on the admin page if not logged in',
+  it('should not let someone access an admin page if not logged in',
   function(done) {
     request(app)
       .get('/logout')
@@ -68,9 +67,9 @@ describe('Authentication', function() {
           .get('/admin')
           .end(function(err, res) {
             if (err) return done(err);
-            res.text.should.include('Administration Portals');
+            session.logged_in.should.be.false;
+            res.text.should.not.include('Administration Portals');
             res.text.should.not.include('Testing Tester');
-            res.text.should.include('login');
             done();
           });
       });
