@@ -11,7 +11,7 @@ describe('Authentication', function() {
     done();
   });
 
-  it('should display name and logout link if user is logged in',
+  it('should display user\'s name and logout link if user is logged in',
       function(done) {
     request(app)
       .get('/')
@@ -36,6 +36,7 @@ describe('Authentication', function() {
           .end(function (err, res) {
             if (err) return done(err);
             res.text.should.not.include('Testing Tester');
+            res.text.should.not.include('logout');
             res.text.should.include('login');
             session.logged_in.should.be.false;
             session.passport.should.be.null;
@@ -70,7 +71,13 @@ describe('Authentication', function() {
             session.logged_in.should.be.false;
             res.text.should.not.include('Administration Portals');
             res.text.should.not.include('Testing Tester');
-            done();
+            // Validate that an error message was flashed.
+            request(app)
+              .get('/')
+              .end(function(err, res) {
+                res.text.should.include('You should be logged in...');
+                done();
+              })
           });
       });
   });
