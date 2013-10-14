@@ -2,6 +2,14 @@ var Comment = require('../models/comment'),
   markdown = require('../../util/markdown');
 
 exports.create = function(req, res) {
+  /**
+   * TODO: Shouldn't a block like this be in a `before` method?
+   */
+  var user = res.locals.user || null;
+  if (!user) {
+    req.flash('error', 'You should be logged in...');
+    return res.redirect('/');
+  }
   var comment = new Comment(req.app, null);
   var params = req.body;
   params.body_md = params.body.toString().trim();
@@ -23,6 +31,14 @@ exports.create = function(req, res) {
 
 
 exports.flag = function(req, res) {
+  /**
+   * TODO: Shouldn't a block like this be in a `before` method?
+   */
+  var user = res.locals.user || null;
+  if (!user) {
+    req.flash('error', 'You should be logged in...');
+    return res.redirect('/');
+  }
   var comment = new Comment(req.app, null);
   var id = parseInt(req.params.comment);
   var user = res.locals.user || null;
