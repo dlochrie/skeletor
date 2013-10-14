@@ -14,7 +14,10 @@
  */
 module.exports = function(app, cb) {
   var mysql = require('mysql'),
-    utils = require('../util/db-tools');
+    utils = require('../util/db-tools'),
+    env = process.env,
+    mode = String(env.NODE_ENV || 'dev').toUpperCase(),
+    database = env[mode + '_' + 'MYSQL_DB'];
 
   /**
    * Set the DB Credentials in your environmental variables:
@@ -29,13 +32,11 @@ module.exports = function(app, cb) {
    * the process.env.{} object to reflect that below. i.e., instead of
    * `MYSQL_DB`, you can change to `APPNAME_DB`.
    */
-
-  /** TODO!!!!!!!! Change this to match what's in mysql-install.js... **/
   var pool = mysql.createPool({
-    host: process.env.MYSQL_HOST,
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PASS,
-    database: process.env.MYSQL_DB,
+    database: database = env[mode + '_' + 'MYSQL_DB'],
+    host: env[mode + '_' + 'MYSQL_HOST'],
+    user: env[mode + '_' + 'MYSQL_USER'],
+    password: env[mode + '_' + 'MYSQL_PASS'],
     connectionLimit: 10
   });
 
@@ -64,8 +65,7 @@ module.exports = function(app, cb) {
         '+---------------------------------------------------------';
     logToConsole(block);
     checkConnectionPool(pool, function(connection) {
-      logToConsole('Successfully Connected to Database: ' +
-          process.env.MYSQL_DB);
+      logToConsole('Successfully Connected to Database: ' + database);
       connection.end();
 
       /**

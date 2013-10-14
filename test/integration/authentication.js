@@ -3,6 +3,7 @@ var request = require('supertest'),
 
 describe('Authentication', function() {
   var session;
+
   beforeEach(function(done) {
     app.request.session = new app.session();
     session = app.request.session;

@@ -8,7 +8,7 @@ exports.create = function(req, res) {
   markdown.convert(params, ['body'], function(params) {
     comment.validate(params, function(err, resource) {
       comment.create({values: resource}, function(err, comment) {
-        if (err) {
+        if (err || !comment) {
           res.send(err);
         } else {
           comment = comment[0];

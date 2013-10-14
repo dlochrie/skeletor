@@ -1,5 +1,4 @@
-var isSet = this.app || null;
-app = (isSet) ? app : require('../server');
+app = this.app || require('../server');
 
 // Expose `Session` class to app for testing access.
 app.session = Session;

@@ -1,5 +1,4 @@
-var express = require('../node_modules/express'),
-  mysql = require('../node_modules/mysql'),
+var mysql = require('../node_modules/mysql'),
   table;
 
 var env = process.env;
