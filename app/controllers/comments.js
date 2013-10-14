@@ -60,6 +60,9 @@ exports.flag = function(req, res) {
 
 
 exports.flag_confirm = function(req, res) {
+  /**
+   * TODO: Shouldn't a block like this be in a `before` method?
+   */
   var user = res.locals.user || null;
   if (!user) {
     req.flash('error', 'You should be logged in...');
