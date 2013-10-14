@@ -48,7 +48,6 @@ exports.flag = function(req, res) {
   }
   comment.find({where: {'comment.id': id}}, function(err, comment) {
     if (!err || !comment) {
-      console.log('comment', comment)
       res.render('comments/flag', {
         comment: comment[0]
       });
@@ -61,6 +60,11 @@ exports.flag = function(req, res) {
 
 
 exports.flag_confirm = function(req, res) {
+  var user = res.locals.user || null;
+  if (!user) {
+    req.flash('error', 'You should be logged in...');
+    return res.redirect('/');
+  }
   var comment = new Comment(req.app, null);
   var id = parseInt(req.body.comment_id) || null;
   var user = res.locals.user || null;
