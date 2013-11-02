@@ -5,4 +5,7 @@ module.exports = 'INSERT INTO ' + table + ' (' +
   'VALUES ' +
   '(1, "First Post", "first-post", "<p>Description for First Post</p>",' +
   '"Description for First Post", "<p>Body for First Post<p>",' +
-  '"Body for First Post.", NOW(), NOW())';
+  '"Body for First Post.", NOW(), NOW()),' +
+  '(1, "Second Post", "second-post", "<p>Description for Second Post</p>",' +
+  '"Description for Second Post", "<p>Body for Second Post<p>",' +
+  '"Body for Second Post.", NOW(), NOW())';

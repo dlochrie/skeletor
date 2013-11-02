@@ -17,7 +17,6 @@ module.exports = function(app) {
   app.post('/comments/flag', comments.flag_confirm);
 
   app.resource('posts', posts);
-  app.get('/posts/:post/comments', posts.comments);
 
   app.resource('users', users);
   app.get('/account', users.account);

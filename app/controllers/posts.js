@@ -31,13 +31,3 @@ exports.show = function(req, res) {
     });
   });
 };
-
-
-exports.comments = function(req, res) {
-  var comment = new Comment(req.app, null);
-  var id = parseInt(req.params.post);
-  comment.all({where: {'post_id': id}}, function(err, comments) {
-    if (err) return next();
-    res.json(comments);
-  });
-};

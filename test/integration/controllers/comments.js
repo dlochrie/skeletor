@@ -2,7 +2,7 @@ var request = require('supertest'),
   should = require('should'),
   ctrl = require('../../../app/controllers/comments');
 
-describe('Comments Controller', function () {
+describe('Comments Controller', function() {
   var session;
 
   describe('if a user is logged in', function() {
