@@ -92,6 +92,20 @@ describe('Comments Controller', function () {
       done();
     });
 
+    it('should NOT show comment form', function(done) {
+      request(app)
+        .get('/posts/first-post')
+        .expect(200)
+        .end(function(err, res) {
+          if (err) return done(err);
+          res.text.should.include('You must be logged in to leave a comment.');
+          res.text.should.not.include('<div class="form-actions">' +
+              '<button class="btn btn-primary"><i class="icon-ok icon-white">' +
+              '</i> Post Comment</button></div>');
+          done();
+        });
+    });
+
     it('should NOT let a user create a new comment', function(done) {
       request(app)
         .post('/comments')
@@ -112,20 +126,6 @@ describe('Comments Controller', function () {
               res.text.should.not.include('Comment Successfully Created');
               done();
             });
-        });
-    });
-
-    it('should NOT show comment form', function(done) {
-      request(app)
-        .get('/posts/first-post')
-        .expect(200)
-        .end(function(err, res) {
-          if (err) return done(err);
-          res.text.should.include('You must be logged in to leave a comment.');
-          res.text.should.not.include('<div class="form-actions">' +
-              '<button class="btn btn-primary"><i class="icon-ok icon-white">' +
-              '</i> Post Comment</button></div>');
-          done();
         });
     });
 
@@ -165,6 +165,5 @@ describe('Comments Controller', function () {
             });
         });
     });
-
   });
 });
