@@ -3,8 +3,6 @@ var request = require('supertest'),
   ctrl = require('../../../app/controllers/posts');
 
 describe('Posts Controller', function() {
-  var session;
-
   it('should show the posts index', function(done) {
     request(app)
         .get('/posts')
