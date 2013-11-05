@@ -15,7 +15,6 @@ exports.index = function(req, res) {
 };
 
 
-// TODO: What if they are viewing their own account?
 exports.show = function(req, res) {
   var app = req.app;
   var user = new User(app, null);

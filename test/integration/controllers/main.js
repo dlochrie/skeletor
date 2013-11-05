@@ -1,6 +1,5 @@
 var request = require('supertest'),
-  should = require('should'),
-  ctrl = require('../../../app/controllers/posts');
+  should = require('should');
 
 describe('Main Controller', function() {
   it('should show the home page and a few posts', function(done) {

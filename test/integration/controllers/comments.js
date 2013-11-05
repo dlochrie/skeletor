@@ -1,6 +1,5 @@
 var request = require('supertest'),
-  should = require('should'),
-  ctrl = require('../../../app/controllers/comments');
+  should = require('should');
 
 describe('Comments Controller', function() {
   var session;

@@ -37,12 +37,13 @@ block body
               p.text-info This user has not posted any comments yet.
 
 block sidebar
-  .row
-    .span4
-      .well
-        ul.nav.nav-list
-          li.nav-header Actions
-          li: a(href="/logout", title="logout") Logout
-          li.divider
-          li: a Update Account
-          li: a Delete Account
+  if user
+    .row: .span4: .well
+      ul.nav.nav-list
+        li.nav-header Actions
+        li: a(href="/logout", title="logout") Logout
+        li.divider
+        li: a Update Account
+        li: a Delete Account
+  else
+    include ../partials/side-nav-links
