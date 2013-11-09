@@ -19,15 +19,15 @@ block body
     if (posts.length)
       each post in posts
         tr
-          td: a(href='/admin/posts/#{post.post_id}/edit') #{post.post_title}
+          td: a(href='/admin/posts/#{post.post_slug}/edit') #{post.post_title}
           td: a(href='/users/#{post.user_id}/') #{post.user_displayName}
           td #{post._comments}
           td= post.post_updated.toUTCString("en-US", {weekday: "long", month: "long", day: "numeric", year: "numeric", hour12: true})
           td
-            a(href='/admin/posts/#{post.post_id}/edit', class='btn')
+            a(href='/admin/posts/#{post.post_slug}/edit', class='btn')
               i.icon-edit
             | 
-            a(href='/admin/posts/#{post.post_id}/delete', data-method='delete',
+            a(href='/admin/posts/#{post.post_slug}/delete', data-method='delete',
                 class='btn btn-danger')
               i.icon-remove.icon-white
     else

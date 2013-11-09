@@ -69,7 +69,8 @@ exports.edit = function(req, res) {
   var post = new Post(req.app, null);
   // TODO: Make sure all IDs are being parsed as integers....
   var id = parseInt(req.params.post);
-  post.find({where: {'post.id': id}}, function(err, post) {
+  var slug = req.params.post;
+  post.find({where: {'post.slug': slug}}, function(err, post) {
     post = post[0];
     if (err) res.send('There was an error getting the post', err);
     if (post) {

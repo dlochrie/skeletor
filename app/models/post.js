@@ -24,21 +24,22 @@ Post.prototype.latest = function(params, cb) {
       'COUNT(`comment`.`post_id`) AS `comments` ' +
       'FROM `post` ' +
       'LEFT JOIN `user` ON `user`.`id` = `post`.`user_id` ' +
-      'LEFT JOIN `comment` ON `comment`.`post_id` = `post`.`id` ' +
-      'GROUP BY `comment`.`post_id` ' +
+      'LEFT OUTER JOIN `comment` ON `comment`.`post_id` = `post`.`id` ' +
+      'GROUP BY `post`.`id` ' +
       'ORDER BY `post`.`updated` DESC LIMIT 10 ';
   this.performQuery(sql, params, cb);
 };
 
 Post.prototype.adminList = function(params, cb) {
-  var sql = 'SELECT `post`.`id`, `post`.`title`, `post`.`created`, ' +
-    '`post`.`updated`, `user`.`id`, `user`.`displayName`,  ' +
-    'COUNT(`comment`.`post_id`) AS `comments` ' +
-    'FROM `post`  ' +
-    'LEFT JOIN `user` ON `user`.`id` = `post`.`user_id` ' +
-    'LEFT JOIN `comment` ON `comment`.`post_id` = `post`.`id` ' +
-    'GROUP BY `comment`.`post_id` ' +
-    'ORDER BY `post`.`updated` DESC';
+  var sql = 'SELECT `post`.`id`, `post`.`title`, `post`.`slug`, ' +
+      '`post`.`created`, `post`.`updated`, `user`.`id`, ' +
+      '`user`.`displayName`, ' +
+      'COUNT(`comment`.`post_id`) AS `comments` ' +
+      'FROM `post`  ' +
+      'LEFT JOIN `user` ON `user`.`id` = `post`.`user_id` ' +
+      'LEFT OUTER JOIN `comment` ON `comment`.`post_id` = `post`.`id` ' +
+      'GROUP BY `post`.`id` ' +
+      'ORDER BY `post`.`updated` DESC';
   this.performQuery(sql, params, cb);
 };
 
