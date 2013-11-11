@@ -7,7 +7,7 @@ append breadcrumbs
   li.active= title
 
 block body
-  form(action='/admin/posts/#{post.post_id}', method='post')
+  form(action='/admin/posts/#{post.post_slug}', method='post')
     include _form
 
     input(type='hidden',name='user_id',value=post.post_user_id)

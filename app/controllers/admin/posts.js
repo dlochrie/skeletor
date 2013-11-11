@@ -67,8 +67,6 @@ exports.create = function(req, res) {
 
 exports.edit = function(req, res) {
   var post = new Post(req.app, null);
-  // TODO: Make sure all IDs are being parsed as integers....
-  var id = parseInt(req.params.post);
   var slug = req.params.post;
   post.find({where: {'post.slug': slug}}, function(err, post) {
     post = post[0];
@@ -90,19 +88,22 @@ exports.edit = function(req, res) {
  */
 exports.update = function(req, res) {
   var post = new Post(req.app, null);
-  var id = parseInt(req.params.post);
+  var slug = req.params.post;
   var params = req.body;
   params.body_md = params.body.toString().trim();
   params.description_md = params.description.toString().trim();
   markdown.convert(params, ['body', 'description'], function(params) {
-    delete params._csrf;
-    post.update({where: {'post.id': id}, values: params}, function(err, post) {
-      if (err) {
-        res.send(err);
-      } else {
-        req.flash('success', 'Post Successfully Updated');
-        res.redirect('/admin/posts/' + id + '/edit');
-      }
+    post.validate(params, function(err, resource) {
+      if (err) res.send(err);
+      post.update({where: {'post.slug': slug}, values: resource},
+          function(err, post) {
+        if (err) {
+          res.send(err);
+        } else {
+          req.flash('success', 'Post Successfully Updated');
+          res.redirect('/admin/posts');
+        }
+      });
     });
   });
 };
