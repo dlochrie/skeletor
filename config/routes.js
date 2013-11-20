@@ -3,11 +3,15 @@ var dir = ('../app/controllers/')
   , comments = require(dir + 'comments')
   , posts = require(dir + 'posts')
   , users = require(dir + 'users')
+  , admin = require(dir + 'admin')
   , adminPanel = require(dir + 'admin/panel')
   , adminPosts = require(dir + 'admin/posts')
   , adminUsers = require(dir + 'admin/users');
 
 module.exports = function(app) {
+  /**
+   * Public Routes.
+   */
   app.get('/', main.index);
   app.get('/about', main.about);
   app.get('/contact', main.contact);
@@ -21,7 +25,17 @@ module.exports = function(app) {
   app.resource('users', users);
   app.get('/account', users.account);
 
-  // TODO: This namespace should be protected by ACL
+  /**
+   * TODO(dlochrie) This is a temporary admin check, but it needs to be
+   * expanded on and refactored.
+   *
+   * Add authentication middleware to the `admin` namespace.
+   */
+  app.all('/admin/*', admin.authenticate);
+
+  /**
+   * Admin Routes. Should be protected by middleware above.
+   */
   app.resource('admin', adminPanel);
   app.resource('admin/posts', adminPosts);
   app.get('/admin/posts/:post/delete', adminPosts.delete);

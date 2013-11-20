@@ -8,7 +8,7 @@ append breadcrumbs
 
 block body
   h3.text-warning Are you sure you want to delete this post?
-  form(action='/admin/posts/#{post.post_id}',method='post')
+  form(action='/admin/posts/#{post.post_slug}',method='post')
     article
       table.table.table-hover
         tr

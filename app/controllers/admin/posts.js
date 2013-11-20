@@ -4,35 +4,21 @@ var Post = require('../../models/post'),
 
 
 exports.index = function(req, res) {
-  /**
-   * TODO: Shouldn't a block like this be in a `before` method?
-   */
-  var user = res.locals.user || null;
-  if (!user) {
-    req.flash('error', 'You should be logged in...');
-    return res.redirect('/');
-  }
-
   var post = new Post(req.app);
   post.adminList(null, function(err, posts) {
-    if (err) res.send('There was an error getting posts', err);
-    if (posts) {
-      res.render('admin/posts/index', {
-        title: 'posts administration',
-        posts: posts
-      });
+    if (err || !posts) {
+      req.flash('error', 'There was an error getting the posts: ' + err);
+      return res.redirect('/admin');
     }
+    res.render('admin/posts/index', {
+      title: 'posts administration',
+      posts: posts
+    });
   });
 };
 
 
 exports.new = function(req, res) {
-  var user = res.locals.user || null;
-  if (!user) {
-    req.flash('error', 'You should be logged in...');
-    return res.redirect('/');
-  }
-
   var post = new Post(req.app);
   post.user_displayName = user.user_displayName;
   post.post_user_id = parseInt(user.user_id);
@@ -53,8 +39,9 @@ exports.create = function(req, res) {
   markdown.convert(params, ['body', 'description'], function(params) {
     post.validate(params, function(err, resource) {
       post.create({values: resource}, function(err, post) {
-        if (err) {
-          res.send(err);
+        if (err || !post) {
+          req.flash('error', 'There was an error creating the post: ' + err);
+          res.redirect('/admin/posts');
         } else {
           req.flash('success', 'Post Successfully Created');
           res.redirect('/admin/posts');
@@ -69,9 +56,11 @@ exports.edit = function(req, res) {
   var post = new Post(req.app, null);
   var slug = req.params.post;
   post.find({where: {'post.slug': slug}}, function(err, post) {
-    post = post[0];
-    if (err) res.send('There was an error getting the post', err);
-    if (post) {
+    if (err || !post) {
+      req.flash('error', 'There was an error getting the post: ' + err);
+      res.redirect('/admin/posts');
+    } else {
+      post = post[0];
       res.render('admin/posts/edit', {
         title: 'edit post', post: post, token: res.locals.token
       });
@@ -94,11 +83,15 @@ exports.update = function(req, res) {
   params.description_md = params.description.toString().trim();
   markdown.convert(params, ['body', 'description'], function(params) {
     post.validate(params, function(err, resource) {
-      if (err) res.send(err);
+      if (err) {
+        req.flash('error', 'There was an error editing the post: ' + err);
+        return res.redirect('/admin/posts/' + slug + '/edit');
+      }
       post.update({where: {'post.slug': slug}, values: resource},
           function(err, post) {
         if (err) {
-          res.send(err);
+          req.flash('error', 'There was an error editing the post: ' + err);
+          return res.redirect('/admin/posts/' + slug + '/edit');
         } else {
           req.flash('success', 'Post Successfully Updated');
           res.redirect('/admin/posts');
@@ -111,10 +104,13 @@ exports.update = function(req, res) {
 
 exports.delete = function(req, res) {
   var post = new Post(req.app, null),
-    id = parseInt(req.params.post);
-  post.find({where: {'post.id': id}}, function(err, post) {
+    slug = req.params.post;
+  post.find({where: {'post.slug': slug}}, function(err, post) {
+    if (err || !post) {
+      req.flash('error', 'There was an error deleting the post: ' + err);
+      return res.redirect('/admin/posts');
+    }
     post = post[0];
-    if (err) res.send('There was an error getting the post', err);
     if (post) {
       res.render('admin/posts/delete', {
         title: 'delete post', post: post, token: res.locals.token
@@ -126,14 +122,13 @@ exports.delete = function(req, res) {
 
 exports.destroy = function(req, res) {
   var post = new Post(req.app, null),
-    id = parseInt(req.params.post);
-  post.delete({where: {'post.id': id}}, function(err, result) {
+    slug = req.params.post;
+  post.delete({where: {'post.slug': slug}}, function(err, result) {
     if (err) {
-      req.flash('error', 'There was an error deleting the post.');
-      res.redirect('/admin/posts/' + id + '/delete');
+      req.flash('error', 'There was an error deleting the post: ' + err);
     } else {
       req.flash('info', 'Post Successfully Deleted.');
-      res.redirect('/admin/posts');
     }
+    res.redirect('/admin/posts');
   });
 };

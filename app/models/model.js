@@ -82,7 +82,7 @@ Model.prototype.create = function(params, cb) {
 
 
 /**
- * Update a Record for a particular model.
+ * Updates a record for a particular model.
  * @param {?Object} params (Optional) Resource/Criteria to use in search.
  * @param {Function} cb Callback function.
  * @return function
@@ -97,7 +97,7 @@ Model.prototype.update = function(params, cb) {
 
 
 /**
- * * ...To Be Implemented
+ * Removes a record for a particular model.
  * @param {?Object} params (Optional) Resource/Criteria to use in search.
  * @param {Function} cb Callback function.
  * @return function
