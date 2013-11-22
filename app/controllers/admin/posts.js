@@ -19,6 +19,7 @@ exports.index = function(req, res) {
 
 
 exports.new = function(req, res) {
+  var user = res.locals.user || null;
   var post = new Post(req.app);
   post.user_displayName = user.user_displayName;
   post.post_user_id = parseInt(user.user_id);
@@ -33,11 +34,16 @@ exports.new = function(req, res) {
 exports.create = function(req, res) {
   var post = new Post(req.app, null);
   var params = req.body;
-  params.body_md = params.body.toString().trim();
-  params.description_md = params.description.toString().trim();
+  params.body_md = params.body ? params.body.toString().trim() : '';
+  params.description_md = params.description ?
+      params.description.toString().trim() : '';
   params.slug = string.convertToSlug(params.title);
   markdown.convert(params, ['body', 'description'], function(params) {
     post.validate(params, function(err, resource) {
+      if (err || !resource) {
+        req.flash('error', 'There was an error creating the post: ' + err);
+        return res.redirect('/admin/posts');
+      }
       post.create({values: resource}, function(err, post) {
         if (err || !post) {
           req.flash('error', 'There was an error creating the post: ' + err);
@@ -77,10 +83,11 @@ exports.edit = function(req, res) {
  */
 exports.update = function(req, res) {
   var post = new Post(req.app, null);
-  var slug = req.params.post;
+  var slug = req.params.post; // Do not modify.
   var params = req.body;
-  params.body_md = params.body.toString().trim();
-  params.description_md = params.description.toString().trim();
+  params.body_md = params.body ? params.body.toString().trim() : '';
+  params.description_md = params.description ?
+      params.description.toString().trim() : '';
   markdown.convert(params, ['body', 'description'], function(params) {
     post.validate(params, function(err, resource) {
       if (err) {

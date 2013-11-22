@@ -10,14 +10,14 @@ module.exports = Model;
  * @params {Object} resource (Optional) Resource for contructing model.
  * @constructor
  */
-function Model(resource) {
-  var name = this.modelName;
+function Model() {
   this.db = this.app.get('db');
+  // Need a more elegant solution for this, but entire `app` is not needed.
+  delete this.app;
   this.pool = this.db.pool;
-  this.model = this.db.models[name];
+  this.model = this.db.models[this.modelName];
   this.queries = this.model.queries;
   this.definition = this.model.definition;
-  this.resource = resource;
 }
 
 
@@ -265,16 +265,32 @@ Model.prototype.dbClose = function(dbc) {
  */
 Model.prototype.validate = function(params, cb) {
   var modelName = this.modelName || null;
-  if (!modelName) return cb(true, null);
+  if (!modelName || !params) {
+    return cb(true, null);
+  }
 
-  var definition;
+  // Perform validations...
+  // WARNING, this is NOT async... but NEEDS to be.
+  var validations = this.validations || null;
+  if (validations) {
+    for (field in validations) {
+      var rules = validations[field];
+      var subject = params[field] || null;
+      var results = this.testRules_(rules, subject);
+      if (!results.passed) {
+        return cb('Did not pass validations.', null);
+      }
+    }
+  }
+
+  var definition = null;
   try {
     definition = this.definition.columns[modelName];
   } catch(e) {
-    definition = null;
+    return cb('There was a system error:' + modelName, null)
   }
 
-  if (!definition || !params) return cb(true, null);
+  if (!definition) return cb(true, null);
   var fields = Object.keys(params);
   var resource = {};
   fields.forEach(function(field) {
@@ -284,4 +300,106 @@ Model.prototype.validate = function(params, cb) {
   });
 
   return cb(null, resource);
+};
+
+
+/**
+ * Performs validation by passing field type and value to the appropriate
+ * validation method.
+ * @param {Object} rule Rules object containing the rule and its comparison
+ *     operator.
+ * @param {string} field Field to test againt.
+ * @private
+ * @return {Object} Results object.
+ */
+Model.prototype.testRules_ = function(rules, field) {
+  var results = {passed: true};
+  for (rule in rules) {
+    var comparison = rules[rule];
+    var pass;
+    switch(rule) {
+      case 'type':
+        pass = this.testType_(field, comparison);
+        break;
+      case 'min':
+        pass = this.testMin_(field, comparison);
+        break;
+      case 'max':
+        pass = this.testMax_(field, comparison);
+        break;
+      case 'exists':
+        pass = this.testExists_(field);
+        break;
+    }
+    if (results.passed && !pass) {
+      results.passed = false;
+    }
+    results[rule] = pass;
+  }
+  return results;
+};
+
+
+/**
+ * Verifies if the test subject matches the supplied type.
+ * @param {?string} subject The subject to test.
+ * @param {*} type The data type to test the subject for.
+ * @return {boolean}
+ * @private
+ */
+Model.prototype.testType_ = function(subject, type) {
+  if (!subject) return false;
+  var result;
+  switch(type) {
+    case 'string':
+      result = typeof(subject) === 'string';
+      break;
+    case 'integer':
+      result = typeof(subject) === 'number';
+      break;
+    case 'boolean':
+      result = typeof(subject) === 'boolean';
+      break;
+    default:
+      result = false;
+      break;
+  }
+  return result;
+};
+
+
+/**
+ * Verifies if the test subject is greater than or equal to the min allowed.
+ * @param {?string} subject The subject to test.
+ * @param {number} min The minimum amount of characters the subject can have.
+ * @return {boolean}
+ * @private
+ */
+Model.prototype.testMin_ = function(subject, min) {
+  return subject && subject.toString().length >= parseInt(min);
+};
+
+
+/**
+ * Verifies if the test subject is less than or equal to the max allowed.
+ * @param {?string} subject The subject to test.
+ * @param {number} max The maximuma amount of characters the subject can have.
+ * @return {boolean}
+ * @private
+ */
+Model.prototype.testMax_ = function(subject, max) {
+  return subject && subject.toString().length <= parseInt(max);
+};
+
+
+/**
+ * Verifies that the subject does indeed exist.
+ * TODO: This is very ugly. There has got to be a better way of testing this.
+ * @param {?string} subject The subject to test.
+ * @return {boolean}
+ * @private
+ */
+Model.prototype.testExists_ = function(subject) {
+  // TODO: What the hell is this???
+  return subject ? true : typeOf(subject) !== 'undefined';
 };
