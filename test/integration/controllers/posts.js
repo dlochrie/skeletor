@@ -21,7 +21,7 @@ describe('Posts Controller', function() {
         .end(function(err, res) {
           if (err) return done(err);
           res.text.should.include('First Post');
-          res.text.should.include('testing test');
+          res.text.should.include('joe tester');
           res.text.should.include('Body for First Post');
           done();
         });

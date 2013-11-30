@@ -10,7 +10,7 @@ describe('Users Controller', function() {
           .end(function(err, res) {
             if (err) return done(err);
             res.text.should.include('Member Since');
-            res.text.should.include('testing test');
+            res.text.should.include('joe tester');
             done();
           });
     });
@@ -18,12 +18,12 @@ describe('Users Controller', function() {
     it('should show anothers user\'s page and restrict actions',
         function(done) {
       request(app)
-          .get('/users/testing-test')
+          .get('/users/joe-tester')
           .expect(200)
           .end(function(err, res) {
             if (err) return done(err);
-            res.text.should.include('testing test\'s Profile');
-            res.text.should.include('testing test\'s Comments');
+            res.text.should.include('joe tester\'s Profile');
+            res.text.should.include('joe tester\'s Comments');
             res.text.should.not.include('Logout');
             res.text.should.not.include('Update Account');
             res.text.should.not.include('Delete Account');
@@ -43,12 +43,12 @@ describe('Users Controller', function() {
     it('should show anothers user\'s page and restrict actions',
         function(done) {
       request(app)
-          .get('/users/testing-test')
+          .get('/users/joe-tester')
           .expect(200)
           .end(function(err, res) {
             if (err) return done(err);
-            res.text.should.include('testing test\'s Profile');
-            res.text.should.include('testing test\'s Comments');
+            res.text.should.include('joe tester\'s Profile');
+            res.text.should.include('joe tester\'s Comments');
             res.text.should.include('Logout');
             res.text.should.include('Update Account');
             res.text.should.include('Delete Account');
