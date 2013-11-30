@@ -1,0 +1,31 @@
+extends ../../layouts/admin
+
+append breadcrumbs
+  li.active= title
+
+block body
+  table.table.table-hover.table-striped
+    thead
+      tr
+        th Body
+        th Post
+        th User
+        th Date Posted
+        th Actions
+    tbody
+    if (comments.length)
+      each comment in comments
+        tr
+          td: a(href='/comments/#{comment.comment_slug}/') #{truncateAndStripTags(comment.comment_body, 10)}
+          td= comment.post_title
+          td= comment.user_displayName
+          td= comment.comment_created
+          td
+            a(href='/admin/comments/#{comment.comment_slug}/edit', class='btn')
+              i.icon-edit
+            | 
+            a(href='/admin/comments/#{comment.comment_id}/delete', 
+                data-method='delete', class='btn btn-danger')
+              i.icon-remove.icon-white
+    else
+      tr: td(colspan=3) No Comments Found.
