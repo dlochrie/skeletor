@@ -330,6 +330,9 @@ Model.prototype.testRules_ = function(rules, field) {
       case 'exists':
         pass = this.testExists_(field);
         break;
+      case 'email':
+        pass = this.testEmail_(field);
+        break;
     }
     if (results.passed && !pass) {
       results.passed = false;
@@ -401,5 +404,19 @@ Model.prototype.testMax_ = function(subject, max) {
  */
 Model.prototype.testExists_ = function(subject) {
   // TODO: What the hell is this???
-  return subject ? true : typeOf(subject) !== 'undefined';
+  return (subject) ? true : false;
+};
+
+
+/**
+ * Verifies that the subject is an email address.
+ * Note: This might not always work, but since we rely on outside
+ * authentication, it's just a quick check and should serve as thus.
+ * @param {?string} subject The subject to test.
+ * @return {boolean}
+ * @private
+ */
+Model.prototype.testEmail_ = function(subject) {
+  return /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      .test(subject)
 };
