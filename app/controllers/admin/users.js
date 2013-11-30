@@ -19,11 +19,13 @@ exports.index = function(req, res) {
 
 exports.edit = function(req, res) {
   var user = new User(req.app, null);
-  var id = parseInt(req.params.user);
-  user.find({where: {'user.id': id}}, function(err, user) {
-    user = user[0];
-    if (err) res.send('There was an error getting the user', err);
-    if (user) {
+  var slug = req.params.user;
+  user.find({where: {'user.slug': slug}}, function(err, user) {
+    if (err || !user) {
+      req.flash('error', 'There was an error getting the user: ' + err);
+      res.redirect('/admin/users');
+    } else {
+      user = user[0];
       res.render('admin/users/edit', {
         title: 'edit user', user: user, token: res.locals.token
       });
@@ -34,16 +36,24 @@ exports.edit = function(req, res) {
 
 exports.update = function(req, res) {
   var user = new User(req.app, null);
-  var id = parseInt(req.params.user);
+  var slug = req.params.user;
   var params = req.body;
-  delete params._csrf;
-  user.update({where: {'user.id': id}, values: params}, function(err, user) {
+  
+  user.validate(params, function(err, resource) {
     if (err) {
-      res.send(err);
-    } else {
-      req.flash('success', 'User Successfully Updated');
-      res.redirect('/admin/users/' + id + '/edit');
+      req.flash('error', 'There was an error editing the user: ' + err);
+      return res.redirect('/admin/users/' + slug + '/edit');
     }
+    user.update({where: {'user.slug': slug}, values: resource},
+        function(err, post) {
+      if (err) {
+        req.flash('error', 'There was an error editing the user: ' + err);
+        return res.redirect('/admin/users/' + slug + '/edit');
+      } else {
+        req.flash('success', 'User Successfully Updated');
+        res.redirect('/admin/users');
+      }
+    });
   });
 };
 

@@ -14,10 +14,10 @@ block body
     if (users.length)
       each user in users
         tr
-          td: a(href='/users/#{user.user_id}/') #{user.user_displayName}
+          td: a(href='/users/#{user.user_slug}/') #{user.user_displayName}
           td= user.user_updated
           td
-            a(href='/admin/users/#{user.user_id}/edit', class='btn')
+            a(href='/admin/users/#{user.user_slug}/edit', class='btn')
               i.icon-edit
             | 
             a(href='/admin/users/#{user.user_id}/delete', data-method='delete',

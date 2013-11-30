@@ -76,7 +76,7 @@ exports.edit = function(req, res) {
 
 
 /**
- * Update the post.
+ * Updates the post.
  * Note: The Slug will NOT be modified here so that bookmarks are persisted.
  * @param {} req
  * @param {} res
