@@ -24,7 +24,7 @@ exports.index = function(req, res) {
   }, {
     name: 'Comments',
     actions: [
-      {title: 'List', path:'index'}
+      {title: 'List', path:'/admin/comments'}
     ]
   }, {
     name: 'Photos',

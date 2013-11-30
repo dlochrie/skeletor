@@ -6,6 +6,7 @@ var dir = ('../app/controllers/')
   , admin = require(dir + 'admin')
   , adminPanel = require(dir + 'admin/panel')
   , adminPosts = require(dir + 'admin/posts')
+  , adminComments = require(dir + 'admin/comments')
   , adminUsers = require(dir + 'admin/users');
 
 module.exports = function(app) {
@@ -41,4 +42,5 @@ module.exports = function(app) {
   app.get('/admin/posts/:post/delete', adminPosts.delete);
   app.resource('admin/users', adminUsers);
   app.get('/admin/users/:user/delete', adminUsers.delete);
+  app.resource('admin/comments', adminComments);
 }

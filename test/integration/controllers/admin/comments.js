@@ -234,5 +234,5 @@ describe('Comments Admin Controller', function() {
   //           });
   //       });
   //   });
-  // });
+  });
 });

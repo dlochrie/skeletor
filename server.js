@@ -50,6 +50,15 @@ app.configure(function(){
   app.use(express.static(path.join(__dirname, 'public')));
 });
 
+// TODO: Put this here????
+app.locals.truncateAndStripTags = function(string, length) {
+  if (string) {
+    return string
+      .replace(/(<([^>]+)>)/ig,"")
+      .substring(0,length);
+  }
+};
+
 /**
  * Setup Routes
  */
