@@ -1,9 +1,3 @@
-/**
- * Reset the database and apply the seeds for the tests.
- */
-require('../db/mysql-install');
-require('../db/mysql-seed');
-
 // Force `test` environment for tests.
 process.env.NODE_ENV = 'test';
 

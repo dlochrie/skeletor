@@ -23,6 +23,6 @@
     "supertest": "0.8.0"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha --require test/setup --recursive test/"
+    "test": "node db/mysql-install && node db/mysql-seed && ./node_modules/.bin/mocha --require test/setup --recursive test/"
   }
 }
