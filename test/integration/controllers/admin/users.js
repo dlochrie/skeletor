@@ -13,7 +13,7 @@ describe('Users Admin Controller', function() {
     beforeEach(function(done) {
       // Refresh payload before each test.
       payload = {
-        id: TEST_USER_ID
+        id: TEST_USER_ID,
         displayName: TEST_USER,
         email: TEST_USER_EMAIL,
         slug: TEST_USER_SLUG
@@ -62,7 +62,7 @@ describe('Users Admin Controller', function() {
         });
     });
 
-    it('should fail to let a user edit an existing post with BAD DATA',
+    it('should fail to let a user edit an existing user with BAD DATA',
         function(done) {
       payload.displayName = 7777;
       payload.email = 123;
@@ -89,7 +89,7 @@ describe('Users Admin Controller', function() {
         });
     });
 
-    it('should fail to let a user edit an existing post with MISSING DATA',
+    it('should fail to let a user edit an existing user with MISSING DATA',
         function(done) {
       payload.displayName = '';
       payload.email = '';
@@ -115,7 +115,7 @@ describe('Users Admin Controller', function() {
         });
     });
 
-    it('should let a user delete an exising post', function(done) {
+    it('should let a user delete an exising user', function(done) {
       request(app)
         .del('/admin/users/' + TEST_USER_ID)
         .expect(302) // redirect
@@ -133,24 +133,24 @@ describe('Users Admin Controller', function() {
         });
     });
 
-    // it('should fail to let a user delete an existing post with BAD DATA',
-    //     function(done) {
-    //   var bad_slug = new Date().getTime().toString();
-    //   request(app)
-    //     .del('/admin/users/' + bad_slug)
-    //     .expect(302) // redirect
-    //     .end(function(err, res) {
-    //       if (err) return done(err);
-    //       request(app)
-    //         .get('/admin/users')
-    //         .expect(200)
-    //         .end(function (err, res) {
-    //           if (err) return done(err);
-    //           res.text.should.not.include('Post Successfully Deleted');
-    //           done();
-    //         });
-    //     });
-    // });
+    it('should fail to let a user delete an existing user with BAD DATA',
+        function(done) {
+      var bad_slug = new Date().getTime().toString();
+      request(app)
+        .del('/admin/users/' + bad_slug)
+        .expect(302) // redirect
+        .end(function(err, res) {
+          if (err) return done(err);
+          request(app)
+            .get('/admin/users')
+            .expect(200)
+            .end(function (err, res) {
+              if (err) return done(err);
+              res.text.should.not.include('User Successfully Deleted');
+              done();
+            });
+        });
+    });
   });
 
   describe('if a user is NOT logged in', function() {
@@ -160,79 +160,79 @@ describe('Users Admin Controller', function() {
       done();
     });
 
-  //   it('should NOT show the index page', function(done) {
-  //     request(app)
-  //       .get('/admin/users')
-  //       .expect(302)
-  //       .end(function(err, res) {
-  //         if (err) return done(err);
-  //         res.text.should.not.include('users administration');
-  //         request(app)
-  //           .get('/')
-  //           .expect(200)
-  //           .end(function (err, res) {
-  //             res.text.should.include('This action is unauthorized.');
-  //             done();
-  //         });
-  //       });
-  //   });
+    it('should NOT show the index page', function(done) {
+      request(app)
+        .get('/admin/users')
+        .expect(302)
+        .end(function(err, res) {
+          if (err) return done(err);
+          res.text.should.not.include('users administration');
+          request(app)
+            .get('/')
+            .expect(200)
+            .end(function (err, res) {
+              res.text.should.include('This action is unauthorized.');
+              done();
+          });
+        });
+    });
 
-  //   it('should NOT let a user create a new post', function(done) {
-  //     request(app)
-  //       .post('/admin/users')
-  //       .send(payload)
-  //       .expect(302) // redirect
-  //       .end(function(err, res) {
-  //         if (err) return done(err);
-  //         request(app)
-  //           .get('/')
-  //           .expect(200)
-  //           .end(function (err, res) {
-  //             res.text.should.include('This action is unauthorized.');
-  //             res.text.should.not.include('Post Successfully Created');
-  //             res.text.should.not.include(TEST_CONTENT);
-  //             done();
-  //         });
-  //       });
-  //   });
+    it('should NOT let a user create a new user', function(done) {
+      request(app)
+        .post('/admin/users')
+        .send(payload)
+        .expect(302) // redirect
+        .end(function(err, res) {
+          if (err) return done(err);
+          request(app)
+            .get('/')
+            .expect(200)
+            .end(function (err, res) {
+              res.text.should.include('This action is unauthorized.');
+              res.text.should.not.include('User Successfully Created');
+              res.text.should.not.include(TEST_USER);
+              done();
+          });
+        });
+    });
 
-  //   it('should NOT let a user edit an exising post', function(done) {
-  //     request(app)
-  //       .put('/admin/users/' + TEST_CONTENT_SLUG)
-  //       .send(payload)
-  //       .expect(302) // redirect
-  //       .end(function(err, res) {
-  //         if (err) return done(err);
-  //         request(app)
-  //           .get('/')
-  //           .expect(200)
-  //           .end(function (err, res) {
-  //             if (err) return done(err);
-  //             res.text.should.include('This action is unauthorized.');
-  //             res.text.should.not.include('Post Successfully Updated');
-  //             res.text.should.not.include(TEST_CONTENT);
-  //             done();
-  //           });
-  //       });
-  //   });
+    it('should NOT let a user edit an exising user', function(done) {
+      request(app)
+        .put('/admin/users/' + TEST_USER_SLUG)
+        .send(payload)
+        .expect(302) // redirect
+        .end(function(err, res) {
+          if (err) return done(err);
+          request(app)
+            .get('/')
+            .expect(200)
+            .end(function (err, res) {
+              if (err) return done(err);
+              res.text.should.include('This action is unauthorized.');
+              res.text.should.not.include('User Successfully Updated');
+              res.text.should.not.include(TEST_USER);
+              done();
+            });
+        });
+    });
 
-  //   it('should NOT let a user delete an exising post', function(done) {
-  //     request(app)
-  //       .del('/admin/users/' + TEST_CONTENT_SLUG)
-  //       .expect(302) // redirect
-  //       .end(function(err, res) {
-  //         if (err) return done(err);
-  //         request(app)
-  //           .get('/')
-  //           .expect(200)
-  //           .end(function (err, res) {
-  //             if (err) return done(err);
-  //             res.text.should.include('This action is unauthorized.');
-  //             res.text.should.not.include('Post Successfully Deleted');
-  //             res.text.should.not.include(TEST_CONTENT);
-  //             done();
-  //           });
-  //       });
-  //   });
+    it('should NOT let a user delete an exising user', function(done) {
+      request(app)
+        .del('/admin/users/' + TEST_USER_SLUG)
+        .expect(302) // redirect
+        .end(function(err, res) {
+          if (err) return done(err);
+          request(app)
+            .get('/')
+            .expect(200)
+            .end(function (err, res) {
+              if (err) return done(err);
+              res.text.should.include('This action is unauthorized.');
+              res.text.should.not.include('User Successfully Deleted');
+              res.text.should.not.include(TEST_USER);
+              done();
+            });
+        });
+    });
   });
 });
