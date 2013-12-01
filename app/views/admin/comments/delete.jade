@@ -7,29 +7,24 @@ append breadcrumbs
   li.active= title
 
 block body
-  h2 Deleting Comment
-    .btn-group.pull-right
-      a.btn(href='/admin') Admin Home
-      a.btn(href='/admin/comments') Comments Administration
-      a.btn(href='/admin') Admin Home
-
   h3.text-warning Are you sure you want to delete this comment?
   form(action='/admin/comments/#{comment.comment_id}',method='post')
-    h2 Showing Comment
     .row: .span8
       table.table.table-striped.table-hover
         tr
           th Body
-          td #{comment.comment_body}
+          td!= comment.comment_body
         tr
           th Post
-          td #{comment.post_id}
+          td 
+            a(href="/posts/#{comment.post_slug}#comment#{comment.comment_id}")
+              = comment.post_title
         tr
           th User
-          td #{comment.user_id}
+          td #{comment.user_displayName}
         tr
-          th Flagged?
-          td #{comment.flagged}
+          th Flagged
+          td= (comment.comment_flagged) ? 'True' : 'False'
 
     input(type='hidden',name='_csrf',value=token)
     input(type='hidden',name='_method',value='delete')

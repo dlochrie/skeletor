@@ -51,11 +51,17 @@ app.configure(function(){
 });
 
 // TODO: Put this here????
-app.locals.truncateAndStripTags = function(string, length) {
+// TODO: Doesn't seem to be putting ellipses on the correct string length.
+app.locals.truncateAndStripTags = function(string, maxLength) {
+  var original = string;
   if (string) {
-    return string
-      .replace(/(<([^>]+)>)/ig,"")
-      .substring(0,length);
+    string = string
+        .replace(/(<([^>]+)>)/ig,"")
+        .substring(0, maxLength);
+    if (original.length >= maxLength) {
+      string += '&hellip;';
+    }
+    return string;
   }
 };
 

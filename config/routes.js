@@ -43,4 +43,5 @@ module.exports = function(app) {
   app.resource('admin/users', adminUsers);
   app.get('/admin/users/:user/delete', adminUsers.delete);
   app.resource('admin/comments', adminComments);
+  app.get('/admin/comments/:comment/delete', adminComments.delete);
 }

@@ -25,8 +25,8 @@ exports.unflag = function(req, res) {
 
 exports.delete = function(req, res) {
   var comment = new Comment(req.app, null),
-    slug = req.params.comment;
-  comment.find({where: {'comment.slug': slug}}, function(err, comment) {
+    id = parseInt(req.params.comment);
+  comment.find({where: {'comment.id': id}}, function(err, comment) {
     if (err || !comment) {
       req.flash('error', 'There was an error deleting the comment: ' + err);
       return res.redirect('/admin/comments');
@@ -43,8 +43,8 @@ exports.delete = function(req, res) {
 
 exports.destroy = function(req, res) {
   var comment = new Comment(req.app, null),
-    slug = req.params.comment;
-  comment.delete({where: {'comment.slug': slug}}, function(err, result) {
+    id = parseInt(req.params.comment);
+  comment.delete({where: {'comment.id': id}}, function(err, result) {
     if (err) {
       req.flash('error', 'There was an error deleting the comment: ' + err);
     } else {

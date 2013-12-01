@@ -1,0 +1,21 @@
+extends ../../layouts/admin
+
+append breadcrumbs
+  li
+    a(href="/admin/users") user administration
+    span.divider /
+  li.active= title
+
+block body
+  form(action='/admin/users/#{user.user_slug}', method='post')
+    include _form
+
+    input(type='hidden',name='_csrf',value=token)
+    input(type='hidden',name='_method',value='put')
+
+    .form-actions
+      .btn-group
+        button.btn.btn-primary
+          i.icon-ok.icon-white
+          |&nbsp;Update User
+        a.btn(href='/admin/users') Cancel

@@ -1,0 +1,6 @@
+.control-group
+  label.control-label(for='displayName') Display Name
+  .controls
+    input.span12(type='text', name='displayName',
+        value=(user.user_displayName) ? user.user_displayName : "",
+        placeholder='Thomas Alva Edison')
