@@ -20,8 +20,8 @@ block body
             a(href='/admin/users/#{user.user_slug}/edit', class='btn')
               i.icon-edit
             | 
-            a(href='/admin/users/#{user.user_id}/delete', data-method='delete',
-                class='btn btn-danger')
+            a(href='/admin/users/#{user.user_slug}/delete',
+                data-method='delete', class='btn btn-danger')
               i.icon-remove.icon-white
     else
       tr: td(colspan=3) No Users Found.

@@ -61,18 +61,19 @@ exports.update = function(req, res) {
 exports.delete = function(req, res) {
   var user = new User(req.app, null),
       id = parseInt(req.params.user);
-  user.find({where: {'user.id': id}}, function(err, user) {
+  user.find({where: {'user.slug': slug}}, function(err, user) {
     user = user[0];
-    if (err) res.send('There was an error getting the user', err);
-    if (user) {
-      getGravatarHash(user.user_email, function(hash) {
-        user.gravatar = '//www.gravatar.com/avatar/' + hash + '?s=200&amp;d=mm';
-        res.render('./users/show', {title: 'Skeletor', user: user});
-      });
+    if (err || !user) {
+      req.flash('error', 'There was an error getting information for this ' +
+          'user: ' + err);
+      return res.redirect('/admin/users');
+    }
+    getGravatarHash(user.user_email, function(hash) {
+      user.gravatar = '//www.gravatar.com/avatar/' + hash + '?s=200&amp;d=mm';
       res.render('admin/users/delete', {
         title: 'delete user', user: user, token: res.locals.token
       });
-    }
+    });
   });
 };
 
