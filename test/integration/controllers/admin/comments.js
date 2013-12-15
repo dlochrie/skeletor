@@ -36,17 +36,17 @@ describe('Comments Admin Controller', function() {
         .get('/admin/comments/' + TEST_COMMENT_ID + '/flag')
         .expect(302) // redirect
         .end(function(err, res) {
-          if (err) return done(err);
-          request(app)
+            if (err) return done(err);
+            request(app)
             .get('/admin/comments')
             .expect(200)
-            .end(function (err, res) {
-              if (err) return done(err);
-              res.text.should.include('Comment Successfully Flagged');
-              res.text.should.include(TEST_USER);
-              done();
-            });
-        });
+            .end(function(err, res) {
+                  if (err) return done(err);
+                  res.text.should.include('Comment Successfully Flagged');
+                  res.text.should.include(TEST_USER);
+                  done();
+                });
+          });
     });
 
     it('should let a user un-flag an flagged comment', function(done) {
@@ -54,17 +54,17 @@ describe('Comments Admin Controller', function() {
         .get('/admin/comments/' + TEST_COMMENT_ID + '/unflag')
         .expect(302) // redirect
         .end(function(err, res) {
-          if (err) return done(err);
-          request(app)
+            if (err) return done(err);
+            request(app)
             .get('/admin/comments')
             .expect(200)
-            .end(function (err, res) {
-              if (err) return done(err);
-              res.text.should.include('Comment Successfully Un-Flagged');
-              res.text.should.include(TEST_USER);
-              done();
-            });
-        });
+            .end(function(err, res) {
+                  if (err) return done(err);
+                  res.text.should.include('Comment Successfully Un-Flagged');
+                  res.text.should.include(TEST_USER);
+                  done();
+                });
+          });
     });
 
     it('should let a user delete an exising comment', function(done) {
@@ -72,17 +72,17 @@ describe('Comments Admin Controller', function() {
         .del('/admin/comments/' + TEST_COMMENT_ID)
         .expect(302) // redirect
         .end(function(err, res) {
-          if (err) return done(err);
-          request(app)
+            if (err) return done(err);
+            request(app)
             .get('/')
             .expect(200)
-            .end(function (err, res) {
-              if (err) return done(err);
-              res.text.should.include('Comment Successfully Deleted');
-              res.text.should.include(TEST_USER);
-              done();
-            });
-        });
+            .end(function(err, res) {
+                  if (err) return done(err);
+                  res.text.should.include('Comment Successfully Deleted');
+                  res.text.should.include(TEST_USER);
+                  done();
+                });
+          });
     });
   });
 
@@ -98,16 +98,16 @@ describe('Comments Admin Controller', function() {
         .get('/admin/comments')
         .expect(302)
         .end(function(err, res) {
-          if (err) return done(err);
-          res.text.should.not.include('comments administration');
-          request(app)
+            if (err) return done(err);
+            res.text.should.not.include('comments administration');
+            request(app)
             .get('/')
             .expect(200)
-            .end(function (err, res) {
-              res.text.should.include('This action is unauthorized.');
-              done();
+            .end(function(err, res) {
+                  res.text.should.include('This action is unauthorized.');
+                  done();
+                });
           });
-        });
     });
 
     it('should NOT let a user flag an un-flagged comment', function(done) {
@@ -115,17 +115,17 @@ describe('Comments Admin Controller', function() {
         .get('/admin/comments/' + TEST_COMMENT_ALT_ID + '/flag')
         .expect(302) // redirect
         .end(function(err, res) {
-          if (err) return done(err);
-          request(app)
+            if (err) return done(err);
+            request(app)
             .get('/')
             .expect(200)
-            .end(function (err, res) {
-              if (err) return done(err);
-              res.text.should.not.include('Comment Successfully Flagged');
-              res.text.should.not.include(TEST_COMMENT_ALT_BODY);
-              done();
-            });
-        });
+            .end(function(err, res) {
+                  if (err) return done(err);
+                  res.text.should.not.include('Comment Successfully Flagged');
+                  res.text.should.not.include(TEST_COMMENT_ALT_BODY);
+                  done();
+                });
+          });
     });
 
     it('should NOT let a user un-flag an flagged comment', function(done) {
@@ -133,17 +133,17 @@ describe('Comments Admin Controller', function() {
         .get('/admin/comments/' + TEST_COMMENT_ALT_ID + '/unflag')
         .expect(302) // redirect
         .end(function(err, res) {
-          if (err) return done(err);
-          request(app)
+            if (err) return done(err);
+            request(app)
             .get('/')
             .expect(200)
-            .end(function (err, res) {
-              if (err) return done(err);
-              res.text.should.not.include('Comment Successfully Un-Flagged');
-              res.text.should.not.include(TEST_COMMENT_ALT_BODY);
-              done();
-            });
-        });
+            .end(function(err, res) {
+                  if (err) return done(err);
+                  res.text.should.not.include('Comment Successfully Un-Flagged');
+                  res.text.should.not.include(TEST_COMMENT_ALT_BODY);
+                  done();
+                });
+          });
     });
 
     it('should NOT let a user delete an exising comment', function(done) {
@@ -151,17 +151,17 @@ describe('Comments Admin Controller', function() {
         .del('/admin/comments/' + TEST_COMMENT_ALT_ID)
         .expect(302) // redirect
         .end(function(err, res) {
-          if (err) return done(err);
-          request(app)
+            if (err) return done(err);
+            request(app)
             .get('/')
             .expect(200)
-            .end(function (err, res) {
-              if (err) return done(err);
-              res.text.should.include('This action is unauthorized.');
-              res.text.should.not.include('Comment Successfully Deleted');
-              done();
-            });
-        });
+            .end(function(err, res) {
+                  if (err) return done(err);
+                  res.text.should.include('This action is unauthorized.');
+                  res.text.should.not.include('Comment Successfully Deleted');
+                  done();
+                });
+          });
     });
   });
 });
