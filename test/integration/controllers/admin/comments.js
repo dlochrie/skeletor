@@ -3,6 +3,9 @@ var request = require('supertest'),
 
 describe('Comments Admin Controller', function() {
   var session;
+  var TEST_COMMENT_ID = 1;
+  var TEST_USER = 'joe tester';
+  var TEST_COMMENT_BODY = 'FIRST TEST COMMENT';
 
   describe('if a user is logged in', function() {
     beforeEach(function(done) {
@@ -26,25 +29,59 @@ describe('Comments Admin Controller', function() {
           });
     });
 
-    // it('should let a user unflag an exising comment', function(done) {
-    //   request(app)
-    //     .put('/admin/comments/' + TEST_USER_SLUG)
-    //     .send(payload)
-    //     .expect(302) // redirect
-    //     .end(function(err, res) {
-    //       if (err) return done(err);
-    //       request(app)
-    //         .get('/admin/comments')
-    //         .expect(200)
-    //         .end(function (err, res) {
-    //           if (err) return done(err);
-    //           res.text.should.include('User Successfully Updated');
-    //           res.text.should.include(payload.displayName);
-    //           res.text.should.not.include(TEST_USER);
-    //           done();
-    //         });
-    //     });
-    // });
+    it('should let a user flag an un-flagged comment', function(done) {
+      request(app)
+        .get('/admin/comments/' + TEST_COMMENT_ID + '/flag')
+        .expect(302) // redirect
+        .end(function(err, res) {
+          if (err) return done(err);
+          request(app)
+            .get('/admin/comments')
+            .expect(200)
+            .end(function (err, res) {
+              if (err) return done(err);
+              res.text.should.include('Comment Successfully Flagged');
+              res.text.should.include(TEST_USER);
+              done();
+            });
+        });
+    });
+
+    it('should let a user un-flag an flagged comment', function(done) {
+      request(app)
+        .get('/admin/comments/' + TEST_COMMENT_ID + '/unflag')
+        .expect(302) // redirect
+        .end(function(err, res) {
+          if (err) return done(err);
+          request(app)
+            .get('/admin/comments')
+            .expect(200)
+            .end(function (err, res) {
+              if (err) return done(err);
+              res.text.should.include('Comment Successfully Un-Flagged');
+              res.text.should.include(TEST_USER);
+              done();
+            });
+        });
+    });
+
+    it('should let a user delete an exising comment', function(done) {
+      request(app)
+        .del('/admin/comments/' + TEST_COMMENT_ID)
+        .expect(302) // redirect
+        .end(function(err, res) {
+          if (err) return done(err);
+          request(app)
+            .get('/')
+            .expect(200)
+            .end(function (err, res) {
+              if (err) return done(err);
+              res.text.should.include('Comment Successfully Deleted');
+              res.text.should.include(TEST_USER);
+              done();
+            });
+        });
+    });
   });
 
   describe('if a user is NOT logged in', function() {

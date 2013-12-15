@@ -3,6 +3,12 @@ var request = require('supertest'),
 
 describe('Comments Controller', function() {
   var session;
+  var COMMENT = {
+    ID: 3, // Assumes that 2 seeds we created first.
+    BODY: 'My First Comment!',
+    POST_ID: 1,
+    USER_ID: 1
+  };
 
   describe('if a user is logged in', function() {
     beforeEach(function(done) {
@@ -31,9 +37,9 @@ describe('Comments Controller', function() {
       request(app)
         .post('/comments')
         .send({
-            body: 'My First Comment!',
-            post_id: 1,
-            user_id: 1
+            body: COMMENT.BODY,
+            post_id: COMMENT.POST_ID,
+            user_id: COMMENT.USER_ID
           })
         .expect(302) // redirect
         .end(function(err, res) {
@@ -44,7 +50,7 @@ describe('Comments Controller', function() {
             .end(function(err, res) {
                   if (err) return done(err);
                   res.text.should.include('Comment Successfully Created');
-                  res.text.should.include('My First Comment');
+                  res.text.should.include(COMMENT.BODY);
                   done();
                 });
           });
@@ -52,13 +58,13 @@ describe('Comments Controller', function() {
 
     it('should show a user the flag form', function(done) {
       request(app)
-        .get('/comments/1/flag')
+        .get('/comments/' + COMMENT.ID + '/flag')
         .expect(200)
         .end(function(err, res) {
             if (err) return done(err);
             res.text.should.include(
                 'Are you sure you want to flag this comment?');
-            res.text.should.include('First Test Comment');
+            res.text.should.include(COMMENT.BODY);
             done();
           });
     });
@@ -66,7 +72,7 @@ describe('Comments Controller', function() {
     it('should let a user flag a comment', function(done) {
       request(app)
         .post('/comments/flag')
-        .send({comment_id: 1})
+        .send({comment_id: COMMENT.ID})
         .expect(302)
         .end(function(err, res) {
             if (err) return done(err);
