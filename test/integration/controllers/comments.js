@@ -3,8 +3,12 @@ var request = require('supertest'),
 
 describe('Comments Controller', function() {
   var session;
+  /**
+   * Assumes that 2 comment seeds were created first.
+   * @enum
+   */
   var COMMENT = {
-    ID: 3, // Assumes that 2 seeds we created first.
+    ID: 3,
     BODY: 'My First Comment!',
     POST_ID: 1,
     USER_ID: 1
