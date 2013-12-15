@@ -1,5 +1,5 @@
 var request = require('supertest'),
-  should = require('should');
+    should = require('should');
 
 describe('Posts Admin Controller', function() {
   var session;
@@ -29,12 +29,12 @@ describe('Posts Admin Controller', function() {
         .get('/admin/posts')
         .expect(200)
         .end(function(err, res) {
-          if (err) return done(err);
-          res.text.should.include('posts administration');
-          res.text.should.include('First Post');
-          res.text.should.include('Second Post');
-          done();
-        });
+            if (err) return done(err);
+            res.text.should.include('posts administration');
+            res.text.should.include('First Post');
+            res.text.should.include('Second Post');
+            done();
+          });
     });
 
     it('should let a user create a new post', function(done) {
@@ -43,70 +43,70 @@ describe('Posts Admin Controller', function() {
         .send(payload)
         .expect(302) // redirect
         .end(function(err, res) {
-          if (err) return done(err);
-          request(app)
+            if (err) return done(err);
+            request(app)
             .get('/admin/posts')
             .expect(200)
-            .end(function (err, res) {
-              if (err) return done(err);
-              res.text.should.include('Post Successfully Created');
-              res.text.should.include(TEST_CONTENT);
-              done();
-            });
-        });
+            .end(function(err, res) {
+                  if (err) return done(err);
+                  res.text.should.include('Post Successfully Created');
+                  res.text.should.include(TEST_CONTENT);
+                  done();
+                });
+          });
     });
 
     it('should fail to let a user create a new post with BAD DATA',
         function(done) {
-      payload.title = 123;
-      payload.body = 123;
-      payload.user_id = 'not a number';
+         payload.title = 123;
+         payload.body = 123;
+         payload.user_id = 'not a number';
 
-      request(app)
+         request(app)
         .post('/admin/posts')
         .send(payload)
         .expect(302) // redirect
         .end(function(err, res) {
-          if (err) return done(err);
-          request(app)
+           if (err) return done(err);
+           request(app)
             .get('/admin/posts')
             .expect(200)
-            .end(function (err, res) {
-              if (err) return done(err);
-              res.text.should.include(
-                  'There was an error creating the post: Did not pass ' +
-                  'validations.');
-              res.text.should.not.include('Post Successfully Created');
-              done();
-            });
-        });
-    });
+            .end(function(err, res) {
+             if (err) return done(err);
+             res.text.should.include(
+             'There was an error creating the post: Did not pass ' +
+             'validations.');
+             res.text.should.not.include('Post Successfully Created');
+             done();
+           });
+         });
+       });
 
     it('should fail to let a user create a new post with MISSING DATA',
         function(done) {
-      payload.title = null;
-      payload.body = null;
-      payload.user_id = null;
+         payload.title = null;
+         payload.body = null;
+         payload.user_id = null;
 
-      request(app)
+         request(app)
         .post('/admin/posts')
         .send(payload)
         .expect(302) // redirect
         .end(function(err, res) {
-          if (err) return done(err);
-          request(app)
+           if (err) return done(err);
+           request(app)
             .get('/admin/posts')
             .expect(200)
-            .end(function (err, res) {
-              if (err) return done(err);
-              res.text.should.include(
-                  'There was an error creating the post: Did not pass ' +
-                  'validations.');
-              res.text.should.not.include('Post Successfully Created');
-              done();
-            });
-        });
-    });
+            .end(function(err, res) {
+             if (err) return done(err);
+             res.text.should.include(
+             'There was an error creating the post: Did not pass ' +
+             'validations.');
+             res.text.should.not.include('Post Successfully Created');
+             done();
+           });
+         });
+       });
 
     it('should let a user edit an exising post', function(done) {
       payload.title = 'Updated Title';
@@ -118,83 +118,83 @@ describe('Posts Admin Controller', function() {
         .send(payload)
         .expect(302) // redirect
         .end(function(err, res) {
-          if (err) return done(err);
-          request(app)
+            if (err) return done(err);
+            request(app)
             .get('/admin/posts')
             .expect(200)
-            .end(function (err, res) {
-              if (err) return done(err);
-              res.text.should.include('Post Successfully Updated');
-              res.text.should.include(payload.title);
-              res.text.should.not.include(TEST_CONTENT);
-              done();
-            });
-        });
+            .end(function(err, res) {
+                  if (err) return done(err);
+                  res.text.should.include('Post Successfully Updated');
+                  res.text.should.include(payload.title);
+                  res.text.should.not.include(TEST_CONTENT);
+                  done();
+                });
+          });
     });
 
     it('should fail to let a user edit an existing post with BAD DATA',
         function(done) {
-      payload.title = 123;
-      payload.body = 123;
-      payload.user_id = 'string';
+         payload.title = 123;
+         payload.body = 123;
+         payload.user_id = 'string';
 
-      request(app)
+         request(app)
         .put('/admin/posts/' + TEST_CONTENT_SLUG)
         .send(payload)
         .expect(302) // redirect
         .end(function(err, res) {
-          if (err) return done(err);
-          request(app)
+           if (err) return done(err);
+           request(app)
             .get('/admin/posts')
             .expect(200)
-            .end(function (err, res) {
-              if (err) return done(err);
-              res.text.should.include(
-                  'There was an error editing the post: Did not pass ' +
-                  'validations.');
-              res.text.should.not.include('Post Successfully Updated');
-              res.text.should.not.include(payload.title);
-              done();
-            });
-        });
-    });
+            .end(function(err, res) {
+             if (err) return done(err);
+             res.text.should.include(
+             'There was an error editing the post: Did not pass ' +
+             'validations.');
+             res.text.should.not.include('Post Successfully Updated');
+             res.text.should.not.include(payload.title);
+             done();
+           });
+         });
+       });
 
     it('should let a user delete an exising post', function(done) {
       request(app)
         .del('/admin/posts/' + TEST_CONTENT_SLUG)
         .expect(302) // redirect
         .end(function(err, res) {
-          if (err) return done(err);
-          request(app)
+            if (err) return done(err);
+            request(app)
             .get('/admin/posts')
             .expect(200)
-            .end(function (err, res) {
-              if (err) return done(err);
-              res.text.should.include('Post Successfully Deleted');
-              res.text.should.not.include(TEST_CONTENT);
-              done();
-            });
-        });
+            .end(function(err, res) {
+                  if (err) return done(err);
+                  res.text.should.include('Post Successfully Deleted');
+                  res.text.should.not.include(TEST_CONTENT);
+                  done();
+                });
+          });
     });
 
     it('should fail to let a user delete an existing post with BAD DATA',
         function(done) {
-      var bad_slug = new Date().getTime().toString();
-      request(app)
+         var bad_slug = new Date().getTime().toString();
+         request(app)
         .del('/admin/posts/' + bad_slug)
         .expect(302) // redirect
         .end(function(err, res) {
-          if (err) return done(err);
-          request(app)
+           if (err) return done(err);
+           request(app)
             .get('/admin/posts')
             .expect(200)
-            .end(function (err, res) {
-              if (err) return done(err);
-              res.text.should.not.include('Post Successfully Deleted');
-              done();
-            });
-        });
-    });
+            .end(function(err, res) {
+             if (err) return done(err);
+             res.text.should.not.include('Post Successfully Deleted');
+             done();
+           });
+         });
+       });
   });
 
   describe('if a user is NOT logged in', function() {
@@ -209,16 +209,16 @@ describe('Posts Admin Controller', function() {
         .get('/admin/posts')
         .expect(302)
         .end(function(err, res) {
-          if (err) return done(err);
-          res.text.should.not.include('posts administration');
-          request(app)
+            if (err) return done(err);
+            res.text.should.not.include('posts administration');
+            request(app)
             .get('/')
             .expect(200)
-            .end(function (err, res) {
-              res.text.should.include('This action is unauthorized.');
-              done();
+            .end(function(err, res) {
+                  res.text.should.include('This action is unauthorized.');
+                  done();
+                });
           });
-        });
     });
 
     it('should NOT let a user create a new post', function(done) {
@@ -227,17 +227,17 @@ describe('Posts Admin Controller', function() {
         .send(payload)
         .expect(302) // redirect
         .end(function(err, res) {
-          if (err) return done(err);
-          request(app)
+            if (err) return done(err);
+            request(app)
             .get('/')
             .expect(200)
-            .end(function (err, res) {
-              res.text.should.include('This action is unauthorized.');
-              res.text.should.not.include('Post Successfully Created');
-              res.text.should.not.include(TEST_CONTENT);
-              done();
+            .end(function(err, res) {
+                  res.text.should.include('This action is unauthorized.');
+                  res.text.should.not.include('Post Successfully Created');
+                  res.text.should.not.include(TEST_CONTENT);
+                  done();
+                });
           });
-        });
     });
 
     it('should NOT let a user edit an exising post', function(done) {
@@ -246,18 +246,18 @@ describe('Posts Admin Controller', function() {
         .send(payload)
         .expect(302) // redirect
         .end(function(err, res) {
-          if (err) return done(err);
-          request(app)
+            if (err) return done(err);
+            request(app)
             .get('/')
             .expect(200)
-            .end(function (err, res) {
-              if (err) return done(err);
-              res.text.should.include('This action is unauthorized.');
-              res.text.should.not.include('Post Successfully Updated');
-              res.text.should.not.include(TEST_CONTENT);
-              done();
-            });
-        });
+            .end(function(err, res) {
+                  if (err) return done(err);
+                  res.text.should.include('This action is unauthorized.');
+                  res.text.should.not.include('Post Successfully Updated');
+                  res.text.should.not.include(TEST_CONTENT);
+                  done();
+                });
+          });
     });
 
     it('should NOT let a user delete an exising post', function(done) {
@@ -265,18 +265,18 @@ describe('Posts Admin Controller', function() {
         .del('/admin/posts/' + TEST_CONTENT_SLUG)
         .expect(302) // redirect
         .end(function(err, res) {
-          if (err) return done(err);
-          request(app)
+            if (err) return done(err);
+            request(app)
             .get('/')
             .expect(200)
-            .end(function (err, res) {
-              if (err) return done(err);
-              res.text.should.include('This action is unauthorized.');
-              res.text.should.not.include('Post Successfully Deleted');
-              res.text.should.not.include(TEST_CONTENT);
-              done();
-            });
-        });
+            .end(function(err, res) {
+                  if (err) return done(err);
+                  res.text.should.include('This action is unauthorized.');
+                  res.text.should.not.include('Post Successfully Deleted');
+                  res.text.should.not.include(TEST_CONTENT);
+                  done();
+                });
+          });
     });
   });
 });

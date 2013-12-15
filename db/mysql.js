@@ -4,6 +4,7 @@
  *     connection-to-routes-with-express-js#answer-16800702
  */
 
+
 /**
  * Load the Database and Model configuration into memory for quick access.
  * Since the callback is typically the listener for the server, any error
@@ -14,10 +15,10 @@
  */
 module.exports = function(app, cb) {
   var mysql = require('mysql'),
-    utils = require('../util/db-tools'),
-    env = process.env,
-    mode = String(env.NODE_ENV || 'dev').toUpperCase(),
-    database = env[mode + '_' + 'MYSQL_DB'];
+      utils = require('../util/db-tools'),
+      env = process.env,
+      mode = String(env.NODE_ENV || 'dev').toUpperCase(),
+      database = env[mode + '_' + 'MYSQL_DB'];
 
   /**
    * Set the DB Credentials in your environmental variables:
@@ -75,7 +76,7 @@ module.exports = function(app, cb) {
         if (!err) {
           cacheModelQueries(done);
         } else {
-          throw('Could not successfully load models. Aborting.');
+          throw ('Could not successfully load models. Aborting.');
         }
       });
     });
@@ -88,7 +89,7 @@ module.exports = function(app, cb) {
    */
   function logToConsole(msg) {
     var fontColor = '\033[36m',
-      resetColor = '\033[0m';
+        resetColor = '\033[0m';
     msg = (msg) ? fontColor + msg + resetColor : '';
     console.log(msg);
   }
@@ -135,23 +136,23 @@ module.exports = function(app, cb) {
    */
   function cacheModelDefinitions(done) {
     var db = app.settings.db,
-      dir = './db/definitions/';
+        dir = './db/definitions/';
     logToConsole('Begin Loading Definitions...');
     require('fs').readdir(dir, function(err, files) {
       if (err) {
-        throw('There was an error reading in Model Definitions');
+        throw ('There was an error reading in Model Definitions');
         return done(true);
       }
       function loadModel(file) {
         if (file) {
-          var name = file.replace(/\.[^/.]+$/, "");
+          var name = file.replace(/\.[^/.]+$/, '');
           var data;
           try {
             data = require(__dirname + '/definitions/' + file);
             logToConsole('-- Loaded ' + file);
-          } catch(e) {
+          } catch (e) {
             var msg = 'There was an error Loading: ' + file + ', ' + e;
-            throw(msg);
+            throw (msg);
           }
           db.models[name] = {definition: data};
           return loadModel(files.shift());
@@ -176,7 +177,7 @@ module.exports = function(app, cb) {
       logToConsole('Checking Database Connection Pool');
       if (err) {
         var msg = 'There was an error connecting to the database: ' + err;
-        throw(msg);
+        throw (msg);
       } else {
         return done(connection);
       }

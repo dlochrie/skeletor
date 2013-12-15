@@ -1,5 +1,5 @@
 var request = require('supertest'),
-  should = require('should');
+    should = require('should');
 
 describe('Authentication', function() {
   var session;
@@ -14,36 +14,36 @@ describe('Authentication', function() {
 
   it('should display user\'s name and logout link if user is logged in',
       function(done) {
-    request(app)
+       request(app)
       .get('/')
       .expect(200)
-      .end(function (err, res) {
-        if (err) return done(err);
-        res.text.should.include('Testing Tester');
-        res.text.should.include('logout');
-        res.text.should.not.include('login');
-        done();
-    });
-  });
+      .end(function(err, res) {
+         if (err) return done(err);
+         res.text.should.include('Testing Tester');
+         res.text.should.include('logout');
+         res.text.should.not.include('login');
+         done();
+       });
+     });
 
   it('should log the user out', function(done) {
     request(app)
       .get('/logout')
-      .end(function (err, res) {
-        if (err) return done(err);
-        // Follow redirect
-        request(app)
+      .end(function(err, res) {
+          if (err) return done(err);
+          // Follow redirect
+          request(app)
           .get('/')
-          .end(function (err, res) {
-            if (err) return done(err);
-            res.text.should.not.include('Testing Tester');
-            res.text.should.not.include('logout');
-            res.text.should.include('login');
-            session.logged_in.should.be.false;
-            session.passport.should.be.null;
-            done();
-          });
-      });
+          .end(function(err, res) {
+                if (err) return done(err);
+                res.text.should.not.include('Testing Tester');
+                res.text.should.not.include('logout');
+                res.text.should.include('login');
+                session.logged_in.should.be.false;
+                session.passport.should.be.null;
+                done();
+              });
+        });
   });
 
   // TODO: Move this to an ACL Test
@@ -52,34 +52,34 @@ describe('Authentication', function() {
       .get('/admin')
       .expect(200)
       .end(function(err, res) {
-        if (err) return done(err);
-        res.text.should.include('Administration Portals');
-        done();
-    });
+          if (err) return done(err);
+          res.text.should.include('Administration Portals');
+          done();
+        });
   });
 
   // TODO: Move this to an ACL Test
   it('should not let someone access an admin page if not logged in',
-  function(done) {
-    request(app)
+     function(done) {
+       request(app)
       .get('/logout')
       .end(function(err, res) {
-        if (err) return done(err);
-        request(app)
+         if (err) return done(err);
+         request(app)
           .get('/admin')
           .end(function(err, res) {
-            if (err) return done(err);
-            session.logged_in.should.be.false;
-            res.text.should.not.include('Administration Portals');
-            res.text.should.not.include('Testing Tester');
-            // Validate that an error message was flashed.
-            request(app)
+           if (err) return done(err);
+           session.logged_in.should.be.false;
+           res.text.should.not.include('Administration Portals');
+           res.text.should.not.include('Testing Tester');
+           // Validate that an error message was flashed.
+           request(app)
               .get('/')
               .end(function(err, res) {
-                res.text.should.include('You should be logged in...');
-                done();
-              })
-          });
-      });
-  });
+             res.text.should.include('You should be logged in...');
+             done();
+           });
+         });
+       });
+     });
 });

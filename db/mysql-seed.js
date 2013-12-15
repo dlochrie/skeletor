@@ -14,6 +14,7 @@ if (!database || !config.host || !config.user || !config.password) {
   console.log('Could not access database environmental variables.');
 }
 
+
 /**
  * Inititialize Client
  */

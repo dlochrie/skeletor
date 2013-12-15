@@ -1,6 +1,6 @@
 var mysql = require('mysql'),
-  orange = '\033[33m',
-  reset = '\033[0m';
+    orange = '\033[33m',
+    reset = '\033[0m';
 
 
 /**
@@ -12,14 +12,14 @@ var mysql = require('mysql'),
  */
 exports.prepareSelect = function(struct, params) {
   var primary = mysql.escapeId(struct.primary),
-    params = (params) ? params : {};
+      params = (params) ? params : {};
 
   var select = [];
   for (table in struct.columns) {
     var table_ = mysql.escapeId(table);
     struct.columns[table].forEach(function(field) {
       var field_ = mysql.escapeId(field);
-      select.push(table_ + '.' + field_)
+      select.push(table_ + '.' + field_);
     });
   }
 
@@ -76,7 +76,7 @@ exports.prepareSelect = function(struct, params) {
  */
 exports.prepareInsert = function(struct, params) {
   var primary = mysql.escapeId(struct.primary),
-    params = (params) ? params : {};
+      params = (params) ? params : {};
 
   var query = 'INSERT INTO ' + primary + ' SET ?';
   if (params.limit) query += ' LIMIT ' + parseInt(params.limit);
@@ -93,7 +93,7 @@ exports.prepareInsert = function(struct, params) {
  */
 exports.prepareUpdate = function(struct, params) {
   var primary = mysql.escapeId(struct.primary),
-    params = (params) ? params : {};
+      params = (params) ? params : {};
 
   var query = 'UPDATE ' + primary + ' SET ? WHERE ?';
   if (params.limit) query += ' LIMIT ' + parseInt(params.limit);
@@ -110,7 +110,7 @@ exports.prepareUpdate = function(struct, params) {
  */
 exports.prepareDelete = function(struct, params) {
   var primary = mysql.escapeId(struct.primary),
-    params = (params) ? params : {};
+      params = (params) ? params : {};
 
   var query = 'DELETE FROM ' + primary + ' WHERE ?';
   var limit = parseInt(params.limit) || null;

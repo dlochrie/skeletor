@@ -1,5 +1,5 @@
 var request = require('supertest'),
-  should = require('should');
+    should = require('should');
 
 describe('Posts Controller', function() {
   it('should show the posts index', function(done) {

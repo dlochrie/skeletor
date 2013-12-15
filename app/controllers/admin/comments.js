@@ -1,6 +1,6 @@
 var Comment = require('../../models/comment'),
-  markdown = require('../../../util/markdown'),
-  string = require('../../../util/string');
+    markdown = require('../../../util/markdown'),
+    string = require('../../../util/string');
 
 
 exports.index = function(req, res) {
@@ -20,8 +20,8 @@ exports.index = function(req, res) {
 
 exports.flag = function(req, res) {
   var comment = new Comment(req.app, null),
-    id = parseInt(req.params.comment);
-  comment.update({where: {'comment.id': id}, values: {flagged: true}}, 
+      id = parseInt(req.params.comment);
+  comment.update({where: {'comment.id': id}, values: {flagged: true}},
       function(err, result) {
         if (err) {
           req.flash('error', 'There was an error flagging the comment: ' + err);
@@ -35,8 +35,8 @@ exports.flag = function(req, res) {
 
 exports.unflag = function(req, res) {
   var comment = new Comment(req.app, null),
-    id = parseInt(req.params.comment);
-  comment.update({where: {'comment.id': id}, values: {flagged: false}}, 
+      id = parseInt(req.params.comment);
+  comment.update({where: {'comment.id': id}, values: {flagged: false}},
       function(err, result) {
         if (err) {
           req.flash('error', 'There was an error un-flagging the comment: ' +
@@ -51,7 +51,7 @@ exports.unflag = function(req, res) {
 
 exports.delete = function(req, res) {
   var comment = new Comment(req.app, null),
-    id = parseInt(req.params.comment);
+      id = parseInt(req.params.comment);
   comment.find({where: {'comment.id': id}}, function(err, comment) {
     if (err || !comment) {
       req.flash('error', 'There was an error deleting the comment: ' + err);
@@ -69,7 +69,7 @@ exports.delete = function(req, res) {
 
 exports.destroy = function(req, res) {
   var comment = new Comment(req.app, null),
-    id = parseInt(req.params.comment);
+      id = parseInt(req.params.comment);
   comment.delete({where: {'comment.id': id}}, function(err, result) {
     if (err) {
       req.flash('error', 'There was an error deleting the comment: ' + err);

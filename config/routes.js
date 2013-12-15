@@ -46,4 +46,4 @@ module.exports = function(app) {
   app.get('/admin/comments/:comment/delete', adminComments.delete);
   app.get('/admin/comments/:comment/flag', adminComments.flag);
   app.get('/admin/comments/:comment/unflag', adminComments.unflag);
-}
+};

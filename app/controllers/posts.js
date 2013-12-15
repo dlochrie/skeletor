@@ -1,5 +1,5 @@
 var Post = require('../models/post'),
-  Comment = require('../models/comment');
+    Comment = require('../models/comment');
 
 exports.index = function(req, res) {
   var post = new Post(req.app, null);

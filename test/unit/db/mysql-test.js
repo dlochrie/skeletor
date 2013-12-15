@@ -1,5 +1,5 @@
 var should = require('should'),
-  express = require('express');
+    express = require('express');
 
 describe('MySQL Initialization', function() {
   beforeEach(function(done) {

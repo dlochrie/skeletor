@@ -1,5 +1,5 @@
 var request = require('supertest'),
-  should = require('should');
+    should = require('should');
 
 describe('Users Admin Controller', function() {
   var session;
@@ -31,12 +31,12 @@ describe('Users Admin Controller', function() {
         .get('/admin/users')
         .expect(200)
         .end(function(err, res) {
-          if (err) return done(err);
-          res.text.should.include('users administration');
-          res.text.should.include('joe tester');
-          res.text.should.include('johnny edit');
-          done();
-        });
+            if (err) return done(err);
+            res.text.should.include('users administration');
+            res.text.should.include('joe tester');
+            res.text.should.include('johnny edit');
+            done();
+          });
     });
 
     it('should let a user edit an exising user', function(done) {
@@ -48,109 +48,109 @@ describe('Users Admin Controller', function() {
         .send(payload)
         .expect(302) // redirect
         .end(function(err, res) {
-          if (err) return done(err);
-          request(app)
+            if (err) return done(err);
+            request(app)
             .get('/admin/users')
             .expect(200)
-            .end(function (err, res) {
-              if (err) return done(err);
-              res.text.should.include('User Successfully Updated');
-              res.text.should.include(payload.displayName);
-              res.text.should.not.include(TEST_USER);
-              done();
-            });
-        });
+            .end(function(err, res) {
+                  if (err) return done(err);
+                  res.text.should.include('User Successfully Updated');
+                  res.text.should.include(payload.displayName);
+                  res.text.should.not.include(TEST_USER);
+                  done();
+                });
+          });
     });
 
     it('should fail to let a user edit an existing user with BAD DATA',
         function(done) {
-      payload.displayName = 7777;
-      payload.email = 123;
+         payload.displayName = 7777;
+         payload.email = 123;
 
-      request(app)
+         request(app)
         .put('/admin/users/' + TEST_USER_SLUG)
         .send(payload)
         .expect(302) // redirect
         .end(function(err, res) {
-          if (err) return done(err);
-          request(app)
+           if (err) return done(err);
+           request(app)
             .get('/admin/users')
             .expect(200)
-            .end(function (err, res) {
-              if (err) return done(err);
-              res.text.should.not.include(TEST_USER);
-              res.text.should.include(
-                  'There was an error editing the user: Did not pass ' +
-                  'validations.');
-              res.text.should.not.include('User Successfully Updated');
-              res.text.should.not.include(payload.displayName);
-              done();
-            });
-        });
-    });
+            .end(function(err, res) {
+             if (err) return done(err);
+             res.text.should.not.include(TEST_USER);
+             res.text.should.include(
+             'There was an error editing the user: Did not pass ' +
+             'validations.');
+             res.text.should.not.include('User Successfully Updated');
+             res.text.should.not.include(payload.displayName);
+             done();
+           });
+         });
+       });
 
     it('should fail to let a user edit an existing user with MISSING DATA',
         function(done) {
-      payload.displayName = '';
-      payload.email = '';
+         payload.displayName = '';
+         payload.email = '';
 
-      request(app)
+         request(app)
         .put('/admin/users/' + TEST_USER_SLUG)
         .send(payload)
         .expect(302) // redirect
         .end(function(err, res) {
-          if (err) return done(err);
-          request(app)
+           if (err) return done(err);
+           request(app)
             .get('/admin/users')
             .expect(200)
-            .end(function (err, res) {
-              if (err) return done(err);
-              res.text.should.not.include(TEST_USER);
-              res.text.should.include(
-                  'There was an error editing the user: Did not pass ' +
-                  'validations.');
-              res.text.should.not.include('User Successfully Updated');
-              done();
-            });
-        });
-    });
+            .end(function(err, res) {
+             if (err) return done(err);
+             res.text.should.not.include(TEST_USER);
+             res.text.should.include(
+             'There was an error editing the user: Did not pass ' +
+             'validations.');
+             res.text.should.not.include('User Successfully Updated');
+             done();
+           });
+         });
+       });
 
     it('should let a user delete an exising user', function(done) {
       request(app)
         .del('/admin/users/' + TEST_USER_ID)
         .expect(302) // redirect
         .end(function(err, res) {
-          if (err) return done(err);
-          request(app)
+            if (err) return done(err);
+            request(app)
             .get('/admin/users')
             .expect(200)
-            .end(function (err, res) {
-              if (err) return done(err);
-              res.text.should.include('User Successfully Deleted');
-              res.text.should.not.include(TEST_USER);
-              done();
-            });
-        });
+            .end(function(err, res) {
+                  if (err) return done(err);
+                  res.text.should.include('User Successfully Deleted');
+                  res.text.should.not.include(TEST_USER);
+                  done();
+                });
+          });
     });
 
     it('should fail to let a user delete an existing user with BAD DATA',
         function(done) {
-      var bad_slug = new Date().getTime().toString();
-      request(app)
+         var bad_slug = new Date().getTime().toString();
+         request(app)
         .del('/admin/users/' + bad_slug)
         .expect(302) // redirect
         .end(function(err, res) {
-          if (err) return done(err);
-          request(app)
+           if (err) return done(err);
+           request(app)
             .get('/admin/users')
             .expect(200)
-            .end(function (err, res) {
-              if (err) return done(err);
-              res.text.should.not.include('User Successfully Deleted');
-              done();
-            });
-        });
-    });
+            .end(function(err, res) {
+             if (err) return done(err);
+             res.text.should.not.include('User Successfully Deleted');
+             done();
+           });
+         });
+       });
   });
 
   describe('if a user is NOT logged in', function() {
@@ -165,16 +165,16 @@ describe('Users Admin Controller', function() {
         .get('/admin/users')
         .expect(302)
         .end(function(err, res) {
-          if (err) return done(err);
-          res.text.should.not.include('users administration');
-          request(app)
+            if (err) return done(err);
+            res.text.should.not.include('users administration');
+            request(app)
             .get('/')
             .expect(200)
-            .end(function (err, res) {
-              res.text.should.include('This action is unauthorized.');
-              done();
+            .end(function(err, res) {
+                  res.text.should.include('This action is unauthorized.');
+                  done();
+                });
           });
-        });
     });
 
     it('should NOT let a user create a new user', function(done) {
@@ -183,17 +183,17 @@ describe('Users Admin Controller', function() {
         .send(payload)
         .expect(302) // redirect
         .end(function(err, res) {
-          if (err) return done(err);
-          request(app)
+            if (err) return done(err);
+            request(app)
             .get('/')
             .expect(200)
-            .end(function (err, res) {
-              res.text.should.include('This action is unauthorized.');
-              res.text.should.not.include('User Successfully Created');
-              res.text.should.not.include(TEST_USER);
-              done();
+            .end(function(err, res) {
+                  res.text.should.include('This action is unauthorized.');
+                  res.text.should.not.include('User Successfully Created');
+                  res.text.should.not.include(TEST_USER);
+                  done();
+                });
           });
-        });
     });
 
     it('should NOT let a user edit an exising user', function(done) {
@@ -202,18 +202,18 @@ describe('Users Admin Controller', function() {
         .send(payload)
         .expect(302) // redirect
         .end(function(err, res) {
-          if (err) return done(err);
-          request(app)
+            if (err) return done(err);
+            request(app)
             .get('/')
             .expect(200)
-            .end(function (err, res) {
-              if (err) return done(err);
-              res.text.should.include('This action is unauthorized.');
-              res.text.should.not.include('User Successfully Updated');
-              res.text.should.not.include(TEST_USER);
-              done();
-            });
-        });
+            .end(function(err, res) {
+                  if (err) return done(err);
+                  res.text.should.include('This action is unauthorized.');
+                  res.text.should.not.include('User Successfully Updated');
+                  res.text.should.not.include(TEST_USER);
+                  done();
+                });
+          });
     });
 
     it('should NOT let a user delete an exising user', function(done) {
@@ -221,18 +221,18 @@ describe('Users Admin Controller', function() {
         .del('/admin/users/' + TEST_USER_SLUG)
         .expect(302) // redirect
         .end(function(err, res) {
-          if (err) return done(err);
-          request(app)
+            if (err) return done(err);
+            request(app)
             .get('/')
             .expect(200)
-            .end(function (err, res) {
-              if (err) return done(err);
-              res.text.should.include('This action is unauthorized.');
-              res.text.should.not.include('User Successfully Deleted');
-              res.text.should.not.include(TEST_USER);
-              done();
-            });
-        });
+            .end(function(err, res) {
+                  if (err) return done(err);
+                  res.text.should.include('This action is unauthorized.');
+                  res.text.should.not.include('User Successfully Deleted');
+                  res.text.should.not.include(TEST_USER);
+                  done();
+                });
+          });
     });
   });
 });

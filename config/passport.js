@@ -1,9 +1,9 @@
 module.exports = function(app) {
   var passport = require('passport'),
-    GoogleStrategy = require('passport-google').Strategy,
-    User = require('../app/models/user'),
-    string = require('../util/string'),
-    url = 'http://' + app.get('host') + ':' + app.get('port');
+      GoogleStrategy = require('passport-google').Strategy,
+      User = require('../app/models/user'),
+      string = require('../util/string'),
+      url = 'http://' + app.get('host') + ':' + app.get('port');
 
   // Passport session setup.
   //   To support persistent login sessions, Passport needs to be able to
@@ -26,28 +26,28 @@ module.exports = function(app) {
    * Use the Google OpenId Strategy within Passport.
    */
   passport.use(new GoogleStrategy({
-      returnURL:  url + '/auth/google/return',
-      realm: url + '/'
-    },
-    function(identifier, profile, done) {
-      var resource = {
-        displayName: profile.displayName,
-        google_id: identifier,
-        email: profile.emails[0].value
+    returnURL: url + '/auth/google/return',
+    realm: url + '/'
+  },
+  function(identifier, profile, done) {
+    var resource = {
+      displayName: profile.displayName,
+      google_id: identifier,
+      email: profile.emails[0].value
+    };
+    var model = new User(app, null);
+    model.find({where: {email: resource.email}}, function(err, user) {
+      user = (user.length) ? user[0] : null;
+      if (user) return done(null, user);
+      if (err || !user) {
+        resource.slug = string.convertToSlug(resource.displayName);
+        model.create({values: resource}, function(err, user) {
+          if (user) return done(null, user[0]);
+          return done(err, null);
+        });
       }
-      var model = new User(app, null);
-      model.find({where: {email: resource.email}}, function(err, user) {
-        user = (user.length) ? user[0] : null;
-        if (user) return done(null, user);
-        if (err || !user) {
-          resource.slug = string.convertToSlug(resource.displayName);
-          model.create({values: resource}, function(err, user) {
-            if (user) return done(null, user[0]);
-            return done(err, null);
-          });
-        }
-      });
-    }
+    });
+  }
   ));
 
 
@@ -62,13 +62,13 @@ module.exports = function(app) {
    */
   app.get('/auth/google/return', passport.authenticate('google',
       {failureRedirect: '/login'}),
-    function(req, res) {
-      var session = req.session;
-      if (session.passport.user) {
-        session.logged_in = true;
-      }
-      res.redirect('/');
-    });
+      function(req, res) {
+        var session = req.session;
+        if (session.passport.user) {
+          session.logged_in = true;
+        }
+        res.redirect('/');
+      });
 
 
   /**

@@ -1,6 +1,6 @@
 var User = require('../../models/user'),
-  crypto = require('crypto'),
-  string = require('../../../util/string');;
+    crypto = require('crypto'),
+    string = require('../../../util/string');
 
 
 exports.index = function(req, res) {
@@ -38,7 +38,7 @@ exports.update = function(req, res) {
   var user = new User(req.app, null);
   var slug = req.params.user;
   var params = req.body;
-  
+
   user.validate(params, function(err, resource) {
     if (err) {
       req.flash('error', 'There was an error editing the user: ' + err);
@@ -46,21 +46,21 @@ exports.update = function(req, res) {
     }
     user.update({where: {'user.slug': slug}, values: resource},
         function(err, post) {
-      if (err) {
-        req.flash('error', 'There was an error editing the user: ' + err);
-        return res.redirect('/admin/users/' + slug + '/edit');
-      } else {
-        req.flash('success', 'User Successfully Updated');
-        res.redirect('/admin/users');
-      }
-    });
+          if (err) {
+            req.flash('error', 'There was an error editing the user: ' + err);
+            return res.redirect('/admin/users/' + slug + '/edit');
+          } else {
+            req.flash('success', 'User Successfully Updated');
+            res.redirect('/admin/users');
+          }
+        });
   });
 };
 
 
 exports.delete = function(req, res) {
   var user = new User(req.app, null),
-    id = parseInt(req.params.user);
+      id = parseInt(req.params.user);
   user.find({where: {'user.id': id}}, function(err, user) {
     user = user[0];
     if (err) res.send('There was an error getting the user', err);
@@ -79,7 +79,7 @@ exports.delete = function(req, res) {
 
 exports.destroy = function(req, res) {
   var user = new User(req.app, null),
-    id = parseInt(req.params.user);
+      id = parseInt(req.params.user);
   user.delete({where: {'user.id': id}}, function(err, result) {
     if (err) {
       req.flash('error', 'There was an error deleting the user.');
@@ -94,6 +94,7 @@ exports.destroy = function(req, res) {
 
 // TODO: Gravatar Method should be put somewhere shared...
 
+
 /**
  * Generate a MD5 hash for retrieving a Gravatar Image.
  * According to: https://en.gravatar.com/site/implement/hash/
@@ -107,5 +108,5 @@ exports.destroy = function(req, res) {
  */
 function getGravatarHash(email, done) {
   email = email.trim().toLowerCase();
-  done(crypto.createHash('md5').update(email).digest("hex"));
+  done(crypto.createHash('md5').update(email).digest('hex'));
 }

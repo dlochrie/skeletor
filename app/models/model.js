@@ -159,7 +159,7 @@ Model.prototype.select = function(type, params, cb) {
 Model.prototype.upsert = function(type, params, cb) {
   var sql = this.queries[type] || null;
   var self = this,
-    where = {};
+      where = {};
 
   params = (params) ? params : {};
   params.where = params.where || null;
@@ -199,7 +199,7 @@ Model.prototype.upsert = function(type, params, cb) {
  */
 Model.prototype.performQuery = function(sql, params, cb) {
   var self = this,
-    params = params || {};
+      params = params || {};
   this.dbOpen(function(err, dbc) {
     if (err) return cb(err, null);
     var values = [];
@@ -248,7 +248,7 @@ Model.prototype.dbOpen = function(cb) {
 Model.prototype.dbClose = function(dbc) {
   if (dbc) {
     try { dbc.end(); }
-    catch(e) { console.log('Could not close DB Connection.'); }
+    catch (e) { console.log('Could not close DB Connection.'); }
   }
 };
 
@@ -286,8 +286,8 @@ Model.prototype.validate = function(params, cb) {
   var definition = null;
   try {
     definition = this.definition.columns[modelName];
-  } catch(e) {
-    return cb('There was a system error:' + modelName, null)
+  } catch (e) {
+    return cb('There was a system error:' + modelName, null);
   }
 
   if (!definition) return cb(true, null);
@@ -317,7 +317,7 @@ Model.prototype.testRules_ = function(rules, field) {
   for (rule in rules) {
     var comparison = rules[rule];
     var pass;
-    switch(rule) {
+    switch (rule) {
       case 'type':
         pass = this.testType_(field, comparison);
         break;
@@ -353,7 +353,7 @@ Model.prototype.testRules_ = function(rules, field) {
 Model.prototype.testType_ = function(subject, type) {
   if (!subject) return false;
   var result;
-  switch(type) {
+  switch (type) {
     case 'string':
       result = typeof(subject) === 'string';
       break;
@@ -418,5 +418,5 @@ Model.prototype.testExists_ = function(subject) {
  */
 Model.prototype.testEmail_ = function(subject) {
   return /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      .test(subject)
+      .test(subject);
 };

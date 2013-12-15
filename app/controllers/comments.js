@@ -1,5 +1,5 @@
 var Comment = require('../models/comment'),
-  markdown = require('../../util/markdown');
+    markdown = require('../../util/markdown');
 
 exports.create = function(req, res) {
   /**
@@ -77,14 +77,14 @@ exports.flag_confirm = function(req, res) {
   }
   var params = {flagged: true};
   comment.update({where: {'comment.id': id}, values: params},
-  function(err, comment) {
-    if (err) {
-      req.flash('error', 'The post you were trying to flag does not exist.');
-      res.redirect('/');
-    } else {
-      comment = comment[0];
-      req.flash('success', 'The comment has been flagged.');
-      res.redirect('/posts/' + comment.post_slug);
-    }
-  });
+      function(err, comment) {
+        if (err) {
+          req.flash('error', 'The post you were trying to flag does not exist.');
+          res.redirect('/');
+        } else {
+          comment = comment[0];
+          req.flash('success', 'The comment has been flagged.');
+          res.redirect('/posts/' + comment.post_slug);
+        }
+      });
 };

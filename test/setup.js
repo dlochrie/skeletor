@@ -6,6 +6,7 @@ app = this.app || require('../server');
 // Expose `Session` class to app for testing access.
 app.session = Session;
 
+
 /**
  * Create a mock session class and expose it to `app`.
  */
@@ -16,7 +17,7 @@ function Session() {
       user_displayName: 'Testing Tester'
     }
   };
-};
+}
 
 Session.prototype.logout = function() {
   this.logged_in = false;

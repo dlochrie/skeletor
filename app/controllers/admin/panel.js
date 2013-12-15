@@ -13,24 +13,24 @@ exports.index = function(req, res) {
   var sections = [{
     name: 'Posts',
     actions: [
-      {title: 'List', path:'/admin/posts/'},
-      {title: 'Create', path:'/admin/posts/new'}
+      {title: 'List', path: '/admin/posts/'},
+      {title: 'Create', path: '/admin/posts/new'}
     ]
   }, {
     name: 'Users',
     actions: [
-      {title: 'List', path:'/admin/users'}
+      {title: 'List', path: '/admin/users'}
     ]
   }, {
     name: 'Comments',
     actions: [
-      {title: 'List', path:'/admin/comments'}
+      {title: 'List', path: '/admin/comments'}
     ]
   }, {
     name: 'Photos',
     actions: [
-      {title: 'List', path:'index'},
-      {title: 'Create', path:'new'}
+      {title: 'List', path: 'index'},
+      {title: 'Create', path: 'new'}
     ]
   }];
   res.render('admin/index', {

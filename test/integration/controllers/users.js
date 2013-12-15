@@ -1,5 +1,5 @@
 var request = require('supertest'),
-  should = require('should');
+    should = require('should');
 
 describe('Users Controller', function() {
   describe('when not logged in', function() {
@@ -17,19 +17,19 @@ describe('Users Controller', function() {
 
     it('should show anothers user\'s page and restrict actions',
         function(done) {
-      request(app)
+         request(app)
           .get('/users/joe-tester')
           .expect(200)
           .end(function(err, res) {
-            if (err) return done(err);
-            res.text.should.include('joe tester\'s Profile');
-            res.text.should.include('joe tester\'s Comments');
-            res.text.should.not.include('Logout');
-            res.text.should.not.include('Update Account');
-            res.text.should.not.include('Delete Account');
-            done();
-          });
-    });
+           if (err) return done(err);
+           res.text.should.include('joe tester\'s Profile');
+           res.text.should.include('joe tester\'s Comments');
+           res.text.should.not.include('Logout');
+           res.text.should.not.include('Update Account');
+           res.text.should.not.include('Delete Account');
+           done();
+         });
+       });
   });
 
   describe('when logged in as the user', function() {
@@ -42,18 +42,18 @@ describe('Users Controller', function() {
 
     it('should show anothers user\'s page and restrict actions',
         function(done) {
-      request(app)
+         request(app)
           .get('/users/joe-tester')
           .expect(200)
           .end(function(err, res) {
-            if (err) return done(err);
-            res.text.should.include('joe tester\'s Profile');
-            res.text.should.include('joe tester\'s Comments');
-            res.text.should.include('Logout');
-            res.text.should.include('Update Account');
-            res.text.should.include('Delete Account');
-            done();
-          });
-    });
+           if (err) return done(err);
+           res.text.should.include('joe tester\'s Profile');
+           res.text.should.include('joe tester\'s Comments');
+           res.text.should.include('Logout');
+           res.text.should.include('Update Account');
+           res.text.should.include('Delete Account');
+           done();
+         });
+       });
   });
 });

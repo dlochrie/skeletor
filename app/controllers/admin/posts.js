@@ -1,6 +1,6 @@
 var Post = require('../../models/post'),
-  markdown = require('../../../util/markdown'),
-  string = require('../../../util/string');
+    markdown = require('../../../util/markdown'),
+    string = require('../../../util/string');
 
 
 exports.index = function(req, res) {
@@ -96,14 +96,14 @@ exports.update = function(req, res) {
       }
       post.update({where: {'post.slug': slug}, values: resource},
           function(err, post) {
-        if (err) {
-          req.flash('error', 'There was an error editing the post: ' + err);
-          return res.redirect('/admin/posts/' + slug + '/edit');
-        } else {
-          req.flash('success', 'Post Successfully Updated');
-          res.redirect('/admin/posts');
-        }
-      });
+            if (err) {
+              req.flash('error', 'There was an error editing the post: ' + err);
+              return res.redirect('/admin/posts/' + slug + '/edit');
+            } else {
+              req.flash('success', 'Post Successfully Updated');
+              res.redirect('/admin/posts');
+            }
+          });
     });
   });
 };
@@ -111,7 +111,7 @@ exports.update = function(req, res) {
 
 exports.delete = function(req, res) {
   var post = new Post(req.app, null),
-    slug = req.params.post;
+      slug = req.params.post;
   post.find({where: {'post.slug': slug}}, function(err, post) {
     if (err || !post) {
       req.flash('error', 'There was an error deleting the post: ' + err);
@@ -129,7 +129,7 @@ exports.delete = function(req, res) {
 
 exports.destroy = function(req, res) {
   var post = new Post(req.app, null),
-    slug = req.params.post;
+      slug = req.params.post;
   post.delete({where: {'post.slug': slug}}, function(err, result) {
     if (err) {
       req.flash('error', 'There was an error deleting the post: ' + err);

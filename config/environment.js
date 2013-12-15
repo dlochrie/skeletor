@@ -1,11 +1,11 @@
 module.exports = function(app) {
   var express = require('express'),
-    env = process.env.NODE_ENV || 'development';
+      env = process.env.NODE_ENV || 'development';
 
   /**
    * Development and Prod, but NOT Test
    */
-  app.configure('development', 'production', function(){
+  app.configure('development', 'production', function() {
     /**
      * Setup Anti-Forgery
      * usage: (Where `token` is available as a local var)

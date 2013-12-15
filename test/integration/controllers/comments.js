@@ -1,5 +1,5 @@
 var request = require('supertest'),
-  should = require('should');
+    should = require('should');
 
 describe('Comments Controller', function() {
   var session;
@@ -17,37 +17,37 @@ describe('Comments Controller', function() {
         .get('/posts/first-post')
         .expect(200)
         .end(function(err, res) {
-          if (err) return done(err);
-          res.text.should.include('<div class="form-actions">' +
-              '<button class="btn btn-primary"><i class="icon-ok icon-white">' +
-              '</i> Post Comment</button></div>');
-          res.text.should.not.include(
-              'You must be logged in to leave a comment.');
-          done();
-        });
+            if (err) return done(err);
+            res.text.should.include('<div class="form-actions">' +
+                '<button class="btn btn-primary"><i class="icon-ok icon-white">' +
+                '</i> Post Comment</button></div>');
+            res.text.should.not.include(
+                'You must be logged in to leave a comment.');
+            done();
+          });
     });
 
     it('should let a user create a new comment', function(done) {
       request(app)
         .post('/comments')
         .send({
-          body: 'My First Comment!',
-          post_id: 1,
-          user_id: 1
-        })
+            body: 'My First Comment!',
+            post_id: 1,
+            user_id: 1
+          })
         .expect(302) // redirect
         .end(function(err, res) {
-          if (err) return done(err);
-          request(app)
+            if (err) return done(err);
+            request(app)
             .get('/posts/first-post')
             .expect(200)
-            .end(function (err, res) {
-              if (err) return done(err);
-              res.text.should.include('Comment Successfully Created');
-              res.text.should.include('My First Comment');
-              done();
-            });
-        });
+            .end(function(err, res) {
+                  if (err) return done(err);
+                  res.text.should.include('Comment Successfully Created');
+                  res.text.should.include('My First Comment');
+                  done();
+                });
+          });
     });
 
     it('should show a user the flag form', function(done) {
@@ -55,12 +55,12 @@ describe('Comments Controller', function() {
         .get('/comments/1/flag')
         .expect(200)
         .end(function(err, res) {
-          if (err) return done(err);
-          res.text.should.include(
-              'Are you sure you want to flag this comment?');
-          res.text.should.include('First Test Comment');
-          done();
-        });
+            if (err) return done(err);
+            res.text.should.include(
+                'Are you sure you want to flag this comment?');
+            res.text.should.include('First Test Comment');
+            done();
+          });
     });
 
     it('should let a user flag a comment', function(done) {
@@ -69,18 +69,18 @@ describe('Comments Controller', function() {
         .send({comment_id: 1})
         .expect(302)
         .end(function(err, res) {
-          if (err) return done(err);
-          request(app)
+            if (err) return done(err);
+            request(app)
             .get('/posts/first-post')
             .expect(200)
-            .end(function (err, res) {
-              if (err) return done(err);
-              res.text.should.include('The comment has been flagged.');
-              res.text.should.include('<p class="comment-status">' +
-                  '<i class="icon-flag"></i></p>');
-              done();
-            });
-        });
+            .end(function(err, res) {
+                  if (err) return done(err);
+                  res.text.should.include('The comment has been flagged.');
+                  res.text.should.include('<p class="comment-status">' +
+                      '<i class="icon-flag"></i></p>');
+                  done();
+                });
+          });
     });
   });
 
@@ -96,36 +96,36 @@ describe('Comments Controller', function() {
         .get('/posts/first-post')
         .expect(200)
         .end(function(err, res) {
-          if (err) return done(err);
-          res.text.should.include('You must be logged in to leave a comment.');
-          res.text.should.not.include('<div class="form-actions">' +
-              '<button class="btn btn-primary"><i class="icon-ok icon-white">' +
-              '</i> Post Comment</button></div>');
-          done();
-        });
+            if (err) return done(err);
+            res.text.should.include('You must be logged in to leave a comment.');
+            res.text.should.not.include('<div class="form-actions">' +
+                '<button class="btn btn-primary"><i class="icon-ok icon-white">' +
+                '</i> Post Comment</button></div>');
+            done();
+          });
     });
 
     it('should NOT let a user create a new comment', function(done) {
       request(app)
         .post('/comments')
         .send({
-          body: 'My First Comment!',
-          post_id: 1,
-          user_id: 1
-        })
+            body: 'My First Comment!',
+            post_id: 1,
+            user_id: 1
+          })
         .expect(302) // redirect
         .end(function(err, res) {
-          if (err) return done(err);
-          request(app)
+            if (err) return done(err);
+            request(app)
             .get('/posts/first-post')
             .expect(200)
-            .end(function (err, res) {
-              if (err) return done(err);
-              res.text.should.include('You should be logged in...');
-              res.text.should.not.include('Comment Successfully Created');
-              done();
-            });
-        });
+            .end(function(err, res) {
+                  if (err) return done(err);
+                  res.text.should.include('You should be logged in...');
+                  res.text.should.not.include('Comment Successfully Created');
+                  done();
+                });
+          });
     });
 
     it('should NOT show a user the flag form', function(done) {
@@ -133,18 +133,18 @@ describe('Comments Controller', function() {
         .get('/comments/1/flag')
         .expect(302)
         .end(function(err, res) {
-          if (err) return done(err);
-          request(app)
+            if (err) return done(err);
+            request(app)
             .get('/posts/first-post')
             .expect(200)
-            .end(function (err, res) {
-              if (err) return done(err);
-              res.text.should.include('You should be logged in...');
-              res.text.should.not.include(
-                'Are you sure you want to flag this comment?');
-              done();
-            });
-        });
+            .end(function(err, res) {
+                  if (err) return done(err);
+                  res.text.should.include('You should be logged in...');
+                  res.text.should.not.include(
+                      'Are you sure you want to flag this comment?');
+                  done();
+                });
+          });
     });
 
     it('should NOT let a user flag a comment', function(done) {
@@ -153,16 +153,16 @@ describe('Comments Controller', function() {
         .send({comment_id: 1})
         .expect(302)
         .end(function(err, res) {
-          if (err) return done(err);
-          request(app)
+            if (err) return done(err);
+            request(app)
             .get('/posts/first-post')
             .expect(200)
-            .end(function (err, res) {
-              if (err) return done(err);
-              res.text.should.include('You should be logged in...');
-              done();
-            });
-        });
+            .end(function(err, res) {
+                  if (err) return done(err);
+                  res.text.should.include('You should be logged in...');
+                  done();
+                });
+          });
     });
   });
 });

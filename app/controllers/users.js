@@ -1,6 +1,6 @@
 var User = require('../models/user'),
-  Comment = require('../models/comment'),
-  crypto = require('crypto');
+    Comment = require('../models/comment'),
+    crypto = require('crypto');
 
 
 exports.index = function(req, res) {
@@ -72,10 +72,10 @@ exports.account = function(req, res) {
 function loadComments(app, userId, cb) {
   var comment = new Comment(app);
   comment.all({where: {'comment.user_id': userId}},
-  function(err, comments) {
-    if (err) comments = null;
-    cb(comments);
-  });
+      function(err, comments) {
+        if (err) comments = null;
+        cb(comments);
+      });
 }
 
 
@@ -92,5 +92,5 @@ function loadComments(app, userId, cb) {
  */
 function getGravatarHash(email, done) {
   email = email.trim().toLowerCase();
-  done(crypto.createHash('md5').update(email).digest("hex"));
+  done(crypto.createHash('md5').update(email).digest('hex'));
 }

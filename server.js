@@ -2,15 +2,15 @@
  * Module dependencies.
  */
 var express = require('express'),
-  resource = require('express-resource'),
-  flash = require('connect-flash'),
-  http = require('http'),
-  path = require('path'),
-  passport = require('passport');
+    resource = require('express-resource'),
+    flash = require('connect-flash'),
+    http = require('http'),
+    path = require('path'),
+    passport = require('passport');
 
 var app = express();
 
-app.configure(function(){
+app.configure(function() {
   app.set('port', process.env.PORT || 3000);
   app.set('host', process.env.HOST || '0.0.0.0');
   app.use(express.static(app.root + '/public', {
@@ -43,7 +43,7 @@ app.configure(function(){
    */
   app.use(function(req, res, next) {
     res.locals.messages = req.flash();
-    next()
+    next();
   });
 
   app.use(app.router);
@@ -56,7 +56,7 @@ app.locals.truncateAndStripTags = function(string, maxLength) {
   var original = string;
   if (string) {
     string = string
-        .replace(/(<([^>]+)>)/ig,"")
+        .replace(/(<([^>]+)>)/ig, '')
         .substring(0, maxLength);
     if (original.length >= maxLength) {
       string += '&hellip;';
@@ -65,31 +65,36 @@ app.locals.truncateAndStripTags = function(string, maxLength) {
   }
 };
 
+
 /**
  * Setup Routes
  */
 require('./config/routes')(app);
+
 
 /**
  * Setup Environment-Specific Settings
  */
 require('./config/environment')(app);
 
+
 /**
  * Setup Passport-Specific Settings
  */
 require('./config/passport')(app);
+
 
 /**
  * Setup Dabasase-Specific Settings
  * Replace file with DB-Type you wish to use, ie `redis`
  */
 require('./db/mysql')(app, function() {
-  http.createServer(app).listen(app.get('port'), app.get('host'), function(){
-    console.log("Express server listening on port " + app.get('port') +
-      ' in the `' + process.env.NODE_ENV + '` environment.');
+  http.createServer(app).listen(app.get('port'), app.get('host'), function() {
+    console.log('Express server listening on port ' + app.get('port') +
+        ' in the `' + process.env.NODE_ENV + '` environment.');
   });
 });
+
 
 /**
  * Expose the app module.

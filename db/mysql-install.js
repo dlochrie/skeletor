@@ -1,5 +1,5 @@
 var mysql = require('../node_modules/mysql'),
-  table;
+    table;
 
 var env = process.env;
 var mode = String(env.NODE_ENV || 'dev').toUpperCase();
@@ -15,6 +15,7 @@ if (!database || !config.host || !config.user || !config.password) {
   console.log('Could not access database environmental variables.');
 }
 
+
 /**
  * Inititialize Client
  */
@@ -22,6 +23,7 @@ var db = mysql.createConnection(config);
 db.on('error', function(err) {
   console.log('There was an error connecting to the database:\n', err);
 });
+
 
 /**
  * Create Database
@@ -34,63 +36,67 @@ db.query('USE `' + database + '`');
  * Create Tables
  */
 
+
 /** Posts */
 table = 'post';
 console.log('Creating table `' + table + '`');
 db.query('DROP TABLE IF EXISTS ' + table);
 db.query('CREATE TABLE ' + table + ' (' +
-  'id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,' +
-  'user_id INT(10) UNSIGNED NOT NULL,' +
-  'title VARCHAR(255) NOT NULL,' +
-  'slug VARCHAR(255) NOT NULL,' +
-  'description TEXT NOT NULL,' +
-  'description_md TEXT NOT NULL,' +
-  'body TEXT NOT NULL,' +
-  'body_md TEXT NOT NULL,' +
-  'created DATETIME NOT NULL,' +
-  'updated DATETIME NOT NULL,' +
-  'PRIMARY KEY(id),' +
-  'UNIQUE(title),' +
-  'INDEX(user_id))');
+    'id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,' +
+    'user_id INT(10) UNSIGNED NOT NULL,' +
+    'title VARCHAR(255) NOT NULL,' +
+    'slug VARCHAR(255) NOT NULL,' +
+    'description TEXT NOT NULL,' +
+    'description_md TEXT NOT NULL,' +
+    'body TEXT NOT NULL,' +
+    'body_md TEXT NOT NULL,' +
+    'created DATETIME NOT NULL,' +
+    'updated DATETIME NOT NULL,' +
+    'PRIMARY KEY(id),' +
+    'UNIQUE(title),' +
+    'INDEX(user_id))');
+
 
 /** Users */
 table = 'user';
 console.log('Creating table `' + table + '`');
 db.query('DROP TABLE IF EXISTS ' + table);
 db.query('CREATE TABLE ' + table + ' (' +
-  'id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,' +
-  'displayName VARCHAR(100) NOT NULL,' +
-  'slug VARCHAR(100) NOT NULL,' +
-  'email VARCHAR(100) NOT NULL,' +
-  'google_id VARCHAR(100),' +
-  'facebook_id VARCHAR(100),' +
-  'twitter_id VARCHAR(100),' +
-  'created DATETIME NOT NULL,' +
-  'updated DATETIME NOT NULL,' +
-  'PRIMARY KEY(id),' +
-  'UNIQUE(displayName),' +
-  'UNIQUE(email))');
+    'id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,' +
+    'displayName VARCHAR(100) NOT NULL,' +
+    'slug VARCHAR(100) NOT NULL,' +
+    'email VARCHAR(100) NOT NULL,' +
+    'google_id VARCHAR(100),' +
+    'facebook_id VARCHAR(100),' +
+    'twitter_id VARCHAR(100),' +
+    'created DATETIME NOT NULL,' +
+    'updated DATETIME NOT NULL,' +
+    'PRIMARY KEY(id),' +
+    'UNIQUE(displayName),' +
+    'UNIQUE(email))');
+
 
 /** Comments */
 table = 'comment';
 console.log('Creating table `' + table + '`');
 db.query('DROP TABLE IF EXISTS ' + table);
 db.query('CREATE TABLE ' + table + ' (' +
-  'id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,' +
-  'user_id INT(10) UNSIGNED NOT NULL,' +
-  'post_id INT(10) UNSIGNED NOT NULL,' +
-  'body TEXT NOT NULL,' +
-  'body_md TEXT NOT NULL,' +
-  'flagged TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,' +
-  'created DATETIME NOT NULL,' +
-  'updated DATETIME NOT NULL,' +
-  'PRIMARY KEY(id),' +
-  'INDEX(user_id),' +
-  'INDEX(post_id))');
+    'id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,' +
+    'user_id INT(10) UNSIGNED NOT NULL,' +
+    'post_id INT(10) UNSIGNED NOT NULL,' +
+    'body TEXT NOT NULL,' +
+    'body_md TEXT NOT NULL,' +
+    'flagged TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,' +
+    'created DATETIME NOT NULL,' +
+    'updated DATETIME NOT NULL,' +
+    'PRIMARY KEY(id),' +
+    'INDEX(user_id),' +
+    'INDEX(post_id))');
 
 /** Categories */
 
 /** Tags */
+
 
 /**
  * Close Connection
