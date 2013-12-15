@@ -8,11 +8,11 @@ if (posts.length)
           span.pull-right: small #{post.post_created.toUTCString()}
         .description!= post.post_description
         ul.flairline.inline
-          li: i.icon-white.icon-comment 
-            | #{post._comments}
-          li: i.icon-white.icon-facebook 
-            | 20
-          li: i.icon-white.icon-twitter 
-            | 22
-          li: i.icon-white.icon-google-plus 
-            | 3
+          li: i.fa.fa-comment
+            |  #{post._comments}
+          li: i.fa.fa-facebook
+            |  20
+          li: i.fa.fa-twitter
+            |  22
+          li: i.fa.fa-google-plus
+            |  3
