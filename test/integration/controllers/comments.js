@@ -58,7 +58,7 @@ describe('Comments Controller', function() {
           if (err) return done(err);
           res.text.should.include(
               'Are you sure you want to flag this comment?');
-          res.text.should.include('My First Comment');
+          res.text.should.include('First Test Comment');
           done();
         });
     });

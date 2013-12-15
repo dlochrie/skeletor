@@ -26,6 +26,7 @@ db.on('error', function(err) {
 if (db) {
   var users = require('./seeds/users');
   var posts = require('./seeds/posts');
+  var comments = require('./seeds/comments');
 
   db.query('TRUNCATE user');
   console.log('Adding Fixtures for Users...');
@@ -38,6 +39,9 @@ if (db) {
   console.log('\t...Success.');
 
   db.query('TRUNCATE comment');
+  console.log('Adding Fixtures for Comments...');
+  db.query(comments);
+  console.log('\t...Success.');
 
   // Closeout.
   db.end();
