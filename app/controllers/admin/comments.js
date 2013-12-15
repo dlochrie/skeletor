@@ -18,8 +18,34 @@ exports.index = function(req, res) {
 };
 
 
+exports.flag = function(req, res) {
+  var comment = new Comment(req.app, null),
+    id = parseInt(req.params.comment);
+  comment.update({where: {'comment.id': id}, values: {flagged: true}}, 
+      function(err, result) {
+        if (err) {
+          req.flash('error', 'There was an error flagging the comment: ' + err);
+        } else {
+          req.flash('info', 'Comment Successfully Flagged.');
+        }
+        res.redirect('/admin/comments');
+      });
+};
+
+
 exports.unflag = function(req, res) {
- // .. TO BE IMPLEMENTED
+  var comment = new Comment(req.app, null),
+    id = parseInt(req.params.comment);
+  comment.update({where: {'comment.id': id}, values: {flagged: false}}, 
+      function(err, result) {
+        if (err) {
+          req.flash('error', 'There was an error un-flagging the comment: ' +
+              err);
+        } else {
+          req.flash('info', 'Comment Successfully Un-Flagged.');
+        }
+        res.redirect('/admin/comments');
+      });
 };
 
 

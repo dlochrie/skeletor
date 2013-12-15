@@ -24,8 +24,14 @@ block body
           td= comment.comment_created
           td= (comment.comment_flagged) ? 'True' : 'False'
           td
-            a(href='/admin/comments/#{comment.comment_id}/unflag', class='btn')
-              i.icon-flag
+            if comment.comment_flagged
+              a(href='/admin/comments/#{comment.comment_id}/unflag',
+                  class='btn')
+                i.fa.fa-flag
+            else
+              a(href='/admin/comments/#{comment.comment_id}/flag',
+                  class='btn')
+                i.fa.fa-flag-o
             | 
             a(href='/admin/comments/#{comment.comment_id}/delete', 
                 data-method='delete', class='btn btn-danger')

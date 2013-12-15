@@ -44,4 +44,6 @@ module.exports = function(app) {
   app.get('/admin/users/:user/delete', adminUsers.delete);
   app.resource('admin/comments', adminComments);
   app.get('/admin/comments/:comment/delete', adminComments.delete);
+  app.get('/admin/comments/:comment/flag', adminComments.flag);
+  app.get('/admin/comments/:comment/unflag', adminComments.unflag);
 }
