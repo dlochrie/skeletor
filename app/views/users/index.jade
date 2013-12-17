@@ -13,7 +13,6 @@ block body
           tr
             td: a(href="/users/#{user.user_slug}",
                 title="#{user.user_displayName}")
-              i.icon-user 
               = user.user_displayName
             td= user.user_created
       else

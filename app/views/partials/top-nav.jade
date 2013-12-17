@@ -23,12 +23,12 @@
                 b.caret
               ul.dropdown-menu
                 li: a(href="/account")
-                  i.icon-user 
-                  | my account
+                  i.fa.fa-user
+                  |  my account
                 li: a(href="/logout")
-                  i.icon-signout 
-                  | logout
+                  i.fa.fa-sign-out
+                  |  logout
           else
             li: a(href="/auth/google").navbar-link 
-              i.icon-signin 
-              | login
+              i.fa.fa-sign-in
+              |  login
