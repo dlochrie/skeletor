@@ -32,7 +32,7 @@ module.exports = function(app) {
    *
    * Add authentication middleware to the `admin` namespace.
    */
-  app.all('/admin/*', admin.authenticate);
+  app.all('/admin*', admin.authenticate);
 
   /**
    * Admin Routes. Should be protected by middleware above.
