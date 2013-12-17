@@ -27,7 +27,7 @@ exports.index = function(req, res) {
       {title: 'List', path: '/admin/comments'}
     ]
   }];
-  
+
   res.render('admin/index', {
     title: 'Admin Panel',
     sections: sections
