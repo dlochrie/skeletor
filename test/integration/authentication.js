@@ -70,15 +70,15 @@ describe('Authentication', function() {
           .end(function(err, res) {
            if (err) return done(err);
            session.logged_in.should.be.false;
-           res.text.should.not.include('Administration Portals');
+           res.text.should.not.include('Admin Panel');
            res.text.should.not.include('Testing Tester');
            // Validate that an error message was flashed.
            request(app)
               .get('/')
               .end(function(err, res) {
-             res.text.should.include('You should be logged in...');
-             done();
-           });
+                res.text.should.include('This action is unauthorized.');
+                done();
+              });
          });
        });
      });

@@ -26,13 +26,8 @@ exports.index = function(req, res) {
     actions: [
       {title: 'List', path: '/admin/comments'}
     ]
-  }, {
-    name: 'Photos',
-    actions: [
-      {title: 'List', path: 'index'},
-      {title: 'Create', path: 'new'}
-    ]
   }];
+  
   res.render('admin/index', {
     title: 'Admin Panel',
     sections: sections
