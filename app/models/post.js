@@ -13,8 +13,7 @@ function Post(app, resource) {
   this.app = app;
   this.modelName = 'post';
   this.resource = resource || {};
-  // TODO: Is there a better way to access this, vs on the prototype???
-  this.validations = this.VALIDATIONS_;
+  this.validations = Post.VALIDATIONS_;
   Model.call(this);
 }
 require('util').inherits(Post, Model);
@@ -61,7 +60,7 @@ Post.prototype.adminList = function(params, cb) {
  * @const {enum {string}}
  * @private
  */
-Post.prototype.VALIDATIONS_ = {
+Post.VALIDATIONS_ = {
   title: {
     min: 10,
     max: 100
