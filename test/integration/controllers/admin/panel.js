@@ -41,7 +41,7 @@ describe('Admin Panel Controller', function() {
       .end(function(err, res) {
             if (err) return done(err);
             res.text.should.not.include('Admin Panel');
-        request(app)
+            request(app)
         .get('/')
         .expect(200)
         .end(function(err, res) {

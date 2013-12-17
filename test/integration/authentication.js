@@ -76,9 +76,9 @@ describe('Authentication', function() {
            request(app)
               .get('/')
               .end(function(err, res) {
-                res.text.should.include('This action is unauthorized.');
-                done();
-              });
+             res.text.should.include('This action is unauthorized.');
+             done();
+           });
          });
        });
      });
