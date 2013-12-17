@@ -2,12 +2,8 @@ var should = require('should'),
     express = require('express');
 
 describe('MySQL Initialization', function() {
-  beforeEach(function(done) {
-    done();
-  });
-
+  var db = app.settings.db;
   it('should connect to MySQL and create a connection pool', function(done) {
-    var db = app.settings.db;
     db.should.be.a('object').and.have.property('pool');
     db.should.be.a('object').and.have.property('models');
     db.pool.getConnection(function(err, connection) {
@@ -19,7 +15,6 @@ describe('MySQL Initialization', function() {
   });
 
   it('should cache model definitions and table structure', function(done) {
-    var db = app.settings.db;
     for (name in db.models) {
       var model = db.models[name];
       model.definition.should.be.a('object');
@@ -30,7 +25,6 @@ describe('MySQL Initialization', function() {
   });
 
   it('should cache model queries', function(done) {
-    var db = app.settings.db;
     for (name in db.models) {
       var model = db.models[name];
       model.queries.should.be.a('object');
