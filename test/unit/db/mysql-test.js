@@ -1,5 +1,4 @@
-var should = require('should'),
-    express = require('express');
+var should = require('should');
 
 describe('MySQL Initialization', function() {
   var db = app.settings.db;
