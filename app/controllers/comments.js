@@ -1,6 +1,7 @@
 var Comment = require('../models/comment'),
     markdown = require('../../util/markdown');
 
+
 exports.create = function(req, res) {
   /**
    * TODO: Shouldn't a block like this be in a `before` method?

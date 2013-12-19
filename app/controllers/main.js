@@ -1,5 +1,6 @@
 var Post = require('../models/post');
 
+
 exports.index = function(req, res) {
   var post = new Post(req.app, null);
   post.latest(null, function(err, posts) {
