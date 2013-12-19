@@ -7,7 +7,7 @@ exports.index = function(req, res) {
   post.latest(null, function(err, posts) {
     if (err) return res.send('There was an error getting posts', err);
     if (posts) {
-      res.render('posts/index', {title: 'Skeletor', posts: posts});
+      res.render('posts/index', {title: 'Posts', posts: posts});
     }
   });
 };
@@ -24,7 +24,7 @@ exports.show = function(req, res) {
     var comment = new Comment(req.app, null);
     comment.all({where: {'post_id': post.post_id}}, function(err, comments) {
       res.render('posts/show', {
-        title: 'Skeletor',
+        title: post.post_title,
         post: post,
         comments: comments,
         token: res.locals.token

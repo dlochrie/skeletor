@@ -1,11 +1,12 @@
-.row
-  .span4
-    .well
-      ul.nav.nav-list
-        li.nav-header Tags
-        li: a(href="/", title="General")
-          | general
-        li: a(href="/posts", title="Tutorial")
-          | tutorials
-        li: a(href="/users", title="Commentaries")
-          | commentaries
+if tags
+  .row
+    .span4
+      .well
+        ul.nav.nav-list
+          li.nav-header Tags
+          li: a(href="/", title="General")
+            | general
+          li: a(href="/posts", title="Tutorial")
+            | tutorials
+          li: a(href="/users", title="Commentaries")
+            | commentaries

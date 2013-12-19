@@ -1,7 +1,6 @@
 extends ../layouts/main
 
 block body
-  h2= post.post_title
   .row: .span8
     h5 by 
       a(href='/users/#{post.user_slug}')= post.user_displayName

@@ -10,7 +10,7 @@ exports.index = function(req, res) {
       req.flash('error', 'There was a system error. Please try again.');
       return res.redirect('/');
     }
-    res.render('./users/index', {title: 'Skeletor', users: users});
+    res.render('./users/index', {title: 'Users', users: users});
   });
 };
 
@@ -32,7 +32,7 @@ exports.show = function(req, res) {
       getGravatarHash(user.user_email, function(hash) {
         user.gravatar = '//www.gravatar.com/avatar/' + hash + '?s=200&amp;d=mm';
         res.render('./users/show', {
-          title: 'Showing User',
+          title: user.user_displayName,
           comments: comments,
           siteUser: user
         });
