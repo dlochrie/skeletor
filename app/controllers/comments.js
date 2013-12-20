@@ -80,7 +80,8 @@ exports.flag_confirm = function(req, res) {
   comment.update({where: {'comment.id': id}, values: params},
       function(err, comment) {
         if (err) {
-          req.flash('error', 'The post you were trying to flag does not exist.');
+          req.flash('error',
+              'The post you were trying to flag does not exist.');
           res.redirect('/');
         } else {
           comment = comment[0];
