@@ -1,0 +1,26 @@
+.form-group
+  label.control-label.col-md-3(for='title') Title
+  .col-md-9
+    input.form-control(type='text', name='title',
+        value=(result.post.title) ? result.post.title : "",
+        placeholder='Man Lands on the Moon!')
+
+.form-group
+  label.control-label.col-md-3(for='author') Author
+  .col-md-9
+    input.form-control(type='text', value='#{user.displayName}',
+        name='author', disabled)
+
+.form-group
+  label.control-label.col-md-3(for='description') Description
+  .col-md-9
+    textarea.form-control(rows=2, name='description_md',
+        placeholder='Add a Description here, for Lists and RSS')
+        !=result.post.description_md
+
+.form-group
+  label.control-label.col-md-3(for='body') Body Content
+  .col-md-9
+    textarea.form-control(rows=10, name='body_md',
+        placeholder='Neil Armstrong, we hardly knew ye...')
+        !=result.post.body_md

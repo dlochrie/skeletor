@@ -1,0 +1,25 @@
+Place the config below in one of the following places (or wherever you store
+environmental variables on your system):
+
+
+[ LOCATION ]
+
+  ~/.pam_environment
+  ~/.bash_profile
+  /etc/default/appName
+
+
+[ CONTENTS ]
+
+(You should also create entries for PROD and DEV by replacing TEST down below)
+
+  TEST_ROOT_PATH=/path/to/application/
+  TEST_ROOT_URL=http://localhost:3000/
+  TEST_MYSQL_DB=skeletest
+  TEST_MYSQL_HOST=localhost
+  TEST_MYSQL_USER=skeletor
+  TEST_MYSQL_PASS=skelepass
+  TEST_MYSQL_MAX_CONN=10
+  TEST_REDIS_SECRET=myRedisSecret
+  TEST_COOKIE_SECRET=abcd1234
+  TEST_SITE_OWNERS=testerperson@gdmail.com,tester.test@somelabs.com

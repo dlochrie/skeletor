@@ -1,0 +1,18 @@
+body {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.navbar {
+  margin-bottom: 20px;
+}
+
+.breadcrumb:empty { display: none; }
+
+.flairline a {
+  color: #a94442;
+}
+
+.flairline a:hover {
+  color: #cc0033;
+}

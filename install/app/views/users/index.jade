@@ -1,0 +1,14 @@
+extends ../layouts/main
+
+block body
+  if (results.length)
+    table.table.table-hover.table-striped.users-list
+      tr
+        th User Name
+        th Member Since
+      each result in results
+        tr
+          td
+            a(href='/users/#{result.user.slug}', title=result.user.displayName)
+              | #{result.user.displayName}
+          td= DateHelper.getHumanDate(result.user.created)

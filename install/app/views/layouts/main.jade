@@ -1,0 +1,34 @@
+doctype html
+html(lang="en")
+  head
+    title= title
+    meta(name='description', content=description)
+    link(rel='canonical', href=canonical)
+    block head
+      include ../partials/head
+
+  body
+    .container
+      <!--Begin Top-Nav-->
+      block top-nav
+        include ../partials/top-nav
+
+      block top-dateline
+        include ../partials/top-dateline
+
+      <!--Begin Main Content-->
+      #main
+
+        <!--Begin Alerts-->
+        include ../partials/alerts
+
+        <!--Begin Main Content-->
+        .row
+          .col-md-12
+            <!--Begin Body Content-->
+            h1#title= title
+            block body
+
+      <!--Begin Footer-->
+      block footer
+        include ../partials/footer

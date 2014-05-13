@@ -1,0 +1,32 @@
+extends ../layouts/admin
+
+block breadcrumbs
+
+block body
+  .row: .col-md-12
+      p.lead Choose from one of the Administration Portals below.
+
+  .row
+    .col-md-4
+      .panel.panel-info
+        .panel-heading Posts
+        .panel-body
+          h4 Manage Posts
+          p List, Create, Update, and Remove Posts.
+        .list-group
+          a.list-group-item(href='/admin/posts', title='Browse all Posts')
+            span.text-info List Posts
+          a.list-group-item(href='/admin/posts/new',
+              title='Create a New Post')
+            span.text-info Add New
+
+    .col-md-4
+      .panel.panel-info
+        .panel-heading Users
+        .panel-body
+          h4 Manage Users
+          p List, Create, Update, and Remove Users.
+        .list-group
+          a.list-group-item(href='/admin/users',
+              title='Browse all Users and Owners')
+            span.text-info List Users and Owners

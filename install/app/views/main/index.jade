@@ -1,0 +1,22 @@
+extends ../layouts/main
+
+block body
+  p.lead
+    | Welcome to the {{ appName }} homepage!
+
+  h3 Next Steps
+
+  ul
+    li Edit <em>this</em> text: <code>app/views/main/index</code>.
+    li Alter or remove the About and Contact Pages, as necessary.
+    li Create new resources...
+
+  <hr>
+
+  if (results.length)
+    each result in results
+      article
+        h4: a(href="/posts/#{result.post.slug}") #{result.post.title}
+        p by <a href="/users/#{result.user.slug}">#{result.user.displayName}</a>
+        | on #{DateHelper.getHumanDate(result.post.created)}
+        div.content!= result.post.description

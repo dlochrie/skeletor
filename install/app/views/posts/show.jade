@@ -1,0 +1,17 @@
+extends ../layouts/main
+
+block body
+  .row: .col-md-12
+    h5 by 
+      a(href='/users/#{result.user.slug}')= result.user.displayName
+      span.pull-right
+        small #{DateHelper.getHumanDate(result.post.created)}
+    div!= result.post.body
+
+  .row#post-share: .col-md-12
+    ul.list-inline.flairline
+      li: a: i.fa.fa-print
+      li: a: i.fa.fa-envelope
+      li: a: i.fa.fa-facebook
+      li: a: i.fa.fa-twitter
+      li: a: i.fa.fa-google-plus

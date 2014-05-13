@@ -1,0 +1,13 @@
+.form-group
+  label.control-label.col-md-3(for='displayName') Display Name
+  .col-md-9
+    input.form-control(type='text', name='displayName',
+        value=(result.user.displayName) ? result.user.displayName : "",
+        placeholder='Thomas Alva Edison')
+
+.form-group
+  label.control-label.col-md-3(for='email') Email Address
+  .col-md-9
+    input.form-control(type='text', name='email',
+        value=(result.user.email) ? result.user.email : "",
+        placeholder='t.edison@edison.net')

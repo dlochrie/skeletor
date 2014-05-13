@@ -1,0 +1,33 @@
+nav.navbar.navbar-default(role='navigation')
+  .navbar-header
+    button.navbar-toggle(type='button', data-toggle='collapse',
+        data-target='#top-nav-collapse')
+      span.sr-only Toggle navigation
+      span.icon-bar
+      span.icon-bar
+      span.icon-bar
+    a.navbar-brand(href='/') {{ appName }}
+
+  .collapse.navbar-collapse#top-nav-collapse
+    ul.nav.navbar-nav
+      li: a(href='/posts', title='Posts') Posts
+      li: a(href='/users', title='Users') Users
+      li: a(href='/contact', title='Contact') Contact
+      li: a(href='/about', title='About') About
+
+    ul.nav.navbar-nav.navbar-right
+      if user
+        li.dropdown
+          a(class='dropdown', data-toggle='dropdown', href='#')
+            = user.displayName
+            |&nbsp;
+            b.caret
+          ul.dropdown-menu
+            li: a(href='/logout')
+              i.fa.fa-sign-out
+              |  logout
+      else
+        li: a(href='/auth/google').navbar-link
+          i.fa.fa-sign-in
+          |  login
+  <!-- /.navbar-collapse -->

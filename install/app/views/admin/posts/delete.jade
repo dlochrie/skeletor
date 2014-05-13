@@ -1,0 +1,32 @@
+extends ../../layouts/admin
+
+append breadcrumbs
+  li: a(href='/admin/posts') Posts Administration
+  li.active= title
+
+block body
+  h3.text-warning Are you sure you want to delete this post?
+  form(action='/admin/posts/#{result.post.id}', method='post', role='form')
+    article
+      table.table.table-hover
+        tr
+          th Title
+          td #{result.post.title}
+        tr
+          th Author
+          td #{result.user.displayName}
+
+      h4 Description
+      .well!= result.post.description
+      h4 Body
+      .well!= result.post.body
+
+    input(type='hidden', name='_csrf', value=token)
+    input(type='hidden', name='_method', value='delete')
+
+    .form-actions
+      .btn-group
+        button.btn.btn-danger
+          i.fa.fa-times
+          |&nbsp;Delete Post
+        a.btn.btn-default(href='/admin/posts', role='button') Cancel

@@ -1,0 +1,15 @@
+if messages
+  .row
+    .col-md-12
+      if messages.success
+        .alert.alert-success.alert-dismissable #{messages.success}
+          button.close(type='button', data-dismiss='alert' aria-hidden='true')
+            | &times;
+      if messages.error
+        .alert.alert-danger.alert-dismissable #{messages.error}
+          button.close(type='button', data-dismiss='alert' aria-hidden='true')
+            | &times;
+      if messages.info
+        .alert.alert-info.alert-dismissable #{messages.info}
+          button.close(type='button', data-dismiss='alert' aria-hidden='true')
+            | &times;

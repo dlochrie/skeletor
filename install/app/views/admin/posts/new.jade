@@ -1,0 +1,23 @@
+extends ../../layouts/admin
+
+append breadcrumbs
+  li: a(href='/admin/posts') Posts Administration
+  li.active= title
+
+block body
+  p.alert.alert-warning <strong>TODO</strong>: Please add validation here.
+
+  form.form-horizontal(action='/admin/posts', method='post', role='form')
+    fieldset
+      legend Fill out the form below to create a new Post.
+      include _form
+
+      input(type='hidden', name='user_id', value=user.id)
+      input(type='hidden', name='_csrf', value=token)
+      input(type='hidden', name='_method', value='post')
+
+      .form-group
+        .col-md-offset-3.col-md-9
+          .btn-group
+            button.btn.btn-primary(type='submit') Create Post
+            a.btn.btn-default(href='/admin/posts', role='button') Cancel

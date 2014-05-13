@@ -1,0 +1,36 @@
+extends ../../layouts/admin
+
+append breadcrumbs
+  li.active= title
+
+block body
+  table.table.table-hover.table-striped
+    thead
+      tr
+        th Display Name
+        th Created
+        th Updated
+        th Is Owner?
+        th Actions
+    tbody
+    if (results.length)
+      each result in results
+        tr
+          td: a(href='/admin/users/#{result.user.id}/edit') #{result.user.displayName}
+          td= DateHelper.getHumanDate(result.user.created)
+          td= DateHelper.getHumanDate(result.user.updated)
+          td
+            if User.isOwner(user)
+              span.text-info: strong True
+            else
+              span.text-warning False
+          td
+            a(href='/admin/users/#{result.user.id}/edit',
+                class='btn btn-default', role='button')
+              i.fa.fa-pencil
+            | 
+            a(href='/admin/users/#{result.user.id}/delete',
+                class='btn btn-danger', role='button')
+              i.fa.fa-times
+    else
+      tr: td(colspan=5) No Users Found.
